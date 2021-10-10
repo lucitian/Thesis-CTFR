@@ -1,21 +1,21 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React from 'react'
+import { Router, Scene } from 'react-native-router-flux'
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+import LoginScreen from './screens/login'
+
+const App = () => {
+    return (
+        <Router>
+            <Scene key = "root">
+                <Scene
+                    key = "login"
+                    component = { LoginScreen }
+                    initial = { true }
+                    hideNavBar = { true }
+                ></Scene>
+            </Scene>
+        </Router>
+    ) 
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
