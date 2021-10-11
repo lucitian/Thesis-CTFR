@@ -18,6 +18,8 @@ npm install react-navigation-tabs
 npm install react-navigation-drawer
 npm install react-native-vector-icons
 npm install react-native-paper
+
+npm install react-hook-form
 ```
 
 ### Web system
