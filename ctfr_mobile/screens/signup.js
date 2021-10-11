@@ -1,17 +1,11 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
-
-import { Actions } from 'react-native-router-flux'
 import { useForm, Controller } from 'react-hook-form'
 
-function LoginScreen () {
-    const SignUp = () => {
-        Actions.signup()
-    }
-    
+function SignupScreen () {
     const { control, handleSubmit, formState: { errors, isValid } } = useForm({ mode: 'onBlur' });
-    const onSubmit = data => console.log(data); 
+    const onSubmit = data => console.log(JSON.stringify(data)); 
 
     return (
         <View style = { styles.container }>
@@ -20,7 +14,26 @@ function LoginScreen () {
                 rules = {{
                     required: true
                 }}
-                name = 'email'
+                name = 'Username'
+                render = {({
+                    field: {onChange, value, onBlur}
+                })=> (
+                    <TextInput
+                        label = "Username"
+                        value={value}            
+                        onBlur={onBlur}            
+                        onChangeText={value => onChange(value)} 
+                        style = { styles.registerTextInput } 
+                        mode = 'outlined' 
+                    />
+                )} 
+            />
+            <Controller
+                control = { control }
+                rules = {{
+                    required: true
+                }}
+                name = 'Email'
                 render = {({
                     field: {onChange, value, onBlur}
                 })=> (
@@ -29,15 +42,17 @@ function LoginScreen () {
                         value={value}            
                         onBlur={onBlur}            
                         onChangeText={value => onChange(value)} 
-                        style = { styles.loginTextInput } 
+                        style = { styles.registerTextInput } 
                         mode = 'outlined' 
                     />
                 )} 
             />
-
             <Controller
                 control = { control }
-                name = 'password'
+                rules = {{
+                    required: true
+                }}
+                name = 'Password'
                 render = {({
                     field: {onChange, value, onBlur}
                 })=> (
@@ -46,7 +61,27 @@ function LoginScreen () {
                         value={value}            
                         onBlur={onBlur}            
                         onChangeText={value => onChange(value)} 
-                        style = { styles.loginTextInput } 
+                        style = { styles.registerTextInput } 
+                        mode = 'outlined' 
+                        secureTextEntry = { true }
+                    />
+                )} 
+            />
+            <Controller
+                control = { control }
+                rules = {{
+                    required: true
+                }}
+                name = 'Confirm Password'
+                render = {({
+                    field: {onChange, value, onBlur}
+                })=> (
+                    <TextInput
+                        label = "Confirm Password"
+                        value={value}            
+                        onBlur={onBlur}            
+                        onChangeText={value => onChange(value)} 
+                        style = { styles.registerTextInput } 
                         mode = 'outlined' 
                         secureTextEntry = { true }
                     />
@@ -55,19 +90,15 @@ function LoginScreen () {
             <Button 
                 mode = 'contained'
                 onPress = {handleSubmit(onSubmit)}
-                style = { styles.loginButton }
+                style = { styles.registerButton }
             >
-                Login
+                Register
             </Button>
-            <View style = { styles.loginTextContainer }>
-                <Text>Don't have an account?</Text>
-                <TouchableOpacity onPress={SignUp}><Text style = { styles.registerText }> Register.</Text></TouchableOpacity>
-            </View>
         </View>
     )
 }
 
-export default LoginScreen
+export default SignupScreen
 
 const styles = StyleSheet.create({
     container: {
@@ -76,18 +107,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    loginTextInput: {
+    registerTextInput: {
         width: '80%',
         height: 50,
         marginBottom: 15,
     },
-    loginButton: {
+    registerButton: {
         width: 120,
         height: 50,
         justifyContent: 'center',
         textAlign: 'center'
     },
-    loginTextContainer: {
+    registerTextContainer: {
         marginTop: 15,
         flexDirection: 'row',
         alignItems: 'flex-end',
