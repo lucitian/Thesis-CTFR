@@ -19,6 +19,7 @@ const App = () => {
                 <Scene
                     key = "signup"
                     component = { SignupScreen }
+                    initial = { true }
                     hideNavBar = { true }
                 ></Scene>
                 <Scene
@@ -30,7 +31,7 @@ const App = () => {
                 <Scene
                     key = "camera"
                     component = { CameraScreen }
-                    initial = { true }
+                    //initial = { true }
                     hideNavBar = { true }
                 ></Scene>
             </Scene>
