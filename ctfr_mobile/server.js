@@ -11,7 +11,7 @@ app.use(bodyParser.json())
 app.use(authRoutes)
 
 // This function is used to connect to the mongoDB cluster
-const mongoUri = 'mongodb+srv://admin:ctfradmin@ctfr.rlv9t.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const mongoUri = ''
 mongoose.connect(mongoUri, {
     useNewUrlParser: true,
 })
