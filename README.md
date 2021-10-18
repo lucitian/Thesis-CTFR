@@ -8,18 +8,36 @@ The Mobile Application requires the following:
 
 Dependencies used
 ```
-npm install react-native-gesture-handler
-npm install react-native-reanimated
-npm install react-native-screens
-npm install --save @react-native-community/masked-view
-npm install react-native-router-flux
+Simply type npm install inside the directory folder
 
-npm install react-navigation-tabs
-npm install react-navigation-drawer
-npm install react-native-vector-icons
-npm install react-native-paper
+react-native-gesture-handler
+react-native-reanimated
+react-native-screens
+@react-native-community/masked-view
+react-navigation
+react-navigation-stack
 
-npm install react-hook-form
+react-navigation-tabs
+react-navigation-drawer
+react-native-vector-icons
+react-native-paper
+
+react-hook-form
+express
+mongoose
+jsonwebtoken
+bcrypt
+axios
+ngrok
+(react native) AsyncStorage
+```
+
+MongoDB 
+```
+1. Install mongoDB community sever
+2. Install postman
+
+Note: Since this is not hosted yet, create your own cluster from mongoDB atlas.
 ```
 
 ### Web system

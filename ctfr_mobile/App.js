@@ -1,42 +1,48 @@
 import React from 'react'
-import { Router, Scene } from 'react-native-router-flux'
+import {
+    createAppContainer,
+    createSwitchNavigator,
+} from 'react-navigation'
+import { createStackNavigator } from 'react-navigation-stack'
 
 import LoginScreen from './screens/login'
 import SignupScreen from './screens/signup'
 import HomeScreen from './screens/home'
 import CameraScreen from './screens/camera'
+import { Provider as AuthProvider } from './context/AuthContext'
+import { setNavigator } from './navigation'
+import resolveAuth from './screens/resolveAuth'
 
-const App = () => {
+const switchNavigator = createSwitchNavigator({
+    resolveAuth: resolveAuth,
+    login: createStackNavigator({
+        login: LoginScreen,
+        signup: SignupScreen
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        }
+    }),
+    intro: createStackNavigator({
+        home: HomeScreen,
+        camera: CameraScreen
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        }
+    })
+})
+
+const App = createAppContainer(switchNavigator)
+
+export default () => {
     return (
-        <Router>
-            <Scene key = "root">
-                <Scene
-                    key = "login"
-                    component = { LoginScreen }
-                    // initial = { true }
-                    hideNavBar = { true }
-                ></Scene>
-                <Scene
-                    key = "signup"
-                    component = { SignupScreen }
-                    initial = { true }
-                    hideNavBar = { true }
-                ></Scene>
-                <Scene
-                    key = "home"
-                    component = { HomeScreen }
-                    // initial = { true }
-                    hideNavBar = { true }
-                ></Scene>
-                <Scene
-                    key = "camera"
-                    component = { CameraScreen }
-                    //initial = { true }
-                    hideNavBar = { true }
-                ></Scene>
-            </Scene>
-        </Router>
-    ) 
+        <AuthProvider>
+            <App ref = {( navigator ) => { setNavigator(navigator) }}/>
+        </AuthProvider>
+    )
 }
-
-export default App

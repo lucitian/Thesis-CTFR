@@ -1,20 +1,26 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
-
-import { Actions } from 'react-native-router-flux'
 import { useForm, Controller } from 'react-hook-form'
+import { NavigationEvents } from 'react-navigation'
 
-function LoginScreen () {
-    const SignUp = () => {
-        Actions.signup()
+import { Context as AuthContext } from '../context/AuthContext'
+
+function LoginScreen ({ navigation }) {
+    const { state, signin, clearError } = useContext(AuthContext)
+
+    const { control } = useForm({ mode: 'onBlur' });
+
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
+
+    const LogIn = () => {
+        signin({ email, password })
     }
-    
-    const { control, handleSubmit, formState: { errors, isValid } } = useForm({ mode: 'onBlur' });
-    const onSubmit = data => console.log(data); 
 
     return (
         <View style = { styles.container }>
+            <NavigationEvents onWillBlur = {clearError} />
             <Controller
                 control = { control }
                 rules = {{
@@ -26,9 +32,9 @@ function LoginScreen () {
                 })=> (
                     <TextInput
                         label = "Email"
-                        value={value}            
+                        value={email}            
                         onBlur={onBlur}            
-                        onChangeText={value => onChange(value)} 
+                        onChangeText={setEmail} 
                         style = { styles.loginTextInput } 
                         mode = 'outlined' 
                     />
@@ -43,25 +49,30 @@ function LoginScreen () {
                 })=> (
                     <TextInput
                         label = "Password"
-                        value={value}            
+                        value={password}            
                         onBlur={onBlur}            
-                        onChangeText={value => onChange(value)} 
-                        style = { styles.loginTextInput } 
+                        onChangeText={setPassword} 
+                        style = {[ state.errorMessage == 0 ? styles.loginTextInput : styles.loginTextInputEM]} 
                         mode = 'outlined' 
                         secureTextEntry = { true }
                     />
                 )} 
             />
+            {state.errorMessage ? (
+                <Text style = { styles.errorMessage }>
+                    {state.errorMessage}
+                </Text>
+            ) : null}
             <Button 
                 mode = 'contained'
-                onPress = {handleSubmit(onSubmit)}
+                onPress = {LogIn}
                 style = { styles.loginButton }
             >
                 Login
             </Button>
             <View style = { styles.loginTextContainer }>
                 <Text>Don't have an account?</Text>
-                <TouchableOpacity onPress={SignUp}><Text style = { styles.registerText }> Register.</Text></TouchableOpacity>
+                <TouchableOpacity onPress={() => navigation.navigate('signup')}><Text style = { styles.registerText }> Register.</Text></TouchableOpacity>
             </View>
         </View>
     )
@@ -81,6 +92,10 @@ const styles = StyleSheet.create({
         height: 50,
         marginBottom: 15,
     },
+    loginTextInputEM: {
+        width: '80%',
+        height: 50,
+    },
     loginButton: {
         width: 120,
         height: 50,
@@ -94,5 +109,9 @@ const styles = StyleSheet.create({
     },
     registerText: {
         color: '#6948F4'
+    },
+    errorMessage: {
+        margin: 5,
+        color: 'red',
     }
 })

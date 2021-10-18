@@ -18,7 +18,7 @@ function CameraScreen () {
             <View>
                 <Image
                   style={styles.Logo}
-                  source={require('C:/Users/63955/Desktop/Thesis/Thesis-CTFR/ctfr_mobile/assets/faceid.png')}
+                  source={require('../assets/faceid.png')}
                 ></Image>
             </View>
             <Button 
