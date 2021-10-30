@@ -39,10 +39,3 @@ MongoDB
 
 Note: Since this is not hosted yet, create your own cluster from mongoDB atlas.
 ```
-
-### Web system
-The Web System requires the following:
-* Django
-```
-pip install Django
-```
