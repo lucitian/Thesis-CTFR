@@ -1,0 +1,26 @@
+{
+  "name": "ctfr_software",
+  "version": "1.0.0",
+  "description": "\"The main software for the CTFR desktop software\"",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lucitian/Thesis-CTFR.git"
+  },
+  "author": "TUPM Students BSCS 4A",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lucitian/Thesis-CTFR/issues"
+  },
+  "homepage": "https://github.com/lucitian/Thesis-CTFR#readme",
+  "devDependencies": {
+    "electron": "^15.3.0"
+  },
+  "dependencies": {
+    "electron-reload": "^2.0.0-alpha.1"
+  }
+}
