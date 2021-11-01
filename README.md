@@ -32,6 +32,12 @@ ngrok
 (react native) AsyncStorage
 ```
 
+Electron
+```
+npm install --save-dev electron
+npm install electron-reload
+```
+
 MongoDB 
 ```
 1. Install mongoDB community sever
