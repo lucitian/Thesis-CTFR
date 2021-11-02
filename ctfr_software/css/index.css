@@ -1,13 +1,14 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box !important;
 }
 
 .container {
     display: grid;
-    grid-template-columns: 0.2fr 1fr;
+    grid-template-columns: 0.175fr 1fr;
     grid-template-rows: 1fr;
-    grid-template-areas: dashboard content;
+    grid-template-areas: 'dashboard dbcontent';
     height: 100vh;
     background-color: #ECEFF1;
 }
@@ -20,11 +21,81 @@
     color: white;
 }
 
-.camera-tab {
+.dashboard-tab {
     width: 100%;
     height: 75px;
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: #37474F;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.dashboard-tab:hover {
     background-color: #CFD8DC;
+}
+
+.dashboard-tab.active {
+    background-color: #90A4AE;
+}
+
+[data-tab-content] {
+    display: none;
+}
+
+.active[data-tab-content] {
+    display: grid;
+}
+
+.dashboard-container {
+    grid-area: dbcontent;
+}
+
+.camera-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'table-id camera';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.table-id {
+    grid-area: table-id;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.camera {
+    grid-area: camera;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.database-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 1fr;
+    grid-template-areas: 
+        'db-input' 
+        'db-table';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.db-input {
+    grid-area: db-input;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.db-table {
+    grid-area: db-table;
+    width: 100%;
+    height: 100%;
+    background-color: black;
 }
