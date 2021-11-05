@@ -43,6 +43,4 @@ MongoDB
 ```
 1. Install mongoDB community sever
 2. Install postman
-
-Note: Since this is not hosted yet, create your own cluster from mongoDB atlas.
 ```

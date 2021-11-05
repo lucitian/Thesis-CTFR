@@ -1,15 +1,23 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { useForm, Controller } from 'react-hook-form'
+import { NavigationEvents } from 'react-navigation'
 
 import { Context as AuthContext } from '../context/AuthContext'
 
 function HomeScreen ({ navigation }) {
     const { signout } = useContext(AuthContext)
 
-    const { control, handleSubmit, formState: { errors, isValid } } = useForm({ mode: 'onBlur' });
-    const onSubmit = data => console.log(JSON.stringify(data)); 
+    const { control } = useForm({ mode: 'onBlur' })
+
+    const [ firstname, setFirstName ] = useState('')
+    const [ middleinitial, setMiddleInitial ] = useState('')
+    const [ lastname, setLastName ] = useState('')
+    const [ nationality, setNationality ] = useState('')
+    const [ contact, setContact ] = useState('')
+    const [ vaxstatus, setVaxStatus ] = useState('')
+    const [ address, setAddress ] = useState('')
 
     return (
         <View style = { styles.container }>
@@ -28,15 +36,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Name'
+                    name = 'firstname'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
-                            label = "Name"
-                            value={value}            
+                            label = "First Name"
+                            value={firstname}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setFirstName} 
                             style = { styles.lefthomeTextInput } 
                             mode = 'outlined' 
                         />
@@ -47,15 +55,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Middle'
+                    name = 'middleinitial'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
-                            label = "Middle"
-                            value={value}            
+                            label = "Middle Initial"
+                            value={middleinitial}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setMiddleInitial} 
                             style = { styles.lefthomeTextInput } 
                             mode = 'outlined' 
                         />
@@ -66,15 +74,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Last Name'
+                    name = 'lastname'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
                             label = "Last Name"
-                            value={value}            
+                            value={lastname}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setLastName} 
                             style = { styles.lefthomeTextInput } 
                             mode = 'outlined' 
                         />
@@ -85,15 +93,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Nationality'
+                    name = 'nationality'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
                             label = "Nationality"
-                            value={value}            
+                            value={nationality}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setNationality} 
                             style = { styles.righthomeTextInput } 
                             mode = 'outlined' 
                         />
@@ -104,15 +112,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Contact Number'
+                    name = 'contact'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
                             label = "Contact Number"
-                            value={value}            
+                            value={contact}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setContact} 
                             style = { styles.righthomeTextInput } 
                             mode = 'outlined' 
                         />
@@ -123,15 +131,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Vaccination Status'
+                    name = 'vaxstatus'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
                             label = "Vaccination Status"
-                            value={value}            
+                            value={vaxstatus}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setVaxStatus} 
                             style = { styles.righthomeTextInput } 
                             mode = 'outlined' 
                         />
@@ -142,15 +150,15 @@ function HomeScreen ({ navigation }) {
                     rules = {{
                         required: true
                     }}
-                    name = 'Address'
+                    name = 'address'
                     render = {({
                         field: {onChange, value, onBlur}
                     })=> (
                         <TextInput
                             label = "Address"
-                            value={value}            
+                            value={address}            
                             onBlur={onBlur}            
-                            onChangeText={value => onChange(value)} 
+                            onChangeText={setAddress} 
                             style = { styles.homeTextInput } 
                             mode = 'outlined' 
                         />
@@ -158,7 +166,7 @@ function HomeScreen ({ navigation }) {
                 />
                 <Button 
                     mode = 'contained'
-                    onPress = {handleSubmit(onSubmit)}
+                    //onPress = {handleSubmit(onSubmit)}
                     style = { styles.proceedButton }
                 >
                     <Text style = { styles.textButton } > Proceed</Text>
