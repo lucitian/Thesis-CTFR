@@ -2,6 +2,7 @@ require('./models/User')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
+const mongoUri = require('./secret')
 const authRoutes = require('./routes/routes')
 const requireAuth = require('./middlewares/requireAuth')
 
@@ -11,8 +12,7 @@ app.use(bodyParser.json())
 app.use(authRoutes)
 
 // This function is used to connect to the mongoDB cluster
-const mongoUri = ''
-mongoose.connect(mongoUri, {
+mongoose.connect(mongoUri.url, {
     useNewUrlParser: true,
 })
 

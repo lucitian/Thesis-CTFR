@@ -1,0 +1,160 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 0.175fr 1fr;
+    grid-template-rows: 1fr;
+    grid-template-areas: 'dashboard dbcontent';
+    height: 100vh;
+    background-color: #ECEFF1;
+}
+
+.dashboard-pane {
+    grid-area: dashboard;
+    width: 100%;
+    height: 100%;
+    background-color: #263238;
+    color: white;
+}
+
+.dashboard-tab {
+    width: 100%;
+    height: 75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #37474F;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.dashboard-tab:hover {
+    background-color: #CFD8DC;
+}
+
+.dashboard-tab.active {
+    background-color: #90A4AE;
+}
+
+[data-tab-content] {
+    display: none;
+}
+
+.active[data-tab-content] {
+    display: grid;
+}
+
+.dashboard-container {
+    grid-area: dbcontent;
+}
+
+.camera-container {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 0.05fr 1fr;
+    grid-template-areas: 
+        'title title'
+        'table-id camera';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.title {
+    grid-area: title;
+    width: 100%;
+    height: 100%; 
+}
+
+.table-id {
+    grid-area: table-id;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.camera {
+    grid-area: camera;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.room-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.05fr 0.2fr 1fr;
+    grid-template-areas: 
+        'title'
+        'room-db-input' 
+        'room-db-table';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.room-db-input {
+    grid-area: room-db-input;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.room-db-table {
+    grid-area: room-db-table;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.database-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.05fr 0.2fr 1fr;
+    grid-template-areas: 
+        'title'
+        'db-input' 
+        'db-table';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.db__input {
+    grid-area: db-input;
+    width: 100%;
+    height: 100%;
+    background-color: black;
+}
+
+.db__table {
+    grid-area: db-table;
+    width: 100%;
+    overflow: auto;
+    border-radius: 5px;
+    border: 1px solid black;
+    background-color: white;
+}
+
+.db__table table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin: 0;
+}
+
+.db__header__cell {
+    color: black;
+    width: auto;
+    height: 15px;
+    padding: 5px;
+}
+
+.db__data__cell {
+    height: 15px;
+    padding: 5px;
+}
+
+table, th, td {
+    text-align: left;
+}

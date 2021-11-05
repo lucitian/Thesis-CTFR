@@ -33,7 +33,7 @@ const switchNavigator = createSwitchNavigator({
         headerMode: 'none',
         navigationOptions: {
             headerVisible: false
-        }
+        },
     })
 })
 
