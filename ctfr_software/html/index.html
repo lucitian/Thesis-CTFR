@@ -2,21 +2,39 @@
 <html>
     <head>
         <meta charset="UTF-8">
+        
+        <script src="../script/script.js" defer></script>
         <link rel="stylesheet" type="text/css" href="../css/index.css">
         <title>CTFR</title>
     </head>
     <body>
         <div class="container">
-            <main>
-                <div class="dashboard-pane">
-                    <div class="camera-tab">
-                        Camera
+            <ul class="dashboard-pane">
+                <li data-tab-target="#camera-container" class="active dashboard-tab">
+                    Camera
+                </li>
+                <li data-tab-target="#database-container" class="dashboard-tab">
+                    Database
+                </li>
+            </ul>
+            <div class="dashboard-container">
+                <div id="camera-container" class="active camera-container" data-tab-content>
+                    <div class="table-id">
+
                     </div>
-                    <div class="camera-tab">
-                        Database
+                    <div class="camera">
+
                     </div>
                 </div>
-            </main>
+                <div id="database-container" class="database-container" data-tab-content>
+                    <div class="db-input">
+
+                    </div>
+                    <div class="db-table">
+                        
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
