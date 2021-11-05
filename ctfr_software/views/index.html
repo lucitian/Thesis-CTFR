@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <script src="../script/script.js" defer></script>
+        <link rel="stylesheet" type="text/css" href="../css/index.css">
+        <title>CTFR</title>
+    </head>
+    <body>
+        <div class="container">
+            <ul class="dashboard-pane">
+                <li data-tab-target="#camera-container" class="active dashboard-tab">
+                    Camera
+                </li>
+                <li data-tab-target="#room-container" class="dashboard-tab">
+                    Room Section
+                </li>
+                <li data-tab-target="#database-container" class="dashboard-tab">
+                    Database
+                </li>
+            </ul>
+            <div class="dashboard-container">
+                <div id="camera-container" class="active camera-container" data-tab-content>
+                    <div class="title">
+                        <h1>Camera section</h1>
+                    </div>
+                    <div class="table-id">
+
+                    </div>
+                    <div class="camera">
+
+                    </div>
+                </div>
+                <div id="room-container" class="room-container" data-tab-content>
+                    <div class="title">
+                        <h1>Room section</h1>
+                    </div>
+                    <div class="room-db-input">
+
+                    </div>
+                    <div class="room-db-table">
+                        
+                    </div>
+                </div>
+                <div id="database-container" class="database-container" data-tab-content>
+                    <div class="title">
+                        <h1>Database section</h1>
+                    </div>
+                    <div class="db__input">
+
+                    </div>
+                    <div class="db__table">
+                        <table>
+                            <thead class="db__header">
+                                <tr class="row__head">
+                                    <th class="db__header__cell">Username</th>
+                                    <th class="db__header__cell">Email</th>
+                                    <th class="db__header__cell">Password</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userList"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type='module' src='../script/renderer.js'></script>
+    </body>
+</html>
