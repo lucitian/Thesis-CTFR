@@ -1,5 +1,6 @@
 import axios from 'axios'
+const url = require('./secret_api.js')
 
 export default axios.create({
-    baseURL: 'http://5eaf-136-158-29-41.ngrok.io/'
+    baseURL: url.url
 })
