@@ -15,17 +15,17 @@ import { setNavigator } from './navigation'
 import resolveAuth from './screens/resolveAuth'
 
 const switchNavigator = createSwitchNavigator({
-    // resolveAuth: resolveAuth,
-    // login: createStackNavigator({
-    //     login: LoginScreen,
-    //     signup: SignupScreen
-    // },
-    // {
-    //     headerMode: 'none',
-    //     navigationOptions: {
-    //         headerVisible: false
-    //     }
-    // }),
+    resolveAuth: resolveAuth,
+    login: createStackNavigator({
+        login: LoginScreen,
+        signup: SignupScreen
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        }
+    }),
     intro: createStackNavigator({
         home: HomeScreen,
         camera: CameraScreen,
