@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Alert, ImageBa
 import { Camera } from 'expo-camera';
 import DefaultImage from '../assets/faceid.png';
 
-export default function App() {
+function CameraScreen({navigation}) {
   const def = Image.resolveAssetSource(DefaultImage).uri;
   const [hasPermission, setHasPermission] = useState(null);
   const [camera, setCamera] = useState(null);
@@ -167,6 +167,8 @@ export default function App() {
     </View>
   );
 }
+
+export default CameraScreen
 
 const styles = StyleSheet.create({
     container: {

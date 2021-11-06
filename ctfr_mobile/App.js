@@ -9,25 +9,27 @@ import LoginScreen from './screens/login'
 import SignupScreen from './screens/signup'
 import HomeScreen from './screens/home'
 import CameraScreen from './screens/camera'
+import ProfileScreen from './screens/profile'
 import { Provider as AuthProvider } from './context/AuthContext'
 import { setNavigator } from './navigation'
 import resolveAuth from './screens/resolveAuth'
 
 const switchNavigator = createSwitchNavigator({
-    resolveAuth: resolveAuth,
-    login: createStackNavigator({
-        login: LoginScreen,
-        signup: SignupScreen
-    },
-    {
-        headerMode: 'none',
-        navigationOptions: {
-            headerVisible: false
-        }
-    }),
+    // resolveAuth: resolveAuth,
+    // login: createStackNavigator({
+    //     login: LoginScreen,
+    //     signup: SignupScreen
+    // },
+    // {
+    //     headerMode: 'none',
+    //     navigationOptions: {
+    //         headerVisible: false
+    //     }
+    // }),
     intro: createStackNavigator({
         home: HomeScreen,
-        camera: CameraScreen
+        camera: CameraScreen,
+        profile: ProfileScreen
     },
     {
         headerMode: 'none',
