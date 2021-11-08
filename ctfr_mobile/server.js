@@ -4,12 +4,14 @@ const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
 const mongoUri = require('./secret')
 const authRoutes = require('./routes/routes')
+const userInfoRoutes = require('./routes/userInfoRoutes')
 const requireAuth = require('./middlewares/requireAuth')
 
 const app = express()
 
 app.use(bodyParser.json())
 app.use(authRoutes)
+app.use(userInfoRoutes)
 
 // This function is used to connect to the mongoDB cluster
 mongoose.connect(mongoUri.url, {

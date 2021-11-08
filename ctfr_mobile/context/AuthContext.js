@@ -26,6 +26,8 @@ const authReducer = (state, action) => {
                 ...state,
                 errorMessage: ''
             }
+        case 'fetchAccount':
+            return action.payload
         default:
             return state
     }
@@ -63,7 +65,6 @@ const signup = (dispatch) => async ({ username, email, password }) => {
 
         navigate('home')
     } catch (err) {
-        console.log("BAKIT")
         console.log(err)
         dispatch({
             type: 'add_error',
@@ -78,6 +79,7 @@ const signin = (dispatch) => async ({ email, password }) => {
         await AsyncStorage.setItem('token', response.data.token)
         dispatch({
             type: 'signin',
+            
             payload: response.data.token
         })
 
@@ -91,6 +93,15 @@ const signin = (dispatch) => async ({ email, password }) => {
     }
 }
 
+const fetchAccount = dispatch => async () => {
+    const response = await api.get('/home/:id')
+    
+    dispatch({
+        type: 'fetchAccount',
+        payload: response.data
+    })
+}
+
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
     dispatch({
@@ -102,6 +113,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn },
+    { signup, signin, signout, clearError, localSignIn, fetchAccount },
     { token: null, errorMessage: '' }
 )

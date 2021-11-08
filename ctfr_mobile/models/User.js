@@ -16,15 +16,6 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    info: [{
-        firstname: { type: String, required: true },
-        middleinitial: { type: String },
-        lastname: { type: String, required: true },
-        nationality: { type: String, required: true },
-        contact: { type: Number, required: true },
-        vaxstatus: { type: String, required: true },
-        address: { type: String, required: true }
-    }]
 })
 
 userSchema.pre('save', function(next) {

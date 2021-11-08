@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { useForm, Controller } from 'react-hook-form'
@@ -28,7 +28,7 @@ function LoginScreen ({ navigation }) {
                 }}
                 name = 'email'
                 render = {({
-                    field: {onChange, value, onBlur}
+                    field: {onBlur}
                 })=> (
                     <TextInput
                         label = "Email"
@@ -45,7 +45,7 @@ function LoginScreen ({ navigation }) {
                 control = { control }
                 name = 'password'
                 render = {({
-                    field: {onChange, value, onBlur}
+                    field: {onBlur}
                 })=> (
                     <TextInput
                         label = "Password"
