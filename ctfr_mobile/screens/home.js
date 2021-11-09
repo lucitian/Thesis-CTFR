@@ -5,10 +5,12 @@ import { useForm, Controller } from 'react-hook-form'
 import { NavigationEvents } from 'react-navigation'
 
 import { Context as AuthContext } from '../context/AuthContext'
+import { Context as FillContext } from '../context/UserContext'
 
 function HomeScreen ({ navigation }) {
     const { state, fetchAccount, signout } = useContext(AuthContext)
-    console.log(state)
+    const { fillup } = useContext(FillContext)
+
     const { control } = useForm({ mode: 'onBlur' })
 
     const [ firstname, setFirstName ] = useState('')
@@ -17,13 +19,17 @@ function HomeScreen ({ navigation }) {
     const [ contact, setContact ] = useState('')
     const [ address, setAddress ] = useState('')
 
+    const FillUp = () => {
+        fillup({ firstname, middleinitial, lastname, contact, address })
+    }
+
     return (
         <View style = { styles.container }>
             <View style = { styles.signout }>
                 <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
             </View>
             <View style = { styles.homeComponents }>
-                <NavigationEvents onWillFocus = {fetchAccount} />
+                <NavigationEvents onWillFocus= {fetchAccount}/>
                 <View style = { styles.TextContainer }>
                     <Text style = { styles.boldText }>
                         {state.username}
@@ -139,7 +145,7 @@ function HomeScreen ({ navigation }) {
                 <View>
                     <Button 
                         mode = 'contained'
-                        //onPress = {handleSubmit(onSubmit)}
+                        onPress = {FillUp}
                         style = { styles.proceedButton }
                     >
                         <Text style = { styles.textButton } > Proceed</Text>

@@ -10,7 +10,9 @@ import SignupScreen from './screens/signup'
 import HomeScreen from './screens/home'
 import CameraScreen from './screens/camera'
 import ProfileScreen from './screens/profile'
+import TempScreen from './screens/tempscreen'
 import { Provider as AuthProvider } from './context/AuthContext'
+import { Provider as FillProvider } from './context/UserContext'
 import { setNavigator } from './navigation'
 import resolveAuth from './screens/resolveAuth'
 
@@ -28,6 +30,7 @@ const switchNavigator = createSwitchNavigator({
     }),
     intro: createStackNavigator({
         home: HomeScreen,
+        tempscreen: TempScreen,
         camera: CameraScreen,
         profile: ProfileScreen
     },
@@ -44,7 +47,9 @@ const App = createAppContainer(switchNavigator)
 export default () => {
     return (
         <AuthProvider>
-            <App ref = {( navigator ) => { setNavigator(navigator) }}/>
+            <FillProvider>
+                <App ref = {( navigator ) => { setNavigator(navigator) }}/>
+            </FillProvider>
         </AuthProvider>
     )
 }
