@@ -5,14 +5,13 @@ import {
 } from 'react-navigation'
 import { createStackNavigator } from 'react-navigation-stack'
 
-import LoginScreen from './screens/login'
-import SignupScreen from './screens/signup'
-import FillScreen from './screens/fill'
-import CameraScreen from './screens/camera'
-import ProfileScreen from './screens/profile'
-import TempScreen from './screens/tempscreen'
-import { Provider as AuthProvider } from './context/AuthContext'
-import { Provider as FillProvider } from './context/UserContext'
+import LoginScreen from './screens/login/login'
+import SignupScreen from './screens/login/signup'
+import FillScreen from './screens/intro/fill'
+import CameraScreen from './screens/intro/camera'
+import ProfileScreen from './screens/profile/profile'
+import { Provider as AuthProvider } from './context/UserContext'
+import { Provider as FillProvider } from './context/IntroContext'
 import { setNavigator } from './navigation'
 import resolveAuth from './screens/resolveAuth'
 
@@ -30,15 +29,16 @@ const switchNavigator = createSwitchNavigator({
     }),
     intro: createStackNavigator({
         fill: FillScreen,
-        tempscreen: TempScreen,
         camera: CameraScreen,
-        profile: ProfileScreen
     },
     {
         headerMode: 'none',
         navigationOptions: {
             headerVisible: false
         },
+    }),
+    home: createStackNavigator({
+        profile: ProfileScreen
     })
 })
 

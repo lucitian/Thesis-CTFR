@@ -45,3 +45,12 @@ MongoDB
 1. Install mongoDB community sever
 2. Install postman
 ```
+
+Notes:
+You must provide your own secret.js and secret_api.js by creating your own js files. Then write this:
+```
+module.exports = {
+    url: '{url}'
+}
+```
+On secret.js, provide the url of your mongodb collection, and on the secret_api.js, provide the url provided by the ngrok.

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-import { Context as AuthContext } from '../context/AuthContext'
+import { Context as AuthContext } from '../../context/UserContext'
 
 function ProfileScreen({ navigation }) {
     const { signout } = useContext(AuthContext)
@@ -11,12 +11,8 @@ function ProfileScreen({ navigation }) {
             <View style = { styles.signout }>
                 <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
             </View>
-        </View>
-        
+        </View>   
     )
-        
-    
-   
 }
 
 export default ProfileScreen

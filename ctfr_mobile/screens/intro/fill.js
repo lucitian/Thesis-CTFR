@@ -4,8 +4,8 @@ import { TextInput, Button } from 'react-native-paper'
 import { useForm, Controller } from 'react-hook-form'
 import { NavigationEvents } from 'react-navigation'
 
-import { Context as AuthContext } from '../context/AuthContext'
-import { Context as FillContext } from '../context/UserContext'
+import { Context as AuthContext } from '../context/UserContext'
+import { Context as FillContext } from '../context/IntroContext'
 
 function FillScreen ({ navigation }) {
     const { signout } = useContext(AuthContext)
