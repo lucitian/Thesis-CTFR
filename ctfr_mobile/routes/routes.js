@@ -2,12 +2,20 @@ const express = require('express')
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = mongoose.model('User')
+const UserInfo = mongoose.model('UserInfo')
 
 const router = express.Router()
 
 router.post('/signup', async (req, res) => {
     const { username, email, password } = req.body
     
+    const existingEmail = await User.findOne({ email: email})
+    if (existingEmail) {
+        return res.status(422).send({
+            error: 'An account with this email already exists.'
+        })
+    }
+
     try {
         const user = new User({ username, email, password })
         await user.save()
@@ -40,7 +48,13 @@ router.post('/signin', async (req, res) => {
         await user.comparePassword(password)
 
         const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
-        res.send({ token })
+
+        if (await UserInfo.findOne({ userId: user._id })) {
+            const userInfo = await UserInfo.findOne({ userId: user._id })
+            res.send({ token, userInfo })
+        } else {
+            res.send({ token })
+        }
     } catch (err) {
         return res.status(422).send({
             error: 'Invalid password or email' 

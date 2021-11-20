@@ -22,6 +22,7 @@ react-navigation-drawer
 react-native-vector-icons
 react-native-paper
 
+expo-camera
 react-hook-form
 express
 mongoose

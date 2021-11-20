@@ -26,6 +26,8 @@ const authReducer = (state, action) => {
                 ...state,
                 errorMessage: ''
             }
+        case 'fetchAccount':
+            return action.payload
         default:
             return state
     }
@@ -40,7 +42,11 @@ const localSignIn = (dispatch) => async () => {
             payload: token
         })
 
-        navigate('home')
+        if (await AsyncStorage.getItem('userInfo')) {
+            navigate('profile')
+        } else {
+            navigate('fill')
+        }
     } else {
         navigate('login')
     }
@@ -61,9 +67,8 @@ const signup = (dispatch) => async ({ username, email, password }) => {
             payload: response.data.token
         })
 
-        navigate('home')
+        navigate('fill')
     } catch (err) {
-        console.log("BAKIT")
         console.log(err)
         dispatch({
             type: 'add_error',
@@ -76,12 +81,18 @@ const signin = (dispatch) => async ({ email, password }) => {
     try {
         const response = await api.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
+
         dispatch({
             type: 'signin',
             payload: response.data.token
         })
 
-        navigate('home')
+        if (response.data.userInfo) {
+            await AsyncStorage.setItem('userInfo', 'true')
+            navigate('profile')
+        } else {
+            navigate('fill')
+        }       
     } catch (err) {
         console.log(err)
         dispatch({
