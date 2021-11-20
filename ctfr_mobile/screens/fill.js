@@ -7,8 +7,8 @@ import { NavigationEvents } from 'react-navigation'
 import { Context as AuthContext } from '../context/AuthContext'
 import { Context as FillContext } from '../context/UserContext'
 
-function HomeScreen ({ navigation }) {
-    const { state, fetchAccount, signout } = useContext(AuthContext)
+function FillScreen ({ navigation }) {
+    const { signout } = useContext(AuthContext)
     const { fillup } = useContext(FillContext)
 
     const { control } = useForm({ mode: 'onBlur' })
@@ -29,10 +29,9 @@ function HomeScreen ({ navigation }) {
                 <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
             </View>
             <View style = { styles.homeComponents }>
-                <NavigationEvents onWillFocus= {fetchAccount}/>
                 <View style = { styles.TextContainer }>
                     <Text style = { styles.boldText }>
-                        {state.username}
+                        Hello!
                     </Text>
                 </View>
                 <View>
@@ -156,7 +155,7 @@ function HomeScreen ({ navigation }) {
     )
 }
 
-export default HomeScreen
+export default FillScreen
 
 const styles = StyleSheet.create({
     container: {

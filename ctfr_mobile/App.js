@@ -7,7 +7,7 @@ import { createStackNavigator } from 'react-navigation-stack'
 
 import LoginScreen from './screens/login'
 import SignupScreen from './screens/signup'
-import HomeScreen from './screens/home'
+import FillScreen from './screens/fill'
 import CameraScreen from './screens/camera'
 import ProfileScreen from './screens/profile'
 import TempScreen from './screens/tempscreen'
@@ -29,7 +29,7 @@ const switchNavigator = createSwitchNavigator({
         }
     }),
     intro: createStackNavigator({
-        home: HomeScreen,
+        fill: FillScreen,
         tempscreen: TempScreen,
         camera: CameraScreen,
         profile: ProfileScreen

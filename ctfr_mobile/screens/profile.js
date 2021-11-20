@@ -1,11 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 
-function ProfileScreen({navigation}) {
+import { Context as AuthContext } from '../context/AuthContext'
+
+function ProfileScreen({ navigation }) {
+    const { signout } = useContext(AuthContext)
+
     return(
-        <View>
-            <Text> Rovic! </Text>
+        <View style = { styles.container }>
+            <View style = { styles.signout }>
+                <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
+            </View>
         </View>
+        
     )
         
     
@@ -13,3 +20,17 @@ function ProfileScreen({navigation}) {
 }
 
 export default ProfileScreen
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#F5F5F5',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    signout: {
+        position: 'absolute',
+        top: 35,
+        left: 10
+    },
+})

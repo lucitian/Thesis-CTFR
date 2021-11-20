@@ -42,7 +42,11 @@ const localSignIn = (dispatch) => async () => {
             payload: token
         })
 
-        navigate('home')
+        if (await AsyncStorage.getItem('userInfo')) {
+            navigate('profile')
+        } else {
+            navigate('fill')
+        }
     } else {
         navigate('login')
     }
@@ -63,7 +67,7 @@ const signup = (dispatch) => async ({ username, email, password }) => {
             payload: response.data.token
         })
 
-        navigate('home')
+        navigate('fill')
     } catch (err) {
         console.log(err)
         dispatch({
@@ -77,13 +81,18 @@ const signin = (dispatch) => async ({ email, password }) => {
     try {
         const response = await api.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
+
         dispatch({
             type: 'signin',
-            
             payload: response.data.token
         })
 
-        navigate('home')
+        if (response.data.userInfo) {
+            await AsyncStorage.setItem('userInfo', 'true')
+            navigate('profile')
+        } else {
+            navigate('fill')
+        }       
     } catch (err) {
         console.log(err)
         dispatch({
@@ -91,15 +100,6 @@ const signin = (dispatch) => async ({ email, password }) => {
             payload: 'Something went wrong with sign in'
         })
     }
-}
-
-const fetchAccount = dispatch => async () => {
-    const response = await api.get('/home/:id')
-    
-    dispatch({
-        type: 'fetchAccount',
-        payload: response.data
-    })
 }
 
 const signout = (dispatch) => async () => {
@@ -113,6 +113,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn, fetchAccount },
+    { signup, signin, signout, clearError, localSignIn },
     { token: null, errorMessage: '' }
 )

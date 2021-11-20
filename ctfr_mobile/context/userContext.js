@@ -24,14 +24,12 @@ const userReducer = (state, action) => {
 const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, address }) => {
     try {
         const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, address })
-        await AsyncStorage.setItem('token', response.data.token)
-        console.log(response)
         dispatch({
             type: 'fillup',
             payload: response.data.token
         })
 
-        navigate('tempscreen')
+        navigate('camera')
     } catch (err) {
         console.log(err)
         dispatch({
