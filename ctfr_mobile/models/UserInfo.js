@@ -20,6 +20,14 @@ const userInfoSchema = new mongoose.Schema({
         type: Number, 
         required: true
     },
+    birthdate: {
+        type: Date,
+        required: true
+    },
+    vaxstatus: {
+        type: String,
+        required: true
+    },
     address: {
         type: String,
         required: true

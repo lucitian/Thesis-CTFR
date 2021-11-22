@@ -15,10 +15,10 @@ router.get('profile/:id', async (req, res) => {
 })
 
 router.post('/fill', async (req, res) => {
-    const { firstname, middleinitial, lastname, contact, address } = req.body
+    const { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address } = req.body
 
-    if ( !firstname || !middleinitial || !lastname || !contact || !address ) {
-        console.log('Rovic Walang laman')
+    if ( !firstname || !middleinitial || !lastname || !contact || !birthdate || !vaxstatus || !address ) {
+        console.log(firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address)
         return res.status(422).send({
             error: "Please provide all necessary information."
         })
@@ -33,6 +33,8 @@ router.post('/fill', async (req, res) => {
                 middleinitial,
                 lastname,
                 contact,
+                birthdate,
+                vaxstatus,
                 address,
                 userId: req.user._id
             })

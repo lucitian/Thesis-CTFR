@@ -43,9 +43,10 @@ const localSignIn = (dispatch) => async () => {
         })
 
         if (await AsyncStorage.getItem('userInfo')) {
-            navigate('profile')
-        } else {
+            //navigate('profile')
             navigate('fill')
+        } else {
+            navigate('intro')
         }
     } else {
         navigate('login')
@@ -67,7 +68,7 @@ const signup = (dispatch) => async ({ username, email, password }) => {
             payload: response.data.token
         })
 
-        navigate('fill')
+        navigate('intro')
     } catch (err) {
         console.log(err)
         dispatch({
@@ -89,7 +90,8 @@ const signin = (dispatch) => async ({ email, password }) => {
 
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userInfo', 'true')
-            navigate('profile')
+            //navigate('profile')
+            navigate('fill')
         } else {
             navigate('fill')
         }       

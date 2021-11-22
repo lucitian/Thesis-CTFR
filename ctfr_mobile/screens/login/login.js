@@ -4,10 +4,10 @@ import { TextInput, Button } from 'react-native-paper'
 import { useForm, Controller } from 'react-hook-form'
 import { NavigationEvents } from 'react-navigation'
 
-import { Context as AuthContext } from '../../context/UserContext'
+import { Context as UserContext } from '../../context/UserContext'
 
 function LoginScreen ({ navigation }) {
-    const { state, signin, clearError } = useContext(AuthContext)
+    const { state, signin, clearError } = useContext(UserContext)
 
     const { control } = useForm({ mode: 'onBlur' });
 
@@ -26,7 +26,7 @@ function LoginScreen ({ navigation }) {
                 rules = {{
                     required: true
                 }}
-                name = 'email'
+                name = 'Email'
                 render = {({
                     field: {onBlur}
                 })=> (
@@ -43,7 +43,7 @@ function LoginScreen ({ navigation }) {
 
             <Controller
                 control = { control }
-                name = 'password'
+                name = 'Password'
                 render = {({
                     field: {onBlur}
                 })=> (

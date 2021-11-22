@@ -39,6 +39,12 @@ const switchNavigator = createSwitchNavigator({
     }),
     home: createStackNavigator({
         profile: ProfileScreen
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        },
     })
 })
 

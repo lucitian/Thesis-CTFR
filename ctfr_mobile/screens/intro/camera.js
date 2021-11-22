@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native';
 import { Camera } from 'expo-camera';
-import DefaultImage from '../assets/faceid.png';
+import DefaultImage from '../../assets/faceid.png';
 
 function CameraScreen({navigation}) {
   const def = Image.resolveAssetSource(DefaultImage).uri;
@@ -91,7 +91,7 @@ function CameraScreen({navigation}) {
               <TouchableOpacity disabled = {image === def ? true : false} onPress = {(()=>rem())}>
                   {
                     image !== def ?
-                    (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
+                    (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
                   }
                 </TouchableOpacity>
               </ImageBackground>}
@@ -101,7 +101,7 @@ function CameraScreen({navigation}) {
                 <TouchableOpacity disabled = {image1 === def ? true : false} onPress = {(()=>rem1())}>
                   {
                     image1 !== def ?
-                    (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
+                    (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
                   }
                 </TouchableOpacity>
               </ImageBackground>}
@@ -111,7 +111,7 @@ function CameraScreen({navigation}) {
                   <TouchableOpacity disabled = {image2 === def ? true : false} onPress = {(()=>rem2())}>
                     {
                       image2 !== def ?
-                      (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
+                      (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
                     }
                   </TouchableOpacity>
                 </ImageBackground>}
@@ -121,7 +121,7 @@ function CameraScreen({navigation}) {
                   <TouchableOpacity disabled = {image3 === def ? true : false} onPress = {(()=>rem3())}>
                     {
                       image3 !== def ?
-                      (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
+                      (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
                     }
                   </TouchableOpacity>
                 </ImageBackground>}
@@ -131,7 +131,7 @@ function CameraScreen({navigation}) {
                   <TouchableOpacity disabled = {image4 === def ? true : false} onPress = {(()=>rem4())}>
                     {
                       image4 !== def ?
-                      (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
+                      (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
                     }
                   </TouchableOpacity>
                 </ImageBackground>}
@@ -150,17 +150,17 @@ function CameraScreen({navigation}) {
                         : Camera.Constants.Type.back
                     );
                     }}>
-                      <Image style = {styles.button} source={require('../assets/flip.png')}/>
+                      <Image style = {styles.button} source={require('../../assets/flip.png')}/>
               </TouchableOpacity>
             </View>
             <View>
               <TouchableOpacity style={styles.button2} title = 'Take Picture' onPress = {() => takePicture()}>
-                {/* <Image style = {styles.button} source={require('../assets/flip.png')}/> */}
+                {/* <Image style = {styles.button} source={require('../../assets/flip.png')}/> */}
               </TouchableOpacity>
             </View>   
             <View>
               <TouchableOpacity style={styles.button3} title = 'Submit Photos'>
-                <Image style = {styles.button} source={require('../assets/done.png')}/> 
+                <Image style = {styles.button} source={require('../../assets/done.png')}/> 
               </TouchableOpacity>
             </View>    
           </View>   

@@ -4,12 +4,12 @@ import { TextInput, Button } from 'react-native-paper'
 import { useForm, Controller } from 'react-hook-form'
 import { NavigationEvents } from 'react-navigation'
 
-import { Context as AuthContext } from '../context/AuthContext'
+import { Context as UserContext } from '../../context/UserContext'
 
 function SignupScreen ({ navigation }) {
     const { control, reset } = useForm({ mode: 'onBlur' });
 
-    const { state, signup, clearError } = useContext(AuthContext)
+    const { state, signup, clearError } = useContext(UserContext)
     const [ username, setUsername ] = useState('')
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
@@ -17,7 +17,6 @@ function SignupScreen ({ navigation }) {
 
     const SignUp = () => {
         if (password !== c_password) {
-            console.log("Password does not match")
             reset({
                 password: '',
                 c_password: ''
@@ -31,7 +30,7 @@ function SignupScreen ({ navigation }) {
     return (
         <KeyboardAvoidingView style = {{ flex: 1 }}>
             <ScrollView contentContainerStyle = { styles.container }>
-            <NavigationEvents onWillBlur = {clearError} />
+                <NavigationEvents onWillBlur = {clearError} />
                 <Controller
                     control = { control }
                     rules = {{

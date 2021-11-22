@@ -21,9 +21,9 @@ const userReducer = (state, action) => {
     }
 }
 
-const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, address }) => {
+const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address }) => {
     try {
-        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, address })
+        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address })
         dispatch({
             type: 'fillup',
             payload: response.data.token
