@@ -1,5 +1,6 @@
 require('./models/User')
 require('./models/UserInfo')
+require('./models/UserImages')
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')

@@ -26,7 +26,7 @@ const authReducer = (state, action) => {
                 ...state,
                 errorMessage: ''
             }
-        case 'fetchAccount':
+        case 'profile':
             return action.payload
         default:
             return state
@@ -43,8 +43,8 @@ const localSignIn = (dispatch) => async () => {
         })
 
         if (await AsyncStorage.getItem('userInfo')) {
-            //navigate('profile')
-            navigate('fill')
+            navigate('home')
+            //navigate('camera')
         } else {
             navigate('intro')
         }
@@ -90,8 +90,8 @@ const signin = (dispatch) => async ({ email, password }) => {
 
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userInfo', 'true')
-            //navigate('profile')
-            navigate('fill')
+            navigate('home')
+            //navigate('camera')
         } else {
             navigate('fill')
         }       
@@ -102,6 +102,15 @@ const signin = (dispatch) => async ({ email, password }) => {
             payload: 'Something went wrong with sign in'
         })
     }
+}
+
+const profile = (dispatch) => async () => {
+    const response = await api.get('/profile/:id')
+
+    dispatch({
+        type: 'profile',
+        payload: response.data
+    })
 }
 
 const signout = (dispatch) => async () => {
@@ -115,6 +124,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn },
+    { signup, signin, signout, clearError, localSignIn, profile },
     { token: null, errorMessage: '' }
 )

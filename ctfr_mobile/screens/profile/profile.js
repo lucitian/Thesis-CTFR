@@ -1,15 +1,22 @@
 import React, { useContext, useEffect } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import { NavigationEvents } from 'react-navigation'
 
 import { Context as AuthContext } from '../../context/UserContext'
 
 function ProfileScreen({ navigation }) {
-    const { signout } = useContext(AuthContext)
-
+    const { state, profile, signout } = useContext(AuthContext)
+    console.log(state)
     return(
         <View style = { styles.container }>
             <View style = { styles.signout }>
                 <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
+            </View>
+            <View>
+                <NavigationEvents onWillFocus = {profile} />
+
+                <Image source={{ uri: state.image[2] }}></Image>
+                <Text>Yo. Id: {state.userId}</Text>
             </View>
         </View>   
     )
