@@ -1,43 +1,64 @@
 import React, { useState, useContext } from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Platform } from 'react-native'
-import { TextInput, Button } from 'react-native-paper'
+import { TextInput, Button, Provider } from 'react-native-paper'
+import { TextInputMask } from 'react-native-masked-text'
 import { useForm, Controller } from 'react-hook-form'
+import DropDown from 'react-native-paper-dropdown'
 import { NavigationEvents } from 'react-navigation'
 
-import { Context as AuthContext } from '../context/UserContext'
-import { Context as FillContext } from '../context/IntroContext'
+import { Context as UserContext } from '../../context/UserContext'
+import { Context as IntroContext } from '../../context/IntroContext'
 
 function FillScreen ({ navigation }) {
-    const { signout } = useContext(AuthContext)
-    const { fillup } = useContext(FillContext)
+    const { signout } = useContext(UserContext)
+    const { fillup } = useContext(IntroContext)
 
-    const { control } = useForm({ mode: 'onBlur' })
+    const { control, reset } = useForm({ mode: 'onBlur' })
 
     const [ firstname, setFirstName ] = useState('')
     const [ middleinitial, setMiddleInitial ] = useState('')
     const [ lastname, setLastName ] = useState('')
     const [ contact, setContact ] = useState('')
+    const [ birthdate, setBirthdate ] = useState('')
+    const [ vaxstatus, setVaxStatus ] = useState('')
     const [ address, setAddress ] = useState('')
 
+    const [showDropDown, setShowDropDown] = useState(false);
+    const vaxOptions = [
+        {
+            label: 'Fully Vaccinated',
+            value: 'Fully Vaccinated'
+        },
+        {
+            label: 'Partially Vaccinated',
+            value: 'Partially Vaccinated'
+        },
+        {
+            label: 'Not yet Vaccinated',
+            value: 'Not yet Vaccinated'
+        }
+    ]
+
     const FillUp = () => {
-        fillup({ firstname, middleinitial, lastname, contact, address })
+        fillup({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address })
     }
 
     return (
-        <View style = { styles.container }>
-            <View style = { styles.signout }>
-                <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
-            </View>
-            <View style = { styles.homeComponents }>
-                <View style = { styles.TextContainer }>
-                    <Text style = { styles.boldText }>
-                        Hello!
-                    </Text>
+        <Provider>
+            <View style = { styles.container }>
+                <View style = { styles.signout }>
+                    <TouchableOpacity onPress = {signout}><Text>Sign out</Text></TouchableOpacity>
                 </View>
-                <View>
-                    <Text style = { styles.infoText }>{'\t'} First, we would like to know your personal information to conduct a proper contact tracing.</Text>
+                <View style = { styles.homeComponents }>
+                    <View style = { styles.TextContainer }>
+                        <Text style = { styles.boldText }>
+                            Hello!
+                        </Text>
+                    </View>
+                    <View>
+                        <Text style = { styles.infoText }>First, we would like to know your personal information to conduct a proper contact tracing.</Text>
+                    </View>
                 </View>
-            </View>
                 <View style = {styles.formContainer}>
                     <View style = {styles.pairContainer}>
                         <Controller
@@ -45,7 +66,7 @@ function FillScreen ({ navigation }) {
                             rules = {{
                                 required: true
                             }}
-                            name = 'firstname'
+                            name = 'Firstname'
                             render = {({
                                 field: {onChange, value, onBlur}
                             })=> (
@@ -64,7 +85,7 @@ function FillScreen ({ navigation }) {
                             rules = {{
                                 required: true
                             }}
-                            name = 'middleinitial'
+                            name = 'Middle Initial'
                             render = {({
                                 field: {onChange, value, onBlur}
                             })=> (
@@ -85,7 +106,7 @@ function FillScreen ({ navigation }) {
                             rules = {{
                                 required: true
                             }}
-                            name = 'lastname'
+                            name = 'Last Name'
                             render = {({
                                 field: {onChange, value, onBlur}
                             })=> (
@@ -104,28 +125,95 @@ function FillScreen ({ navigation }) {
                             rules = {{
                                 required: true
                             }}
-                            name = 'contact'
+                            name = 'Contact Number'
                             render = {({
                                 field: {onChange, value, onBlur}
                             })=> (
                                 <TextInput
                                     label = "Contact Number"
+                                    placeholder = "639xxxxxxxxx"
+                                    maxLength={12}
+                                    keyboardType = 'numeric'
                                     value={contact}            
-                                    onBlur={onBlur}            
+                                    onBlur={onBlur}         
                                     onChangeText={setContact} 
-                                    style = { styles.infoTextInput} 
+                                    style = { styles.infoTextInput } 
                                     mode = 'outlined' 
                                 />
                             )} 
                         />
-                    </View>          
+                    </View> 
+                    <View style = { styles.pairContainer }>
+                        <Controller
+                            control = { control }
+                            rules = {{
+                                required: true
+                            }}
+                            name = 'Date of Birth'
+                            render = {({
+                                field: { onChange, value, onBlur }
+                            }) => (
+                                <TextInput
+                                    label = 'Date of Birth'                                    
+                                    placeholder = 'mm/dd/yyyy'
+                                    keyboardType ='numeric'
+                                    onBlur = {onBlur}
+                                    render = { (props) => (
+                                        <TextInputMask
+                                            {...props}
+                                            type={'datetime'}
+                                            options={{
+                                                format: 'MM/DD/YYYY'
+                                            }}
+                                            value = {birthdate}
+                                            onChangeText={(text) => {
+                                                props.onChangeText?.(text) 
+                                                setBirthdate(text)
+                                            }}
+                                        />
+                                    )}
+                                    style = { styles.infoTextInput }
+                                    mode = 'outlined'
+                                />
+                            )}
+                        />
+                        <Controller
+                            control = { control }
+                            rules = {{
+                                required: true
+                            }}
+                            name = 'Vaccination Status'
+                            render = {({
+                                field: { onChange, value, onBlur }
+                            }) => (
+                                <DropDown
+                                    label = "Vaccination Status"
+                                    visible = {showDropDown}
+                                    showDropDown = {() => setShowDropDown(true)}
+                                    onDismiss = {() => setShowDropDown(false)}
+                                    onBlur = { onBlur }
+                                    list = {vaxOptions}    
+                                    value = {vaxstatus}
+                                    setValue = {setVaxStatus}
+                                    inputProps = {{
+                                        style: {
+                                            width: 175,
+                                            height: 50,
+                                            padding: 5,
+                                        }
+                                    }}   
+                                    mode = 'outlined'     
+                                />   
+                            )}
+                        />
+                    </View>         
                     <View>
                         <Controller
                             control = { control }
                             rules = {{
                                 required: true
                             }}
-                            name = 'address'
+                            name = 'Address'
                             render = {({
                                 field: {onChange, value, onBlur}
                             })=> (
@@ -147,11 +235,11 @@ function FillScreen ({ navigation }) {
                         onPress = {FillUp}
                         style = { styles.proceedButton }
                     >
-                        <Text style = { styles.textButton } > Proceed</Text>
+                        <Text style = { styles.textButton }> Proceed</Text>
                     </Button>
                 </View>
-            
-        </View>
+            </View>
+        </Provider>
     )
 }
 
@@ -180,11 +268,6 @@ const styles = StyleSheet.create({
         padding: 5
     },
     infoTextInput: {
-        width: 175,
-        height: 50,
-        padding: 5,
-    },
-    infoTextInput1: {
         width: 175,
         height: 50,
         padding: 5,

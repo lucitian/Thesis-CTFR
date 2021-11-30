@@ -16,14 +16,19 @@ const userReducer = (state, action) => {
                 errorMessage: '',
                 token: action.payload
             }
+        case 'camera_upload':
+            return {
+                errorMessage: '',
+                token: action.payload
+            }
         default: 
             return state
     }
 }
 
-const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, address }) => {
+const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address }) => {
     try {
-        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, address })
+        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address })
         dispatch({
             type: 'fillup',
             payload: response.data.token
@@ -39,8 +44,32 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
     }
 }
 
+const camera_upload = (dispatch) => async (formData) => {
+    try {
+        const response = await api.post('/camera/upload', formData, {
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+
+        dispatch({
+            type: 'camera_upload',
+            payload: response.data.token
+        })
+
+        navigate('profile')
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     userReducer,
-    { fillup },
+    { fillup, camera_upload },
     { token: null, errorMessage: '' }
 )

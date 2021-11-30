@@ -20,10 +20,22 @@ const userInfoSchema = new mongoose.Schema({
         type: Number, 
         required: true
     },
+    birthdate: {
+        type: String,
+        required: true
+    },
+    vaxstatus: {
+        type: String,
+        required: true
+    },
     address: {
         type: String,
         required: true
     },
+    images: {
+        type: String,
+        required: true
+    }
 })
 
 mongoose.model('UserInfo', userInfoSchema)

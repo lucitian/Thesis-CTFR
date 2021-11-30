@@ -1,171 +1,221 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet, Text, View, Button, Image, TouchableOpacity, Alert, ImageBackground } from 'react-native';
-import { Camera } from 'expo-camera';
-import DefaultImage from '../assets/faceid.png';
+import React, { useState, useEffect, useContext } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { Camera } from 'expo-camera'
+import DefaultImage from '../../assets/faceid.png'
 
-function CameraScreen({navigation}) {
-  const def = Image.resolveAssetSource(DefaultImage).uri;
-  const [hasPermission, setHasPermission] = useState(null);
-  const [camera, setCamera] = useState(null);
-  const [image, setImage] = useState(def);
-  const [image1, setImage1] = useState(def);
-  const [image2, setImage2] = useState(def);
-  const [image3, setImage3] = useState(def);
-  const [image4, setImage4] = useState(def);
-  const [type, setType] = useState(Camera.Constants.Type.back);
+import { Context as IntroContext } from '../../context/IntroContext'
 
-  useEffect(() => {
-    (async () => {
-      const { status } = await Camera.requestPermissionsAsync();
-      setHasPermission(status === 'granted');
-    })();
-  }, []);
+import instance from '../../api/api'
 
-  const rem = () => {
-    setImage(def);
-  }
-  const rem1 = () => {
-    setImage1(def);
-  }
-  const rem2 = () => {
-    setImage2(def);
-  }
-  const rem3 = () => {
-    setImage3(def);
-  }
-  const rem4 = () => {
-    setImage4(def);
-  }
-  
-  const takePicture = async () => {
-    if(camera && image == def){
-      const data = await camera.takePictureAsync(null); 
-      setImage(data.uri);
-      }
-    else if (camera && image1 == def) {
-      const data1 = await camera.takePictureAsync(null); 
-      setImage1(data1.uri);
+function CameraScreen ({ navigation }) {
+    const def = Image.resolveAssetSource(DefaultImage).uri
+
+    const { camera_upload } = useContext(IntroContext)
+
+    const [ hasPermission, setHasPermission ] = useState(null)
+    const [ camera, setCamera ] = useState(null)
+    const [ image, setImage ] = useState(def)
+    const [ image1, setImage1 ] = useState(def) 
+    const [ image2, setImage2 ] = useState(def)
+    const [ image3, setImage3 ] = useState(def)
+    const [ image4, setImage4 ] = useState(def)
+    const [ type, setType ] = useState(Camera.Constants.Type.back)
+
+    useEffect(() => {
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync()
+            setHasPermission(status === 'granted')
+        })()
+    }, [])
+
+    const splitFilename = function (str) {
+        return str.split('\\').pop().split('/').pop()
     }
-    else if (camera && image2 == def) {
-      const data2 = await camera.takePictureAsync(null); 
-      setImage2(data2.uri);
+
+    const rem = () => {
+        setImage(def);
     }
-    else if (camera && image3 == def) {
-      const data3 = await camera.takePictureAsync(null); 
-      setImage3(data3.uri);
+    const rem1 = () => {
+        setImage1(def);
     }
-    else if (camera && image4 == def) {
-      const data4 = await camera.takePictureAsync(null); 
-      setImage4(data4.uri);
+    const rem2 = () => {
+        setImage2(def);
     }
-  }
+    const rem3 = () => {
+        setImage3(def);
+    }
+    const rem4 = () => {
+        setImage4(def);
+    }
 
+    const takePicture = async () => {
+        if(camera && image == def){
+            const data = await camera.takePictureAsync(null); 
+            setImage(data.uri);
+        }
+        else if (camera && image1 == def) {
+            const data1 = await camera.takePictureAsync(null); 
+            setImage1(data1.uri);
+        }
+        else if (camera && image2 == def) {
+            const data2 = await camera.takePictureAsync(null); 
+            setImage2(data2.uri);
+        }
+        else if (camera && image3 == def) {
+            const data3 = await camera.takePictureAsync(null); 
+            setImage3(data3.uri);
+        }
+        else if (camera && image4 == def) {
+            const data4 = await camera.takePictureAsync(null); 
+            setImage4(data4.uri);
+        }
+    }
 
+    if (hasPermission === null) {
+        return <View />;
+    }
+    if (hasPermission === false) {
+        return <Text>No access to camera</Text>;
+    }
+    
+    const Upload_Photos = () => {
+        const imageFile = {
+            uri: image,
+            name: splitFilename(image),
+            type: 'image/jpg'
+        }
 
+        const imageFile1 = {
+            uri: image1,
+            name: splitFilename(image1),
+            type: 'image/jpg'
+        }
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
-  return (
-    <View style = {styles.container}>
-        <View style = { styles.TextContainer }>
-            <Text style = { styles.boldText }>Almost!</Text>
-        </View>
-        <View>
-          <Text style = { styles.infoText }>Now, we need to see your face to perform our face recognition</Text>
-        </View>
+        const imageFile2 = {
+            uri: image2,
+            name: splitFilename(image2),
+            type: 'image/jpg'
+        }
 
-        <View style={styles.camContainer}>
-          <Camera
-            ref = {ref => setCamera(ref)}  
-            style={styles.camera} 
-            type={type}
-            ratio= {'1:1'}/>
-        </View>
-          <View style = {styles.picContainer}>
-            <View>
-              {image && <ImageBackground style = {styles.placeholder} source={{uri: image}}>
-              <TouchableOpacity disabled = {image === def ? true : false} onPress = {(()=>rem())}>
-                  {
-                    image !== def ?
-                    (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
-                  }
-                </TouchableOpacity>
-              </ImageBackground>}
+        const imageFile3 = {
+            uri: image3,
+            name: splitFilename(image3),
+            type: 'image/jpg'
+        }
+
+        const imageFile4 = {
+            uri: image4,
+            name: splitFilename(image4),
+            type: 'image/jpg'
+        }
+        
+        const images = [imageFile, imageFile1, imageFile2, imageFile3, imageFile4]
+        const formData = new FormData()
+
+        for (let image in images) {
+            formData.append('image', images[image])
+        }
+
+        camera_upload(formData)
+    }
+
+    return (
+        <View style = {styles.container}>
+            <View style = { styles.TextContainer }>
+                <Text style = { styles.boldText }>Almost!</Text>
             </View>
             <View>
-              {image1 && <ImageBackground style = {styles.placeholder} source={{uri: image1}}>
-                <TouchableOpacity disabled = {image1 === def ? true : false} onPress = {(()=>rem1())}>
-                  {
-                    image1 !== def ?
-                    (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
-                  }
-                </TouchableOpacity>
-              </ImageBackground>}
-              </View>
-              <View>
-                {image2 && <ImageBackground style = {styles.placeholder} source={{uri: image2}}>
-                  <TouchableOpacity disabled = {image2 === def ? true : false} onPress = {(()=>rem2())}>
-                    {
-                      image2 !== def ?
-                      (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
-                    }
-                  </TouchableOpacity>
-                </ImageBackground>}
-              </View>
-              <View>
-                {image3 && <ImageBackground style = {styles.placeholder} source={{uri: image3}}>
-                  <TouchableOpacity disabled = {image3 === def ? true : false} onPress = {(()=>rem3())}>
-                    {
-                      image3 !== def ?
-                      (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
-                    }
-                  </TouchableOpacity>
-                </ImageBackground>}
-              </View>
-              <View>
-                {image4 && <ImageBackground style = {styles.placeholder} source={{uri: image4}}>
-                  <TouchableOpacity disabled = {image4 === def ? true : false} onPress = {(()=>rem4())}>
-                    {
-                      image4 !== def ?
-                      (<Image style = {styles.discard} source={require('../assets/minus.png')}/> ) : null
-                    }
-                  </TouchableOpacity>
-                </ImageBackground>}
-              </View>
+                <Text style = { styles.infoText }>Now, we need to see your face to perform our face recognition</Text>
             </View>
-
-          <View style={styles.buttonContainer} >
-            <View>
-              <TouchableOpacity
-                    style={styles.button}
-                    title = "Flip Camera"
-                    onPress={() => {
-                    setType(
-                        type === Camera.Constants.Type.back
-                        ? Camera.Constants.Type.front
-                        : Camera.Constants.Type.back
-                    );
-                    }}>
-                      <Image style = {styles.button} source={require('../assets/flip.png')}/>
-              </TouchableOpacity>
+            <View style={styles.camContainer}>
+                <Camera
+                    ref = {ref => setCamera(ref)}  
+                    style={styles.camera} 
+                    type={type}
+                    ratio= {'1:1'}
+                />
             </View>
-            <View>
-              <TouchableOpacity style={styles.button2} title = 'Take Picture' onPress = {() => takePicture()}>
-                {/* <Image style = {styles.button} source={require('../assets/flip.png')}/> */}
-              </TouchableOpacity>
+            <View style = {styles.picContainer}>
+                <View>
+                    {image && <ImageBackground style = {styles.placeholder} source={{uri: image}}>
+                        <TouchableOpacity disabled = {image === def ? true : false} onPress = {(()=>rem())}>
+                            {
+                                image !== def ?
+                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
+                            }
+                        </TouchableOpacity>
+                    </ImageBackground>}
+                </View>
+                <View>
+                    {image1 && <ImageBackground style = {styles.placeholder} source={{uri: image1}}>
+                        <TouchableOpacity disabled = {image1 === def ? true : false} onPress = {(()=>rem1())}>
+                            {
+                                image1 !== def ?
+                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
+                            }
+                        </TouchableOpacity>
+                    </ImageBackground>}
+                </View>
+                <View>
+                    {image2 && <ImageBackground style = {styles.placeholder} source={{uri: image2}}>
+                        <TouchableOpacity disabled = {image2 === def ? true : false} onPress = {(()=>rem2())}>
+                            {
+                                image2 !== def ?
+                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
+                            }
+                        </TouchableOpacity>
+                    </ImageBackground>}
+                </View>
+                <View>
+                    {image3 && <ImageBackground style = {styles.placeholder} source={{uri: image3}}>
+                        <TouchableOpacity disabled = {image3 === def ? true : false} onPress = {(()=>rem3())}>
+                            {
+                            image3 !== def ?
+                            (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
+                            }
+                        </TouchableOpacity>
+                    </ImageBackground>}
+                </View>
+                <View>
+                    {image4 && <ImageBackground style = {styles.placeholder} source={{uri: image4}}>
+                        <TouchableOpacity disabled = {image4 === def ? true : false} onPress = {(()=>rem4())}>
+                            {
+                            image4 !== def ?
+                            (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
+                            }
+                        </TouchableOpacity>
+                    </ImageBackground>}
+                </View>
+            </View>
+    
+            <View style={styles.buttonContainer} >
+                <View>
+                    <TouchableOpacity
+                        style={styles.button}
+                        title = "Flip Camera"
+                        onPress={() => {
+                        setType(
+                            type === Camera.Constants.Type.back
+                            ? Camera.Constants.Type.front
+                            : Camera.Constants.Type.back
+                        );
+                        }}>
+                        <Image style = {styles.button} source={require('../../assets/flip.png')}/>
+                    </TouchableOpacity>
+                </View>
+                <View>
+                    <TouchableOpacity style={styles.button2} title = 'Take Picture' onPress = {() => takePicture()}>
+                        {/* <Image style = {styles.button} source={require('../../assets/flip.png')}/> */}
+                    </TouchableOpacity>
+                </View>   
+                <View>
+                    <TouchableOpacity style={styles.button3} title = 'Submit Photos' onPress = {Upload_Photos}>
+                        <Image style = {styles.button} source={require('../../assets/done.png')}/> 
+                    </TouchableOpacity>
+                </View>    
             </View>   
-            <View>
-              <TouchableOpacity style={styles.button3} title = 'Submit Photos'>
-                <Image style = {styles.button} source={require('../assets/done.png')}/> 
-              </TouchableOpacity>
-            </View>    
-          </View>   
-    </View>
-  );
+        </View>
+    )
 }
 
 export default CameraScreen
@@ -246,4 +296,3 @@ const styles = StyleSheet.create({
       alignSelf: 'flex-end'
     }
 })
-
