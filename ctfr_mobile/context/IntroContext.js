@@ -52,7 +52,6 @@ const camera_upload = (dispatch) => async (formData) => {
                 'Accept': 'application/json',
                 'Content-Type': 'multipart/form-data'
             },
-            
         })
 
         dispatch({

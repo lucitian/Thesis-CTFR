@@ -13,9 +13,8 @@ router.use(requireAuth)
 router.get('/profile/:id', async (req, res) => {
     const user = await User.findById(req.user._id)
     const userInfo = await UserInfo.find(req.user._id)
-    const userImage = await UserImages.find(req.user._id)
 
-    res.send(userImage[0])
+    res.send(userInfo[0])
 })
 
 router.post('/fill', async (req, res) => {

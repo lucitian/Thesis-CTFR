@@ -51,6 +51,7 @@ router.post('/signin', async (req, res) => {
 
         if (await UserInfo.findOne({ userId: user._id })) {
             const userInfo = await UserInfo.findOne({ userId: user._id })
+            
             res.send({ token, userInfo })
         } else {
             res.send({ token })

@@ -91,7 +91,6 @@ const signin = (dispatch) => async ({ email, password }) => {
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userInfo', 'true')
             navigate('home')
-            //navigate('camera')
         } else {
             navigate('fill')
         }       
