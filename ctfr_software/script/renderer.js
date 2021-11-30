@@ -7,9 +7,7 @@ function renderUsers(users) {
     users.map(user => {
         userList.innerHTML += `
             <tr>
-                <td class="db__data__cell">${user.username}</td>
                 <td class="db__data__cell">${user.email}</td>
-                <td class="db__data__cell">${user.password}</td>
             </tr>
         `
     })

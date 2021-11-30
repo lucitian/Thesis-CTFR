@@ -4,7 +4,7 @@ const { app, BrowserWindow, ipcMain } = require('electron')
 const path = require('path')
 
 require('./server.js')
-const User = require('./models/model.js')
+const User = require('./models/user.js')
 
 require('electron-reload')(__dirname, {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron')

@@ -43,8 +43,7 @@ router.post('/fill', async (req, res) => {
             })
     
             await userInfo.save()
-            console.log(userInfo)
-            
+ 
             res.send(userInfo)
         } catch (err) {
             return res.status(422).send(err.message)
