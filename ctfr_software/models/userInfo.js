@@ -33,10 +33,6 @@ const userInfoSchema = new Schema({
         type: String,
         required: true
     },
-    images: {
-        type: String,
-        required: true
-    }
 })
 
-module.exports = model('UserInfo')
+module.exports = model('UserInfo', userInfoSchema)
