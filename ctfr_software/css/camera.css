@@ -1,0 +1,81 @@
+.camera-pane {
+    grid-template-columns: 1fr 0.5fr;
+    grid-template-rows: 0.05fr 1fr;
+    grid-template-areas: 
+        'title title'
+        'table-id camera';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.title {
+    font-family: 'Poppins', monospace;
+    grid-area: title;
+    width: 100%;
+    height: 100%; 
+}
+
+.camera-db {
+    grid-area: table-id;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.7fr 1fr 0.175fr;
+    grid-template-areas: 
+        'student-info'
+        'temp-camera-table'
+        'camera-table-buttons';
+    gap: 15px;
+}
+
+.student__info {
+    grid-area: student-info;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}
+
+.temp__camera__table {
+    grid-area: temp-camera-table;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}
+
+.camera__table__buttons {
+    grid-area: camera-table-buttons;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}
+
+.camera-container {
+    grid-area: camera;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 0.1fr;
+    grid-template-areas:
+        'camera-screen'
+        'camera-buttons';
+    height: 100%;
+    gap: 15px;
+}
+
+.camera__screen {
+    grid-area: camera-screen;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}
+
+.camera__buttons {
+    grid-area: camera-buttons;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}

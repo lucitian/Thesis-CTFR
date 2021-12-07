@@ -5,6 +5,7 @@ const path = require('path')
 
 require('./server.js')
 const User = require('./models/user.js')
+const UserInfo = require('./models/userInfo.js')
 
 require('electron-reload')(__dirname, {
     electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
@@ -27,9 +28,24 @@ function createWindow () {
     ctfrWindow.loadFile('./views/index.html')
 }
 
+
+
 ipcMain.on('get-users', async (e, arg) => {
-    const users = await User.find()
-    e.reply('get-users', JSON.stringify(users))
+
+    User.aggregate([
+        {
+            $lookup: {
+                from: 'userinfos',
+                localField: '_id',
+                foreignField: 'userId',
+                as: 'info'
+            }
+        }
+    ]).then(res => {
+        res.forEach(user => e.reply('get-users', JSON.stringify(user)));
+    })
+
+    //e.reply('get-users', JSON.stringify([users, userInfo]))
 })
 
 app.whenReady().then(() => {
