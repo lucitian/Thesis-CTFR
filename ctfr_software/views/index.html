@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <script src="../script/script.js" defer></script>
         <script src="https://kit.fontawesome.com/052f0d8aba.js" crossorigin="anonymous"></script>
+        <script src="../ctfr.js"></script>
         <link rel="stylesheet" type="text/css" href="../css/index.css">
         <link rel="stylesheet" type="text/css" href="../css/camera.css">
         <link rel="stylesheet" type="text/css" href="../css/roomdb.css">
@@ -43,8 +44,9 @@
                         <div class="camera__screen">
 
                         </div>
-                        <div class="camera__buttons">
-
+                        <div class="camera__buttons__container">
+                            <button class="camera__button" onclick="get_ctfr()"><text>Open Camera</text></button>
+                            <button class="camera__button" onclick="close_ctfr()"><text>Close Camera</text></button>
                         </div>
                     </div>
                 </div>

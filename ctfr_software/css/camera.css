@@ -66,16 +66,39 @@
 
 .camera__screen {
     grid-area: camera-screen;
+    flex-direction: row;
     height: 100%;
     border-radius: 5px;
     box-shadow: 1px 1px 3px#b6b6b6;
     background-color: white;
 }
 
-.camera__buttons {
+.camera__buttons__container {
     grid-area: camera-buttons;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
     height: 100%;
+    gap: 15px;
+}
+
+.camera__button {
+    color: inherit;
+    border: none;
+    height: 100%;
+    width: 100%;
     border-radius: 5px;
     box-shadow: 1px 1px 3px#b6b6b6;
     background-color: white;
+    cursor: pointer;
+    transition: 0.1s ease;
+}
+
+.camera__buttons__container text{
+    font-family: 'OpenSans', monospace;
+}
+
+.camera__buttons__container button:hover {
+    font-size: 15px;
+    background-color: royalblue;
 }
