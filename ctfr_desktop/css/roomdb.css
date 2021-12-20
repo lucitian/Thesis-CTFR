@@ -1,0 +1,95 @@
+.room-pane {
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.05fr 0.2fr 1fr;
+    grid-template-areas: 
+        'title'
+        'room-db-input' 
+        'room-db-table';
+    padding: 15px;
+    gap: 15px;
+    height: 100vh;
+}
+
+.room-db-input {
+    grid-area: room-db-input;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}
+
+.room-db__filter__title__container {
+    font-family: 'Poppins', monospace;
+    font-size: 12px;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    border-bottom: 1.35px solid rgba(250, 200, 200, 0.5);
+}
+
+.room-db__filter__input__container {
+    font-family: 'Poppins', monospace;
+    height: 50%;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.filter__name__group {
+    position: relative;
+}
+
+.filter__name {
+    font-family: 'OpenSans', monospace;
+    outline: none;
+    border: 1px solid #dadce0;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.filter__name__group .filter__name:focus {
+    border: 1px solid royalblue;
+}
+
+.filter__name__group .filter__name:valid + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.filter__name__group .filter__name:focus + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.filter__name__group label {
+    font-size: 12px;
+    color: #8d8d8d;
+    position: absolute;
+    bottom: 9px;
+    left: 8.5px;
+    background: #ffffff;
+    transition: 0.15s;
+}
+
+
+.room-db-table {
+    grid-area: room-db-table;
+    overflow: auto;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+}
+
+.room-db-table table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    overflow-wrap: break-word;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
