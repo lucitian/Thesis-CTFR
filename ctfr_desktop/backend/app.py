@@ -2,9 +2,11 @@ from flask import Flask, jsonify, request
 from flask_pymongo import PyMongo
 import json
 from bson import ObjectId
+import secret
 
 app = Flask(__name__)       
-app.config['MONGO_URI'] = 'mongodb+srv://admin:ctfradmin@ctfr.rlv9t.mongodb.net/CTFR?retryWrites=true&w=majority'
+app.config['MONGO_URI'] = secret.secret_key
+
 mongo = PyMongo(app)
 
 db_users = mongo.db.users
