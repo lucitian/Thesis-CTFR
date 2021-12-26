@@ -1,12 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
+        <meta charset="UTF-8">
+        <script src="../script/script.js" defer></script>
+        <script src="https://kit.fontawesome.com/052f0d8aba.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="../css/index.css">
+        <link rel="stylesheet" type="text/css" href="../css/camera.css">
+        <link rel="stylesheet" type="text/css" href="../css/roomdb.css">
+        <link rel="stylesheet" type="text/css" href="../css/database.css">
         <title>CTFR</title>
     </head>
     <body>
-        <div>
-            <h1>Hello World</h1>
+        <div class="container">
+            <ul class="dashboard-pane">
+                <li data-tab-target="#camera-pane" class="active dashboard-tab">
+                    <i class="fas fa-camera"></i>
+                </li>
+                <li data-tab-target="#room-pane" class="dashboard-tab">
+                    <i class="fas fa-table"></i> 
+                </li>
+                <li data-tab-target="#database-pane" class="dashboard-tab">
+                    <i class="fas fa-database"></i> 
+                </li>
+            </ul>
+            <div class="dashboard-container">
+                <div id="camera-pane" class="active camera-pane" data-tab-content>
+                    <div class="title">
+                        <h1>Camera section</h1>
+                    </div>
+                    <div class="camera-db">
+                        <div class="student__info">
+
+                        </div>
+                        <div class="temp__camera__table">
+
+                        </div>
+                        <div class="camera__table__buttons">
+                            
+                        </div>
+                    </div>
+                    <div class="camera-container">
+                        <div class="camera__screen">
+
+                        </div>
+                        <div class="camera__buttons__container">
+                            <button class="camera__button" onclick="get_ctfr()"><text>Open Camera</text></button>
+                            <button class="camera__button" onclick="close_ctfr()"><text>Close Camera</text></button>
+                        </div>
+                    </div>
+                </div>
+                <div id="room-pane" class="room-pane" data-tab-content>
+                    <div class="title">
+                        <h1>Room section</h1>
+                    </div>
+                    <div class="room-db-input">
+                        <div class="room-db__filter__title__container">
+                            <h2>Name</h2>
+                        </div>
+                        <div class="room-db__filter__input__container">
+                            <div class="filter__name__group">
+                                <input type="text" required class="filter__name" id="room__filter__name" onkeyup="myFunction()">
+                                <label>Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="room-db-table">
+
+                    </div>
+                </div>
+                <div id="database-pane" class="database-pane" data-tab-content>
+                    <div class="title">
+                        <h1>Database</h1>
+                    </div>
+                    <div class="db__input">
+                        <div class="db__filter__title__container">
+                            <h2>Name</h2>
+                        </div>
+                        <div class="db__filter__input__container">
+                            <div class="filter__name__group">
+                                <input type="text" required class="filter__name" id="filter__name" onkeyup="myFunction()">
+                                <label>Name</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="db__table__container">
+                        <table id = "db__table">
+                            <thead class="db__header">
+                                <tr class="row__head">
+                                    <th class="db__header__cell__actions">Actions</th>
+                                    <th class="db__header__cell">ID</th>
+                                    <th class="db__header__cell">Email</th>
+                                    <th class="db__header__cell" id="header__name" onclick='sortTable(0)'>Name</th>
+                                    <th class="db__header__cell">Contact No.</th>
+                                    <th class="db__header__cell">Date of Birth</th>
+                                    <th class="db__header__cell">Vaccination Status</th>
+                                    <th class="db__header__cell">Address</th>
+                                </tr>
+                            </thead>
+                            <tbody id="userList">
+                                
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
+        <script type='module' src='../script/pymongo.js'></script>
+        <script src='../script/filter.js'></script>
+        <script src='../script/sort.js'></script>
     </body>
 </html>

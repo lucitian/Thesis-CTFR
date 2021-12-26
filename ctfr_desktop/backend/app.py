@@ -1,23 +1,44 @@
-from flask import Flask, jsonify
-from flask_mongoengine import MongoEngine
+from flask import Flask, jsonify, request
+from flask_pymongo import PyMongo
+import json
+from bson import ObjectId
 
-app = Flask(__name__)
+app = Flask(__name__)       
+app.config['MONGO_URI'] = 'mongodb+srv://admin:ctfradmin@ctfr.rlv9t.mongodb.net/CTFR?retryWrites=true&w=majority'
+mongo = PyMongo(app)
 
-app.config['MONGODB_SETTINGS'] = {
-    'db': 'ctfr',
-    'host': 'mongodb+srv://admin:ctfradmin@ctfr.rlv9t.mongodb.net/CTFR?retryWrites=true&w=majority'
+db_users = mongo.db.users
+db_usersInfo = mongo.db.userInfos
+
+lookup_user = {
+    '$lookup': {
+        'from': 'userinfos',
+        'localField': '_id',
+        'foreignField': 'userId',
+        'as': 'info'
+    }
 }
 
-db = MongoEngine()
-db.init_app(app)
+pipeline = [
+    lookup_user
+]
 
-class user(db.Document):
-    username = db.StringField()
-    email = db.StringField()
+class JSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, ObjectId):
+            return str(o)
+        return json.JSONEncoder.default(self, o)
 
-@app.route('/')
-def hello():
-    return "Hello World!"
+@app.route('/users')
+def get_users():
+    users = db_users.aggregate(pipeline)
+    output = [{
+        '_id': user['_id'],
+        'email': user['email'],
+        'info': user['info']
+    } for user in users]
+
+    return jsonify(json.loads(JSONEncoder().encode(output)))
 
 if __name__ == "__main__":
     app.run(debug=True)

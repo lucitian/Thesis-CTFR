@@ -10,7 +10,7 @@
             "request": "launch",
             "module": "flask",
             "env": {
-                "FLASK_APP": "F:\\Programming\\Thesis-CTFR\\ctfr_desktop\\backend\\app.py",
+                "FLASK_APP": "C:\\Files\\Programming\\Thesis-CTFR\\ctfr_desktop\\backend\\app.py",
                 "FLASK_ENV": "development"
             },
             "args": [

@@ -2,6 +2,11 @@ const { app, BrowserWindow } = require('electron')
 const path = require('path')
 const { stdout } = require('process')
 
+require('electron-reload')(__dirname, {
+    electron: path.join(__dirname, 'node_modules', '.bin', 'electron')
+})
+
+
 function createWindow () {
     const ctfrDesktop = new BrowserWindow({
         width: 1366,
@@ -24,17 +29,5 @@ app.whenReady().then(() => {
 })
 
 app.on('window-all-closed', function () {
-    const { exec } = require('child_process')
-
-    exec('taskkill /f /t /im app.exe', (err, stdout, stderr) => {
-        if (err) {
-            console.log(err)
-
-            return
-        }
-
-        console.log(`stdout: ${stdout}`)
-        console.log(`stderr: ${stderr}`)
-    })
     app.quit()
 })
