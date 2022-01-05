@@ -40,12 +40,12 @@
                         </div>
                     </div>
                     <div class="camera-container">
-                        <div class="camera__screen">
-
+                        <div class="camera__screen" id="camera__screen">
+                            
                         </div>
                         <div class="camera__buttons__container">
-                            <button class="camera__button" onclick="get_ctfr()"><text>Open Camera</text></button>
-                            <button class="camera__button" onclick="close_ctfr()"><text>Close Camera</text></button>
+                            <button id="open__camera" class="camera__button" onclick='open__camera()'><text>Open Camera</text></button>
+                            <button id="close__camera" class="camera__button" onclick='close__camera()'><text>Close Camera</text></button>
                         </div>
                     </div>
                 </div>
@@ -95,6 +95,7 @@
                                     <th class="db__header__cell">Date of Birth</th>
                                     <th class="db__header__cell">Vaccination Status</th>
                                     <th class="db__header__cell">Address</th>
+                                    <th class="db__header__cell">Profession</th>
                                 </tr>
                             </thead>
                             <tbody id="userList">
@@ -106,6 +107,7 @@
             </div>
         </div>
         <script type='module' src='../script/pymongo.js'></script>
+        <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
         <script src='../script/sort.js'></script>
     </body>
