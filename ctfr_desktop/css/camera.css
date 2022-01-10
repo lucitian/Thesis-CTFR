@@ -102,3 +102,8 @@
     font-size: 15px;
     background-color: royalblue;
 }
+
+.disable {
+    pointer-events: none;
+    background-color: rgb(184, 184, 184);
+}

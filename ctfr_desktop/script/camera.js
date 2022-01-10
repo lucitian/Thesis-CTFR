@@ -5,6 +5,7 @@ function open__camera() {
     openCamera.innerHTML += `<img src="http://localhost:5000/open_cam" height="100%" width="100%">`
 
     document.getElementById('open__camera').disabled = true
+    document.getElementById('open__camera').classList.add('disable')
 }
 
 function close__camera() {
@@ -12,4 +13,5 @@ function close__camera() {
     openCamera.innerHTML = ''
 
     document.getElementById('open__camera').disabled = false
+    document.getElementById('open__camera').classList.remove('disable')
 }
