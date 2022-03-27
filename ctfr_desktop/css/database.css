@@ -76,6 +76,30 @@
     transition: 0.15s;
 }
 
+.dashboard__add__button {
+    display: flex;
+    position: absolute;
+    right: 100px;
+}
+
+.dashboard__add__button button {
+    border: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 2.5px;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.dashboard__add__button button:hover {
+    color: royalblue
+}
+
+.dashboard__add__button i {
+    align-self: center;
+    font-size: 15px;
+}
+
 .db__table__container {
     grid-area: db-table;
     overflow: auto;
@@ -110,7 +134,7 @@
     cursor: pointer;
 }
 
-.db__data__cell {
+#db__data__cell {
     font-family: 'OpenSans', monospace;
     font-size: 12px;
     height: 40px;
@@ -128,18 +152,18 @@
     border-bottom: 1.25px solid rgba(250, 200, 200, 0.5);
 }
 
-.button__actions {
+#button__actions {
     font-size: 15px;
     margin: 0.25em;
     border: 0;
     background: none;
 }
 
-.button__actions i {
+#button__actions i {
     cursor: pointer;
 }
 
-.button__actions i:hover {
+#button__actions i:hover {
     color: royalblue
 }
 

@@ -1,0 +1,155 @@
+.edit__window {
+    font-family: 'Poppins', 'monospace';
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.edit__content {
+    background-color: white;
+    position: fixed;
+    width: 360px;
+    max-height: 500px;
+    padding: 10px 10px 25px 15px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+
+.edit__title h1 {
+    padding: 10px 0 0 0;
+    font-size: 20px;
+}
+
+/** edit information */
+.edit__info__group {
+    display: inline-block;
+    position: relative;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.edit__info__content {
+    font-family: 'OpenSans', monospace;
+    outline: none;
+    border: 1px solid #dadce0;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.edit__info__group .edit__info__content:focus {
+    border: 1px solid royalblue;
+}
+
+.edit__info__group .edit__info__content:valid + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.edit__info__group .edit__info__content:focus + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.edit__info__group .edit__info__content:disabled + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.edit__info__group label {
+    font-size: 12px;
+    color: #8d8d8d;
+    position: absolute;
+    bottom: 9px;
+    left: 8.5px;
+    background: #ffffff;
+    transition: 0.15s;
+}
+
+.edit__buttons {
+    margin: 5px 0 30px 0;
+}
+
+.edit__confirm, .edit__cancel, .edit__confirm__yes, .edit__confirm__no, .edit__cancel__yes,  .edit__cancel__no {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.edit__confirm, .edit__confirm__yes, .edit__cancel__yes {
+    background-color: #339900;
+    float: left;
+}
+
+.edit__cancel, .edit__confirm__no, .edit__cancel__no {
+    background-color: #cc3300;
+    float: right;
+}
+
+.edit__confirm:hover, .edit__confirm__yes:hover, .edit__cancel__yes:hover {
+    background-color: #99cc33;
+}
+
+.edit__cancel:hover, .edit__confirm__no:hover, .edit__cancel__no:hover {
+    background-color: #ff4101;
+}
+
+.edit__confirm__window {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.edit__confirm__content {
+    background-color: white;
+    position: fixed;
+    margin: auto;
+    height: 150px;
+    width: 420px;
+    border-radius: 5px;
+    padding: 25px 25px;
+}
+
+.edit__confirm__content .edit__buttons {
+    padding: 10px 0;
+}
+
+.edit__cancel__window {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.edit__cancel__content {
+    background-color: white;
+    position: fixed;
+    margin: auto;
+    height: 150px;
+    width: 420px;
+    border-radius: 5px;
+    padding: 25px 25px;
+}
+
+.edit__cancel__content .edit__buttons {
+    padding: 10px 0;
+}

@@ -8,23 +8,24 @@
         <link rel="stylesheet" type="text/css" href="../css/camera.css">
         <link rel="stylesheet" type="text/css" href="../css/roomdb.css">
         <link rel="stylesheet" type="text/css" href="../css/database.css">
+        <link rel="stylesheet" type="text/css" href="../css/edit.css">
         <title>CTFR</title>
     </head>
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="active dashboard-tab">
+                <li data-tab-target="#camera-pane" class="dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
                 <li data-tab-target="#room-pane" class="dashboard-tab">
                     <i class="fas fa-table"></i> 
                 </li>
-                <li data-tab-target="#database-pane" class="dashboard-tab">
+                <li data-tab-target="#database-pane" class="active dashboard-tab">
                     <i class="fas fa-database"></i> 
                 </li>
             </ul>
-            <div class="dashboard-container">
-                <div id="camera-pane" class="active camera-pane" data-tab-content>
+            <div class="dashboard-container" id="dashboard-container">
+                <div id="camera-pane" class="camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -68,11 +69,11 @@
 
                     </div>
                 </div>
-                <div id="database-pane" class="database-pane" data-tab-content>
+                <div id="database-pane" class="active database-pane" data-tab-content>
                     <div class="title">
                         <h1>Database</h1>
                     </div>
-                    <div class="db__input">
+                    <div class="db__input" id="db__input">
                         <div class="db__filter__title__container">
                             <h2>Name</h2>
                         </div>
@@ -80,6 +81,11 @@
                             <div class="filter__name__group">
                                 <input type="text" required class="filter__name" id="filter__name" onkeyup="myFunction()">
                                 <label>Name</label>
+                            </div>                        
+                            <div class="dashboard__add__button">
+                                <button onclick="addUsers()">
+                                    <i class="fa fa-plus"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -89,13 +95,13 @@
                                 <tr class="row__head">
                                     <th class="db__header__cell__actions">Actions</th>
                                     <th class="db__header__cell">ID</th>
+                                    <th class="db__header__cell">Username</th>
                                     <th class="db__header__cell">Email</th>
                                     <th class="db__header__cell" id="header__name" onclick='sortTable(0)'>Name</th>
                                     <th class="db__header__cell">Contact No.</th>
                                     <th class="db__header__cell">Date of Birth</th>
                                     <th class="db__header__cell">Vaccination Status</th>
                                     <th class="db__header__cell">Address</th>
-                                    <th class="db__header__cell">Profession</th>
                                 </tr>
                             </thead>
                             <tbody id="userList">
@@ -105,10 +111,43 @@
                     </div>
                 </div>
             </div>
+            <div class="edit__window" id="edit__window">
+                <div class="edit__content">
+                    <div class="edit__title">
+                        <h1>Edit Information</h1>
+                    </div>
+                    <form class="edit__form" name="edit__form" id="edit__form" method="PATCH" action="">
+                        
+                    </form>
+                    <div class="edit__buttons">
+                        <button class="edit__confirm" type="submit" onclick="confirmButton()">CONFIRM</button>
+                        <button class="edit__cancel" id="edit__cancel" onclick="cancelButton(0)">CANCEL</button>
+                    </div>
+                </div>
+                <div class="edit__confirm__window" id="edit__confirm__window">
+                    <div class="edit__confirm__content" id="edit__confirm__content">
+                        <div><p>Do you wish to continue and save the information you edited?</p></div>
+                        <div class="edit__buttons">
+                            <button class="edit__confirm__yes" onclick="confirmUpdate()">CONFIRM</button>
+                            <button class="edit__confirm__no" onclick="cancelButton(1)">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit__cancel__window" id="edit__cancel__window">
+                    <div class="edit__cancel__content" id="edit__cancel__content">
+                        <div><p>Changes you've made will not be saved. Do you want to cancel and go back?</p></div>
+                        <div class="edit__buttons">
+                            <button class="edit__cancel__yes" onclick="confirmCancel()">CONFIRM</button>
+                            <button class="edit__cancel__no" onclick="cancelButton(2)">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type='module' src='../script/pymongo.js'></script>
         <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
+        <script src="../script/edit.js"></script>
         <script src='../script/sort.js'></script>
     </body>
 </html>

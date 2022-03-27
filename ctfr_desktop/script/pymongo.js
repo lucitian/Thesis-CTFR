@@ -17,15 +17,25 @@ function renderUsers (users) {
         userList.innerHTML += `
             <tr id="userInfoList">
                 <td class="db__data__cell__actions">
-                    <button class="button__actions"><i class="far fa-edit"></i></button><button class="button__actions"><i class="fa fa-trash-o"></i></button>
+                    <button id="button__actions" onclick="editUsers(this)">
+                        <i class="far fa-edit"></i>
+                    </button>
+                    <button id="button__actions">
+                        <i class="fa fa-trash-o"></i>
+                    </button>
                 </td>
-                <td class="db__data__cell">${data._id}</td>
-                <td class="db__data__cell">${data.email}</td>
-                <td class="db__data__cell">${data.info[0].firstname} ${data.info[0].middleinitial} ${data.info[0].lastname}</td>
-                <td class="db__data__cell">+${data.info[0].contact}</td>
-                <td class="db__data__cell">${data.info[0].birthdate}</td>
-                <td class="db__data__cell">${data.info[0].vaxstatus}</td>
-                <td class="db__data__cell">${data.info[0].address}</td>
+                <td id="db__data__cell" class="data__id">${data._id}</td>
+                <td id="db__data__cell" class="data__username">${data.username}</td>
+                <td id="db__data__cell" class="data__email">${data.email}</td>
+                <td id="db__data__cell">
+                    <span class="data__firstname">${data.info[0].firstname}</span>
+                    <span class="data__middleinitial">${data.info[0].middleinitial}</span>.
+                    <span class="data__lastname">${data.info[0].lastname}</span>
+                </td>
+                <td id="db__data__cell" class="data__contact">+${data.info[0].contact}</td>
+                <td id="db__data__cell" class="data__birthdate">${data.info[0].birthdate}</td>
+                <td id="db__data__cell" class="data__vaxstatus">${data.info[0].vaxstatus}</td>
+                <td id="db__data__cell" class="data__address">${data.info[0].address}</td>
             </tr>
         `
     })
