@@ -1,7 +1,3 @@
-function addUsers () {
-
-}
-
 readData = (row) => {
     let column = row.parentElement.parentElement
     var formData = {}
@@ -131,7 +127,7 @@ statusUpdate = (data) => {
     }
 }
 
-cancelButton = (x) => {
+editCancel = (x) => {
     if (x == 0) {
         document.getElementById('edit__cancel__window').style.display = 'flex'
     } 

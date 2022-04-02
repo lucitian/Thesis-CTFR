@@ -1,3 +1,4 @@
+from base64 import encode
 from flask import Flask, jsonify, request, Response
 from flask_pymongo import PyMongo
 import mongoengine as me
@@ -5,7 +6,7 @@ import json
 from bson.objectid import ObjectId
 import secret
 from camera import camera
-import cv2
+import bcrypt
 
 app = Flask(__name__, template_folder='../views')
 app.config['MONGO_URI'] = secret.secret_key
@@ -51,23 +52,46 @@ def get_users():
 
     return jsonify(json.loads(JSONEncoder().encode(output)))
 
-@app.route('/add-user', methods=['POST'])
+@app.route('/adduser', methods=['POST'])
 def add_user():
     try:
         user = {
-            'email': request.form['email']
-        }
+            'username': request.json['addUsername'],
+            'email': request.json['addEmail'],
+            'password': bcrypt.hashpw(request.json['addPassword'].encode('utf-8'), bcrypt.gensalt())
+        }        
         dbResponse = db_users.insert_one(user)
+        userInfo = {
+            'userId': dbResponse.inserted_id,
+            'firstname': request.json['addFirstName'],
+            'middleinitial': request.json['addMiddleInitial'],
+            'lastname': request.json['addLastName'],
+            'contact': int(request.json['addContact']),
+            'birthdate': request.json['addBirthdate'],
+            'vaxstatus': request.json['addVaxStatus'],
+            'address': request.json['addAddress']
+        }
+        dbResponseInfo = db_usersInfo.insert_one(userInfo)
+
         return Response(
             response=json.dumps({
                 'message': 'user created',
-                'id': f'{dbResponse.inserted_id}'
+                'id': f'{dbResponse.inserted_id, dbResponseInfo.inserted_id}',
+                'send': 'success'
             }),
             status=200,
             mimetype='application/json'
         )
     except Exception as ex:
         print(ex)
+        return Response(
+            response = json.dumps({
+                'message': 'Failed!',
+                'send': 'fail'
+            }),
+            status = 500,
+            mimetype = 'application/json'
+        )
 
 @app.route('/edituser/<id>', methods=['PATCH'])
 def update_user(id):
@@ -121,7 +145,10 @@ def update_user(id):
             mimetype = 'application/json' 
         )
 
-# def delete_user():
+
+@app.route('/deleteuser/<id>', methods=['DELETE'])
+def delete_user():
+    return None
 
 def gen(camera):
     while True:

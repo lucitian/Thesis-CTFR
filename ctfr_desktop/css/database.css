@@ -76,28 +76,31 @@
     transition: 0.15s;
 }
 
-.dashboard__add__button {
-    display: flex;
+.db__buttons {
     position: absolute;
-    right: 100px;
+    right: 35px;
+    height: 35px;
+    width: 100px;
 }
 
-.dashboard__add__button button {
-    border: none;
-    width: 20px;
-    height: 20px;
-    border-radius: 2.5px;
-    background-color: transparent;
+.add__user {
+    border: transparent;
+    border-radius: 5px;
+    height: 100%;
+    width: 100px;
     cursor: pointer;
 }
 
-.dashboard__add__button button:hover {
-    color: royalblue
+.add__user {
+    float: left;
 }
 
-.dashboard__add__button i {
-    align-self: center;
-    font-size: 15px;
+.add__user:hover { 
+    background-color: #b6b6b6;
+}
+
+.db__add__button:hover {
+    color: royalblue
 }
 
 .db__table__container {
