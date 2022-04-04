@@ -8,23 +8,28 @@
         <link rel="stylesheet" type="text/css" href="../css/camera.css">
         <link rel="stylesheet" type="text/css" href="../css/roomdb.css">
         <link rel="stylesheet" type="text/css" href="../css/database.css">
+        <link rel="stylesheet" type="text/css" href="../css/add.css">
+        <link rel="stylesheet" type="text/css" href="../css/edit.css">
+        <link rel="stylesheet" type="text/css" href="../css/delete.css">
         <title>CTFR</title>
     </head>
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="active dashboard-tab">
+                <li data-tab-target="#camera-pane" class="dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
                 <li data-tab-target="#room-pane" class="dashboard-tab">
                     <i class="fas fa-table"></i> 
                 </li>
-                <li data-tab-target="#database-pane" class="dashboard-tab">
+                <li data-tab-target="#database-pane" class="active dashboard-tab">
                     <i class="fas fa-database"></i> 
                 </li>
             </ul>
-            <div class="dashboard-container">
-                <div id="camera-pane" class="active camera-pane" data-tab-content>
+            <div class="dashboard-container" id="dashboard-container">
+
+                <!-- Main Camera Pane -->
+                <div id="camera-pane" class="camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -49,6 +54,8 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Room History Database -->
                 <div id="room-pane" class="room-pane" data-tab-content>
                     <div class="title">
                         <h1>Room section</h1>
@@ -68,11 +75,13 @@
 
                     </div>
                 </div>
-                <div id="database-pane" class="database-pane" data-tab-content>
+
+                <!-- User Database -->
+                <div id="database-pane" class="active database-pane" data-tab-content>
                     <div class="title">
                         <h1>Database</h1>
                     </div>
-                    <div class="db__input">
+                    <div class="db__input" id="db__input">
                         <div class="db__filter__title__container">
                             <h2>Name</h2>
                         </div>
@@ -80,6 +89,12 @@
                             <div class="filter__name__group">
                                 <input type="text" required class="filter__name" id="filter__name" onkeyup="myFunction()">
                                 <label>Name</label>
+                            </div>                        
+                            <div class="db__buttons">
+                                <button class="add__user" onclick="addUser()">Add user</button>
+                            </div>
+                            <div class="db__buttons">
+                                <button class="refresh__button" onclick="refreshUser()">Refresh</button>
                             </div>
                         </div>
                     </div>
@@ -89,13 +104,13 @@
                                 <tr class="row__head">
                                     <th class="db__header__cell__actions">Actions</th>
                                     <th class="db__header__cell">ID</th>
+                                    <th class="db__header__cell">Username</th>
                                     <th class="db__header__cell">Email</th>
                                     <th class="db__header__cell" id="header__name" onclick='sortTable(0)'>Name</th>
                                     <th class="db__header__cell">Contact No.</th>
                                     <th class="db__header__cell">Date of Birth</th>
                                     <th class="db__header__cell">Vaccination Status</th>
                                     <th class="db__header__cell">Address</th>
-                                    <th class="db__header__cell">Profession</th>
                                 </tr>
                             </thead>
                             <tbody id="userList">
@@ -105,10 +120,142 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Modal forms -->
+
+            <!-- Add Modal -->
+            <div class="add__window" id="add__window">
+                <div class="add__content">
+                    <div class="add__title">
+                        <h1>Add a User</h1>
+                    </div>
+                    <form class="add__form" name="add__form" id="add__form" method="POST">
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" value="Auto-generated" disabled/>
+                            <label>Account ID</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__username" id="add__username"/>
+                            <label>Username</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__email" id="add__email"/>
+                            <label>Email</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__password" id="add__password" value="Student12345"/>
+                            <label>Password</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__firstname" id="add__firstname"/>
+                            <label>First name</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__middleinitial" id="add__middleinitial"/>
+                            <label>Middle initial</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__lastname" id="add__lastname"/>
+                            <label>Last name</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__contact" id="add__contact"/>
+                            <label>Contact No.</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="date" required class="add__info__content" name="add__birthdate" id="add__birthdate"/>
+                            <label>Date of Birth</label>
+                        </div>
+                        <div class="add__info__group">
+                            <select type="text" required class="add__info__content" name="add__vaxstatus" id="add__vaxstatus">
+                                <option value="Not yet Vaccinated">Not yet Vaccinated</option>
+                                <option value="Partially Vaccinated">Partially Vaccinated</option>
+                                <option value="Fully Vaccinated">Fully Vaccinated</option>
+                            </select>
+                            <label>Vaccination Status</label>
+                        </div>
+                        <div class="add__info__group">
+                            <input type="text" required class="add__info__content" name="add__address" id="add__address"/>
+                            <label>Address</label>
+                        </div>
+                    </form>
+                    <div class="add__buttons">
+                        <button class="add__confirm" type="submit" onclick="addConfirmWindow()">CONFIRM</button>
+                        <button class="add__cancel" id="add__cancel" onclick="addCancel(0)">CANCEL</button>
+                    </div>
+                </div>
+                <div class="add__confirm__window" id="add__confirm__window">
+                    <div class="add__confirm__content" id="add__confirm__content">
+                        <div><p>Do you wish to continue and add a new user?</p></div>
+                        <div class="add__buttons">
+                            <button class="add__confirm__yes" type="submit" onclick="addConfirm()">CONFIRM</button>
+                            <button class="add__confirm__no" id="add__cancel" onclick="addCancel(1)">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add__cancel__window" id="add__cancel__window">
+                    <div class="add__cancel__content" id="add__cancel__content">
+                        <div><p>Changes you've made will not be saved. Do you want to cancel and go back?</p></div>
+                        <div class="add__buttons">
+                            <button class="add__cancel__yes" onclick="addCancelConfirm()">CONFIRM</button>
+                            <button class="add__cancel__no" onclick="addCancel(2)">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Edit Modal -->
+            <div class="edit__window" id="edit__window">
+                <div class="edit__content">
+                    <div class="edit__title">
+                        <h1>Edit Information</h1>
+                    </div>
+                    <form class="edit__form" name="edit__form" id="edit__form" method="PATCH" action="">
+                        
+                    </form>
+                    <div class="edit__buttons">
+                        <button class="edit__confirm" type="submit" onclick="confirmButton()">CONFIRM</button>
+                        <button class="edit__cancel" id="edit__cancel" onclick="editCancel(0)">CANCEL</button>
+                    </div>
+                </div>
+                <div class="edit__confirm__window" id="edit__confirm__window">
+                    <div class="edit__confirm__content" id="edit__confirm__content">
+                        <div><p>Do you wish to continue and save the information you edited?</p></div>
+                        <div class="edit__buttons">
+                            <button class="edit__confirm__yes" onclick="confirmUpdate()">CONFIRM</button>
+                            <button class="edit__confirm__no" onclick="editCancel(1)">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="edit__cancel__window" id="edit__cancel__window">
+                    <div class="edit__cancel__content" id="edit__cancel__content">
+                        <div><p>Changes you've made will not be saved. Do you want to cancel and go back?</p></div>
+                        <div class="edit__buttons">
+                            <button class="edit__cancel__yes" onclick="confirmCancel()">CONFIRM</button>
+                            <button class="edit__cancel__no" onclick="editCancel(2)">CANCEL</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delete Modal -->
+            <div class="delete__window" id="delete__window">
+                <div class="delete__content">
+                    <div class="delete__title"><h1>Delete a user</h1></div>
+                    <div><p>Are you sure that you want to permanently delete this file?</p></div>
+                    <div class="delete__buttons">
+                        <button class="delete__confirm" type="submit" onclick="confirmDelete()">CONFIRM</button>
+                        <button class="delete__cancel" id="delete__cancel" onclick="deleteCancel()">CANCEL</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type='module' src='../script/pymongo.js'></script>
         <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
+        <script src="../script/add.js"></script>
+        <script src="../script/edit.js"></script>
+        <script src="../script/delete.js"></script>
         <script src='../script/sort.js'></script>
     </body>
 </html>
