@@ -22,7 +22,7 @@
     "mongoose": "^6.0.10",
     "mongoose-dateonly": "^1.0.6",
     "multer": "^1.4.3",
-    "ngrok": "^4.2.2",
+    "ngrok": "^4.3.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^7.17.2",

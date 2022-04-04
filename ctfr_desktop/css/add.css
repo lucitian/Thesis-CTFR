@@ -1,0 +1,153 @@
+.add__window {
+    font-family: 'Poppins', 'monospace';
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.add__content {
+    background-color: white;
+    position: fixed;
+    width: 360px;
+    max-height: 500px;
+    padding: 10px 10px 25px 15px;
+    border-radius: 10px;
+    overflow-y: scroll;
+}
+
+.add__title h1 {
+    font-size: 20px;
+}
+
+.add__info__group {
+    display: inline-block;
+    position: relative;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.add__info__content {
+    font-family: 'OpenSans', monospace;
+    outline: none;
+    border: 1px solid #dadce0;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.add__info__group .add__info__content:focus {
+    border: 1px solid royalblue;
+}
+
+.add__info__group .add__info__content:valid + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.add__info__group .add__info__content:focus + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.add__info__group .add__info__content:disabled + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.add__info__group label {
+    font-size: 12px;
+    color: #8d8d8d;
+    position: absolute;
+    bottom: 9px;
+    left: 8.5px;
+    background: #ffffff;
+    transition: 0.15s;
+}
+
+.add__buttons {
+    margin: 5px 0 30px 0;
+}
+
+.add__confirm, .add__cancel, .add__confirm__yes, .add__confirm__no, .add__cancel__yes, .add__cancel__no {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.add__confirm, .add__confirm__yes, .add__cancel__yes {
+    background-color: #339900;
+    float: left;
+}
+
+.add__cancel, .add__confirm__no, .add__cancel__no {
+    background-color: #cc3300;
+    float: right;
+}
+
+.add__confirm:hover, .add__confirm__yes:hover, .add__cancel__yes:hover {
+    background-color: #99cc33;
+}
+
+.add__cancel:hover, .add__confirm__no:hover, .add__cancel__no:hover {
+    background-color: #ff4101;
+}
+
+.add__confirm__window {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.add__confirm__content {
+    background-color: white;
+    position: fixed;
+    margin: auto;
+    height: 130px;
+    width: 420px;
+    border-radius: 5px;
+    padding: 25px 25px;
+}
+
+.add__confirm__content .add__buttons {
+    padding: 10px 0;
+}
+
+.add__cancel__window {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.add__cancel__content {
+    background-color: white;
+    position: fixed;
+    margin: auto;
+    height: 150px;
+    width: 420px;
+    border-radius: 5px;
+    padding: 25px 25px;
+}
+
+.add__cancel__content .add__buttons {
+    padding: 10px;
+}

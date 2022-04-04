@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         height: 40,
         borderRadius: 30,
         borderWidth: 0.5,
-        margin: 30,
+        margin: 20,
         borderColor: '#fff',
         color: '#fff'
     },
@@ -197,11 +197,10 @@ const styles = StyleSheet.create({
         height: 45,
         borderRadius: 25,
         padding: 10
-        
     },
     notif:{
         justifyContent: "space-between",
-        marginTop: 80,
+        marginTop: 45,
         marginRight: 20,
         marginLeft: 20,
         flexDirection: "row"
