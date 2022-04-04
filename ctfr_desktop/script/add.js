@@ -46,16 +46,16 @@ addConfirm = () => {
     })
     .then(response => response.json())
     .then(data => {
-        statusUpdate(send)
+        statusAdd(send)
     }) 
 }
 
-statusUpdate = (data) => {
+statusAdd = (data) => {
     switch (data.send) {
         case 'success':
             document.getElementById('add__window').style.display = 'none'
             document.getElementById('add__confirm__window').style.display = 'none'
-            alert('Updated successfully!')
+            alert('Added successfully!')
             break
         case 'fail':
             break

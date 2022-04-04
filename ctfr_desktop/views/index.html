@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="../css/database.css">
         <link rel="stylesheet" type="text/css" href="../css/add.css">
         <link rel="stylesheet" type="text/css" href="../css/edit.css">
+        <link rel="stylesheet" type="text/css" href="../css/delete.css">
         <title>CTFR</title>
     </head>
     <body>
@@ -91,6 +92,9 @@
                             </div>                        
                             <div class="db__buttons">
                                 <button class="add__user" onclick="addUser()">Add user</button>
+                            </div>
+                            <div class="db__buttons">
+                                <button class="refresh__button" onclick="refreshUser()">Refresh</button>
                             </div>
                         </div>
                     </div>
@@ -233,12 +237,25 @@
                     </div>
                 </div>
             </div>
+
+            <!-- Delete Modal -->
+            <div class="delete__window" id="delete__window">
+                <div class="delete__content">
+                    <div class="delete__title"><h1>Delete a user</h1></div>
+                    <div><p>Are you sure that you want to permanently delete this file?</p></div>
+                    <div class="delete__buttons">
+                        <button class="delete__confirm" type="submit" onclick="confirmDelete()">CONFIRM</button>
+                        <button class="delete__cancel" id="delete__cancel" onclick="deleteCancel()">CANCEL</button>
+                    </div>
+                </div>
+            </div>
         </div>
         <script type='module' src='../script/pymongo.js'></script>
         <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
         <script src="../script/add.js"></script>
         <script src="../script/edit.js"></script>
+        <script src="../script/delete.js"></script>
         <script src='../script/sort.js'></script>
     </body>
 </html>

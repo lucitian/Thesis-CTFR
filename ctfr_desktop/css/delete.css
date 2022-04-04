@@ -1,0 +1,59 @@
+.delete__window {
+    font-family: 'Poppins', 'monospace';
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.delete__content {
+    background-color: white;
+    position: fixed;
+    width: 420px;
+    height: 180px;
+    padding: 15px 20px 0 20px;
+    border-radius: 10px;
+}
+
+.delete__title h1 {
+    font-size: 20px;
+    padding: 0 0 10px 0;
+}
+
+.delete__buttons {
+    margin: 15px 0 30px 0;
+}
+
+.delete__confirm {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #339900;
+    float: left;
+}
+
+.delete__cancel {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #cc3300;
+    float: right;
+}
+
+.delete__confirm:hover {
+    background-color: #99cc33;
+}
+
+.delete__cancel:hover {
+    background-color: #ff4101;
+}

@@ -135,7 +135,6 @@ def update_user(id):
             mimetype = 'application/json'
         )
     except Exception as ex:
-        print(ex)
         return Response(
             response = json.dumps({
                 'message': 'Failed!',
@@ -147,8 +146,41 @@ def update_user(id):
 
 
 @app.route('/deleteuser/<id>', methods=['DELETE'])
-def delete_user():
-    return None
+def delete_user(id):
+    try:
+        dbResponse = db_users.delete_one({
+            '_id': ObjectId(id)
+        })
+        dbResponeInfo = db_usersInfo.delete_one({
+            'userId': ObjectId(id)
+        })
+        if dbResponse.deleted_count == 1:
+            return Response(
+                response = json.dumps({
+                    'message': 'User deleted',
+                    'send': 'success'
+                }),
+                status = 200,
+                mimetype='application/json'
+            )
+        return Response(
+            response = json.dumps({
+                'message': 'User not found!',
+                'send': 'nothing'
+            }),
+            status = 200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response = json.dumps({
+                'message': 'Failed',
+                'send': 'fail'
+            }),
+            status = 500,
+            mimetype='application/json'
+        )
 
 def gen(camera):
     while True:

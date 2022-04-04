@@ -20,7 +20,7 @@ function renderUsers (users) {
                     <button id="button__actions" onclick="editUsers(this)">
                         <i class="far fa-edit"></i>
                     </button>
-                    <button id="button__actions">
+                    <button id="button__actions" onclick="deleteUser(this)">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
