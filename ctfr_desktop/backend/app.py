@@ -59,8 +59,19 @@ def add_user():
             'username': request.json['addUsername'],
             'email': request.json['addEmail'],
             'password': bcrypt.hashpw(request.json['addPassword'].encode('utf-8'), bcrypt.gensalt())
-        }        
-        dbResponse = db_users.insert_one(user)
+        }     
+        if (user['username'] != "" or user['email'] != ""):
+            dbResponse = db_users.insert_one(user)
+        else:
+            return Response(
+                response = json.dumps({
+                    'message': 'Incomplete!',
+                    'send': 'incomplete'
+                }),
+                status = 500,
+                mimetype = 'application/json'
+            )
+
         userInfo = {
             'userId': dbResponse.inserted_id,
             'firstname': request.json['addFirstName'],
@@ -71,7 +82,24 @@ def add_user():
             'vaxstatus': request.json['addVaxStatus'],
             'address': request.json['addAddress']
         }
-        dbResponseInfo = db_usersInfo.insert_one(userInfo)
+        if (user['firstname'] != "" or
+            user['middleinitial'] != "" or
+            user['lastname'] != "" or
+            user['contact'] != "" or
+            user['birthdate'] != "" or
+            user['vaxstatus'] != "" or
+            user['address'] != ""
+        ):
+            dbResponseInfo = db_usersInfo.insert(userInfo)
+        else:
+            return Response(
+                response = json.dumps({
+                    'message': 'Incomplete!',
+                    'send': 'incomplete'
+                }),
+                status = 500,
+                mimetype = 'application/json'
+            )
 
         return Response(
             response=json.dumps({
