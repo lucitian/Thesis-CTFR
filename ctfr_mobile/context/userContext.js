@@ -112,6 +112,10 @@ const profile = (dispatch) => async () => {
     })
 }
 
+// const edit = (dispatch) => () => {
+//     navigate('edit')
+// }
+
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
     dispatch({
