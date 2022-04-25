@@ -12,8 +12,9 @@ import LoginScreen from './screens/login/login'
 import SignupScreen from './screens/login/signup'
 import FillScreen from './screens/intro/fill'
 import CameraScreen from './screens/intro/camera'
-import ProfileScreen from './screens/profile/profile'
+import ProfileScreen from './screens/profile/OverlappingContainers/profile'
 import HistoryScreen from './screens/profile/history'
+import EditScreen from './screens/profile/edit.js'
 import { Provider as AuthProvider } from './context/UserContext'
 import { Provider as FillProvider } from './context/IntroContext'
 import { setNavigator } from './navigation'
@@ -22,30 +23,31 @@ import resolveAuth from './screens/resolveAuth'
 const deviceWidth = Dimensions.get('window').width
 
 const switchNavigator = createSwitchNavigator({
-    resolveAuth: resolveAuth,
-    login: createStackNavigator({
-        login: LoginScreen,
-        signup: SignupScreen
-    },
-    {
-        headerMode: 'none',
-        navigationOptions: {
-            headerVisible: false
-        }
-    }),
-    intro: createStackNavigator({
-        fill: FillScreen,
-        camera: CameraScreen,
-    },
-    {
-        headerMode: 'none',
-        navigationOptions: {
-            headerVisible: false
-        },
-    }),
+    // resolveAuth: resolveAuth,
+    // login: createStackNavigator({
+    //     login: LoginScreen,
+    //     signup: SignupScreen
+    // },
+    // {
+    //     headerMode: 'none',
+    //     navigationOptions: {
+    //         headerVisible: false
+    //     }
+    // }),
+    // intro: createStackNavigator({
+    //     fill: FillScreen,
+    //     camera: CameraScreen,
+    // },
+    // {
+    //     headerMode: 'none',
+    //     navigationOptions: {
+    //         headerVisible: false
+    //     },
+    // }),
     home: createStackNavigator({
         // main: createBottomTabNavigator({
             profile: ProfileScreen,
+            edit: EditScreen,
             history: HistoryScreen
         },
     //     {
