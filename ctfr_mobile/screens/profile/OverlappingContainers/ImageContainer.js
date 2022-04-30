@@ -1,4 +1,4 @@
-import { Alert, Animated, StyleSheet, View, Text, Modal, FlatList, Pressable, ScrollView, SafeAreaView} from 'react-native';
+import { Alert, Animated, StyleSheet, View, Text, Modal, FlatList, Pressable, ScrollView, SafeAreaView, Dimensions} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { deviceHeight, deviceWidth } from '../helpers/constants';
@@ -36,7 +36,7 @@ const ImageContainer = ({
                   {
                     scale: scrollY.interpolate({
                       inputRange: [0, imageHeight],
-                      outputRange: [1.2, 1],
+                      outputRange: [1, .9],
                       extrapolate: 'clamp'
                     })
                   }
@@ -180,7 +180,7 @@ const ImageContainer = ({
 
 const styles = StyleSheet.create({
   topImage: {
-    width: deviceWidth,
+    width: '100%',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -208,7 +208,7 @@ infoText: {
     color: 'white',
     fontWeight: 'bold',
     textAlign: 'left',
-    marginRight: 130,
+    marginRight: 60,
     marginBottom: 10,
     // marginTop: 20,
 },
@@ -267,9 +267,9 @@ msgContainer: {
 },
 
 notif:{
-  marginTop: 100,
+  marginTop: 50,
   marginBottom: 40,
-  marginRight: 60,
+  marginRight: 20,
   direction: 'rtl'
 },
 
