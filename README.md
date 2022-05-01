@@ -9,6 +9,9 @@ The Mobile Application requires the following:
 For the dependencies of the project:
 ```
 Simply type npm install or yarn inside the directory folder
+
+Python:
+pip install flask
 ```
 
 Electron

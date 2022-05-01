@@ -155,7 +155,7 @@ function FillScreen ({ navigation }) {
                             }) => (
                                 <TextInput
                                     label = 'Date of Birth'                                    
-                                    placeholder = 'mm/dd/yyyy'
+                                    placeholder = 'yyyy/mm/dd'
                                     keyboardType ='numeric'
                                     onBlur = {onBlur}
                                     render = { (props) => (
@@ -163,7 +163,7 @@ function FillScreen ({ navigation }) {
                                             {...props}
                                             type={'datetime'}
                                             options={{
-                                                format: 'MM/DD/YYYY'
+                                                format: 'YYYY/MM/DD'
                                             }}
                                             value = {birthdate}
                                             onChangeText={(text) => {

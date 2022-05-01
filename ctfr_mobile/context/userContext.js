@@ -16,6 +16,11 @@ const authReducer = (state, action) => {
                 errorMessage: '',
                 token: action.payload
             }
+        case 'update':
+            return {
+                errorMessage: '',
+                token: action.payload
+            }
         case 'signout': 
             return {
                 token: null,
@@ -26,8 +31,6 @@ const authReducer = (state, action) => {
                 ...state,
                 errorMessage: ''
             }
-        case 'profile':
-            return action.payload
         default:
             return state
     }
@@ -37,15 +40,19 @@ const localSignIn = (dispatch) => async () => {
     const token = await AsyncStorage.getItem('token')
 
     if (token) {
-        dispatch({
-            type:'signin',
-            payload: token
-        })
-
         if (await AsyncStorage.getItem('userInfo')) {
+            const userInfo = await api.get('/profile/:id')
+            dispatch({
+                type:'signin',
+                payload: {token: token, userInfo: userInfo}
+            })
+    
             navigate('home')
-            //navigate('camera')
         } else {
+            dispatch({
+                type:'signin',
+                payload: token
+            })
             navigate('intro')
         }
     } else {
@@ -83,13 +90,15 @@ const signin = (dispatch) => async ({ email, password }) => {
         const response = await api.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
 
-        dispatch({
-            type: 'signin',
-            payload: response.data.token
-        })
-
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userInfo', 'true')
+            const userInfo = await api.get('/profile/:id')
+
+            dispatch({
+                type: 'signin',
+                payload: {token: response.data.token, userInfo: userInfo}
+            })
+
             navigate('home')
         } else {
             navigate('fill')
@@ -103,18 +112,25 @@ const signin = (dispatch) => async ({ email, password }) => {
     }
 }
 
-const profile = (dispatch) => async () => {
-    const response = await api.get('/profile/:id')
+const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address}) => {
+    try {
+        const response = await api.patch('/update/:id', {
+            firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address
+        })
 
-    dispatch({
-        type: 'profile',
-        payload: response.data
-    })
+        dispatch ({
+            type:'update',
+            payload: response.data.token
+        })
+        navigate('home')
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: 'update_error',
+            payload: 'Something went wrong'
+        })
+    }
 }
-
-// const edit = (dispatch) => () => {
-//     navigate('edit')
-// }
 
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
@@ -127,6 +143,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn, profile },
+    { signup, signin, signout, clearError, localSignIn, update },
     { token: null, errorMessage: '' }
 )

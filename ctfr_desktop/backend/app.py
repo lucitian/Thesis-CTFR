@@ -179,10 +179,10 @@ def delete_user(id):
         dbResponse = db_users.delete_one({
             '_id': ObjectId(id)
         })
-        dbResponeInfo = db_usersInfo.delete_one({
+        dbResponseInfo = db_usersInfo.delete_one({
             'userId': ObjectId(id)
         })
-        if dbResponse.deleted_count == 1:
+        if dbResponse.deleted_count == 1 and dbResponseInfo.deleted_count == 1:
             return Response(
                 response = json.dumps({
                     'message': 'User deleted',

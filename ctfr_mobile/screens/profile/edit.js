@@ -252,23 +252,21 @@ import { useForm, Controller } from 'react-hook-form'
 import DropDown from 'react-native-paper-dropdown'
 import { NavigationEvents } from 'react-navigation'
 
-import { Context as UserContext } from '../../context/UserContext'
 import { Context as IntroContext } from '../../context/IntroContext'
 import { Context as AuthContext } from '../../context/UserContext'
 
 function FillScreen ({ navigation }) {
-    const { fillup } = useContext(IntroContext)
-    const { state, profile, signout } = useContext(AuthContext)
+    const { state, update, signout } = useContext(AuthContext)
 
     const { control, reset } = useForm({ mode: 'onBlur' })
 
-    const [ firstname, setFirstName ] = useState(state.firstname)
-    const [ middleinitial, setMiddleInitial ] = useState(state.middleinitial)
-    const [ lastname, setLastName ] = useState(state.lastname)
-    const [ contact, setContact ] = useState(state.contact)
-    const [ birthdate, setBirthdate ] = useState(state.birthdate)
-    const [ vaxstatus, setVaxStatus ] = useState(state.vaxstatus)
-    const [ address, setAddress ] = useState(state.address)
+    const [ firstname, setFirstName ] = useState(state.token.userInfo.data.userInfo.firstname)
+    const [ middleinitial, setMiddleInitial ] = useState(state.token.userInfo.data.userInfo.middleinitial)
+    const [ lastname, setLastName ] = useState(state.token.userInfo.data.userInfo.lastname)
+    const [ contact, setContact ] = useState(state.token.userInfo.data.userInfo.contact)
+    const [ birthdate, setBirthdate ] = useState(state.token.userInfo.data.userInfo.birthdate)
+    const [ vaxstatus, setVaxStatus ] = useState(state.token.userInfo.data.userInfo.vaxstatus)
+    const [ address, setAddress ] = useState(state.token.userInfo.data.userInfo.address)
 
     const [showDropDown, setShowDropDown] = useState(false);
     const vaxOptions = [
@@ -286,8 +284,8 @@ function FillScreen ({ navigation }) {
         }
     ]
 
-    const FillUp = () => {
-        fillup({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address })
+    const updateButton = () => {
+        update({firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address})
     }
 
     return (
@@ -300,7 +298,7 @@ function FillScreen ({ navigation }) {
                         </Text>
                     </View>
                     <View>
-                        <Text style = { styles.infoText }> {'\t'} Is there an information that needs editing? Feel free to modify your information for us to continue in providing accurate reports.</Text>
+                        <Text style = { styles.infoText }>Is there an information that needs editing? Feel free to modify your information for us to continue in providing accurate reports.</Text>
                     </View>
                 </View>
                 <View style = {styles.formContainer}>
@@ -316,7 +314,8 @@ function FillScreen ({ navigation }) {
                             })=> (
                                 <TextInput
                                     label = "First Name"
-                                    value={firstname}            
+                                    
+                                    value = {firstname}
                                     onBlur={onBlur}            
                                     onChangeText={setFirstName} 
                                     style = { styles.infoTextInput} 
@@ -334,8 +333,8 @@ function FillScreen ({ navigation }) {
                                 field: {onChange, value, onBlur}
                             })=> (
                                 <TextInput
-                                    label = "Middle Initial"
-                                    value={middleinitial}            
+                                    label = "Middle Initial"           
+                                    value={middleinitial}
                                     onBlur={onBlur}            
                                     onChangeText={setMiddleInitial} 
                                     style = { styles.infoTextInput} 
@@ -355,8 +354,8 @@ function FillScreen ({ navigation }) {
                                 field: {onChange, value, onBlur}
                             })=> (
                                 <TextInput
-                                    label = "Last Name"
-                                    value={lastname}            
+                                    label = "Last Name"            
+                                    value={lastname}
                                     onBlur={onBlur}            
                                     onChangeText={setLastName} 
                                     style = { styles.infoTextInput} 
@@ -378,7 +377,7 @@ function FillScreen ({ navigation }) {
                                     placeholder = "639xxxxxxxxx"
                                     maxLength={12}
                                     keyboardType = 'numeric'
-                                    value={contact}            
+                                    value={(contact).toString()}
                                     onBlur={onBlur}         
                                     onChangeText={setContact} 
                                     style = { styles.infoTextInput } 
@@ -399,7 +398,7 @@ function FillScreen ({ navigation }) {
                             }) => (
                                 <TextInput
                                     label = "Date of Birth"                                   
-                                    placeholder = "mm/dd/yyyy"
+                                    placeholder = "yyyy/mm/dd"
                                     keyboardType ='numeric'
                                     onBlur = {onBlur}
                                     render = { (props) => (
@@ -407,9 +406,9 @@ function FillScreen ({ navigation }) {
                                             {...props}
                                             type={'datetime'}
                                             options={{
-                                                format: 'MM/DD/YYYY'
-                                            }}
-                                            value = {birthdate}
+                                                format: 'YYYY/MM/DD'
+                                            }}                                            
+                                            value={birthdate}
                                             onChangeText={(text) => {
                                                 props.onChangeText?.(text) 
                                                 setBirthdate(text)
@@ -450,7 +449,7 @@ function FillScreen ({ navigation }) {
                                 />   
                             )}
                         />
-                    </View>         
+                    </View>
                     <View>
                         <Controller
                             control = { control }
@@ -463,7 +462,7 @@ function FillScreen ({ navigation }) {
                             })=> (
                                 <TextInput
                                     label = "Address"
-                                    value={address}            
+                                    value={address}
                                     onBlur={onBlur}            
                                     onChangeText={setAddress} 
                                     style = {styles.homeTextInput}
@@ -476,7 +475,7 @@ function FillScreen ({ navigation }) {
                 <View>
                     <Button 
                         mode = 'contained'
-                        onPress = {FillUp}
+                        onPress = {updateButton}
                         style = { styles.proceedButton }
                     >
                         <Text style = { styles.textButton }> Update</Text>

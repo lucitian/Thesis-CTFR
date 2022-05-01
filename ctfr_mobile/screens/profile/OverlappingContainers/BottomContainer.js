@@ -12,7 +12,7 @@ const BottomContainer = ({
     imageHeight,
     ...props
 }) => {  
-    const { state, profile, signout} = useContext(AuthContext)
+    const { state, signout} = useContext(AuthContext)
     const animateBorderRadius = scrollY.interpolate({
         inputRange: [0, 450 - 100],
         outputRange: [40, 0],
@@ -41,51 +41,47 @@ const BottomContainer = ({
       ]}>
         {/* {props.children} */}
         <View style = {styles.card}>
-                        <View style = {styles.picContainer}>
-                            <View style = {styles.picRim}>
-                                <Image style = { styles.pic } source={require('../../../assets/Cars-2006.jpg')}/>
-                            </View>
-                        </View>
-                        <View style = {styles.nameContainer}>
-                            <Text style = { styles.name }>{state.firstname} {state.middleinitial}. {state.lastname}</Text>  
-                            {/* <Text style = { styles.name }>James B. Dela Pena</Text>  */}
-                            <TouchableOpacity onPress={() => navigation.navigate('edit')}>
-                                <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
-                            </TouchableOpacity>  
-                        </View>
-                        <View>
-                            <Text style = { styles.email }>james.delapena@tup.edu.ph</Text>
-                        </View>
-                        
-                        <View style = {styles.infoContainer}>
-                            <View style = {styles.containerStrips}>
-                                <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
-                                {/* <Text style = {styles.info}>{state.vaxstatus}</Text> */}
-                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Fully Vaccinated</Text>
-                            </View>
-                            <View style = {styles.containerStrips}>
-                                <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
-                                {/* <Text style = {styles.info}>{state.birthdate}</Text> */}
-                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>03/25/2000</Text>
-                            </View>
-                            <View style = {styles.containerStrips}>
-                                <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
-                                {/* <Text style = {styles.info}>{state.contact}</Text> */}
-                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>09550259942</Text>
-                            </View>
-                            <View style = {styles.containerStrips}>
-                                <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
-                                {/* <Text style = {styles.info}>{state.address}</Text> */}
-                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Noveleta, Cavite, asdasdh askdhas jkkdhakjsdhaksjdas</Text>
-                            </View>
-                            <TouchableOpacity style = {styles.logout} onPress = {signout}>
-                                <View style = {styles.containerStrips}>      
-                                    <MaterialCommunityIcons name="logout" size={20} color="white" style = {styles.icons} />
-                                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
-       
-                                </View>
-                            </TouchableOpacity>
-                        </View>
+            <View style = {styles.picContainer}>
+                <View style = {styles.picRim}>
+                    <Image style = { styles.pic } source={require('../../../assets/Cars-2006.jpg')}/>
+                </View>
+            </View>
+            <View style = {styles.nameContainer}>
+                <Text style = { styles.name }>{state.token.userInfo.data.userInfo.firstname} {state.token.userInfo.data.userInfo.middleinitial}. {state.token.userInfo.data.userInfo.lastname}</Text>  
+                {/* <Text style = { styles.name }>James B. Dela Pena</Text>  */}
+                <TouchableOpacity onPress={() => navigation.navigate('edit')}>
+                    <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
+                </TouchableOpacity>  
+            </View>
+            <View>
+                <Text style = { styles.email }>{state.token.userInfo.data.userInfo.email}</Text>
+            </View>
+            
+            <View style = {styles.infoContainer}>
+                <View style = {styles.containerStrips}>
+                    <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.vaxstatus}</Text>
+                </View>
+                <View style = {styles.containerStrips}>
+                    <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.birthdate}</Text>
+                </View>
+                <View style = {styles.containerStrips}>
+                    <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.contact}</Text>
+                </View>
+                <View style = {styles.containerStrips}>
+                    <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.address}</Text>
+                </View>
+                <TouchableOpacity style = {styles.logout} onPress = {signout}>
+                    <View style = {styles.containerStrips}>      
+                        <MaterialCommunityIcons name="logout" size={20} color="white" style = {styles.icons} />
+                        <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
+
+                    </View>
+                </TouchableOpacity>
+            </View>
         </View>
       </Animated.View>
       <View style={{ height: 0.4 * deviceHeight }}></View>
