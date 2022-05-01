@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Animated, StyleSheet,TouchableOpacity, Image, ImageBackground, View, Text } from 'react-native';
+import { Animated, StyleSheet,TouchableOpacity, Image, ImageBackground, View, Text,} from 'react-native';
 import { deviceHeight, deviceWidth } from '../helpers/constants';
 import { Context as AuthContext } from '../../../context/UserContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -17,6 +17,7 @@ const BottomContainer = ({
         inputRange: [0, 450 - 100],
         outputRange: [40, 0],
   })
+    
   return (
     <Animated.ScrollView
       showsVerticalScrollIndicator={false}
@@ -60,27 +61,27 @@ const BottomContainer = ({
                             <View style = {styles.containerStrips}>
                                 <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
                                 {/* <Text style = {styles.info}>{state.vaxstatus}</Text> */}
-                                <Text style = {styles.info}>Fully Vaccinated</Text>
+                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Fully Vaccinated</Text>
                             </View>
                             <View style = {styles.containerStrips}>
                                 <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
                                 {/* <Text style = {styles.info}>{state.birthdate}</Text> */}
-                                <Text style = {styles.info}>03/25/2000</Text>
+                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>03/25/2000</Text>
                             </View>
                             <View style = {styles.containerStrips}>
                                 <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
-                                <Text style = {styles.info}>{state.contact}</Text>
-                                <Text style = {styles.info}>09550259942</Text>
+                                {/* <Text style = {styles.info}>{state.contact}</Text> */}
+                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>09550259942</Text>
                             </View>
                             <View style = {styles.containerStrips}>
                                 <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
                                 {/* <Text style = {styles.info}>{state.address}</Text> */}
-                                <Text style = {styles.info}>Noveleta, Cavite</Text>
+                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Noveleta, Cavite, asdasdh askdhas jkkdhakjsdhaksjdas</Text>
                             </View>
                             <TouchableOpacity style = {styles.logout} onPress = {signout}>
                                 <View style = {styles.containerStrips}>      
                                     <MaterialCommunityIcons name="logout" size={20} color="white" style = {styles.icons} />
-                                    <Text style = {styles.info}>Logout</Text>
+                                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
        
                                 </View>
                             </TouchableOpacity>

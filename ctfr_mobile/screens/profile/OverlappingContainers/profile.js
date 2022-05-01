@@ -1,19 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Animated, SafeAreaView, StatusBar, StyleSheet, View, Text } from 'react-native';
-import { deviceHeight } from '../helpers/constants';
+import { Animated, SafeAreaView, StatusBar, StyleSheet, View, Text, Dimensions } from 'react-native';
+import { deviceHeight, deviceWidth } from '../helpers/constants';
 import BottomContainer from './BottomContainer';
 import ImageContainer from './ImageContainer';
+import Background from './Background';
 import { NavigationEvents } from 'react-navigation'
+
 
 const OverlappingContainers = (props) => {
   const [scrollY, setScrollY] = useState(new Animated.Value(0));
-  const imageSource = 'https://www.netclipart.com/pp/m/254-2544184_transparent-smile-emoji-png-funny-emoji-faces-png.png'
-  const placeHolderContent = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
   return (
     <View style={[styles.container]}>
       <StatusBar barStyle='light-content' />
       <SafeAreaView>
+        <Background>
+        </Background>
         <ImageContainer
           scrollY={scrollY}
           imageHeight={450}
@@ -22,7 +24,7 @@ const OverlappingContainers = (props) => {
         />
         <BottomContainer
           scrollY={scrollY}
-          imageHeight={640}
+          imageHeight={600}
           navigation={props.navigation}
         >
         </BottomContainer>
