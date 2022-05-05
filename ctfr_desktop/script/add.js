@@ -46,7 +46,7 @@ addConfirm = () => {
     })
     .then(response => response.json())
     .then(data => {
-        statusAdd(send)
+        statusAdd(data)
     }) 
 }
 
@@ -57,7 +57,12 @@ statusAdd = (data) => {
             document.getElementById('add__confirm__window').style.display = 'none'
             alert('Added successfully!')
             break
+        case 'incomplete':
+            document.getElementById('add__confirm__window').style.display = 'none'
+            alert('Incomplete information!')
+            break
         case 'fail':
+            alert('Insert failed!')
             break
     }
 }

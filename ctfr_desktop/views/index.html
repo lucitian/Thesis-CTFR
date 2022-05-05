@@ -90,11 +90,13 @@
                                 <input type="text" required class="filter__name" id="filter__name" onkeyup="myFunction()">
                                 <label>Name</label>
                             </div>                        
-                            <div class="db__buttons">
-                                <button class="add__user" onclick="addUser()">Add user</button>
-                            </div>
-                            <div class="db__buttons">
-                                <button class="refresh__button" onclick="refreshUser()">Refresh</button>
+                            <div class="db__buttons__container">
+                                <div class="db__buttons">
+                                    <button class="add__user" onclick="addUser()">Add user</button>
+                                </div>
+                                <div class="db__buttons">
+                                    <button class="refresh__button" onclick="refreshUser()">Refresh</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -143,7 +145,7 @@
                             <label>Email</label>
                         </div>
                         <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__password" id="add__password" value="Student12345"/>
+                            <input type="text" required class="add__info__content" name="add__password" id="add__password" value="Student12345" disabled/>
                             <label>Password</label>
                         </div>
                         <div class="add__info__group">

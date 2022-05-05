@@ -48,44 +48,10 @@ const switchNavigator = createSwitchNavigator({
     }),
     home: createStackNavigator({
         // main: createBottomTabNavigator({
-            profile: ProfileScreen,
-            edit: EditScreen,
-            history: HistoryScreen
-        },
-    //     {
-    //         defaultNavigationOptions: ({ navigation }) => ({
-    //             tabBarIcon: ({ focused, horizontal, tintColor }) => {
-    //                 const { routeName } = navigation.state
-    //                 let IconComponent = Icon
-    //                 let iconName
-
-    //                 if (routeName === 'profile') {
-    //                     iconName = focused ? 'account' : 'account-outline'
-    //                 } else if ( routeName === 'history') {
-    //                     iconName = focused ? 'file-table' : 'file-table-outline'
-    //                 }
-
-    //                 return <IconComponent name = { iconName } size = { 25 } color = { tintColor } />
-    //             }
-    //         }),
-    //         tabBarOptions: {
-    //             activeTintColor: '#ffffff',
-    //             activeBackgroundColor: '#6948f4',
-    //             inactiveTintColor: '#4a4a4a',
-    //             showLabel: false,
-    //             style: {
-    //                 borderTopLeftRadius: 12,
-    //                 borderTopRightRadius: 12,
-    //                 //borderColor: 'transparent',
-    //                 position: 'absolute',
-    //                 width: deviceWidth,
-    //                 height: 54,
-    //                 zIndex: 8,
-    //             }
-    //         },
-    //     }
-    //     )
-    // },
+        profile: ProfileScreen,
+        edit: EditScreen,
+        history: HistoryScreen
+    },
     {
         headerMode: 'none',
         navigationOptions: {

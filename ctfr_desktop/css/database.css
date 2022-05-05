@@ -33,6 +33,7 @@
     font-family: 'Poppins', monospace;
     height: 50%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 20px;
 }
@@ -76,11 +77,15 @@
     transition: 0.15s;
 }
 
-.db__buttons {
-    position: absolute;
-    height: 35px;
+.db__buttons__container {
+    display: flex;
     width: 220px;
     right: 35px;
+    gap: 15px;
+}
+
+.db__buttons {
+    height: 35px;
 }
 
 .add__user {
@@ -89,7 +94,6 @@
     height: 100%;
     width: 100px;
     cursor: pointer;
-    float: left;
 }
 
 .add__user:hover { 
@@ -101,7 +105,6 @@
     border-radius: 5px;
     height: 100%;
     width: 100px;
-    float: right;
     cursor: pointer;
 }
 
