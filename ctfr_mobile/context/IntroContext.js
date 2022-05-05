@@ -34,7 +34,7 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
             payload: response.data.token
         })
 
-        navigate('camera')
+        navigate('home')
     } catch (err) {
         console.log(err)
         dispatch({

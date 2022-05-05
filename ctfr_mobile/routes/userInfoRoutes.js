@@ -11,10 +11,14 @@ const router = express.Router()
 router.use(requireAuth)
 
 router.get('/profile/:id', async (req, res) => {
-    const user = await User.findById(req.user._id)
-    const userInfo = await UserInfo.findOne({ userId: req.user._id})
-    
-    res.send({user: user, userInfo: userInfo})
+    try {
+        const user = await User.findById(req.user._id)
+        const userInfo = await UserInfo.findOne({ userId: req.user._id})
+        
+        res.status(200).json({user: user, userInfo: userInfo})
+    } catch (err) {
+        res.status(300).send(err)
+    }
 })
 
 router.post('/fill', async (req, res) => {
@@ -62,8 +66,7 @@ router.patch('/update/:id', async (req,res) => {
     }
 
     try {
-        const userInfo = await UserInfo.findOneAndUpdate({ 
-            userId: req.user._id,
+        const userInfo = await UserInfo.findOneAndUpdate({userId: req.user._id},{ 
             firstname: firstname,
             middleinitial: middleinitial,
             lastname: lastname,
@@ -76,6 +79,7 @@ router.patch('/update/:id', async (req,res) => {
         await userInfo.save()
         res.send(userInfo)
     } catch (err) {
+        console.log(err)
         return res.status(404).send(err)
     }
 })

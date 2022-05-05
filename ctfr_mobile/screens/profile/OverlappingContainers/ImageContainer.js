@@ -4,72 +4,74 @@ import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture
 import { deviceHeight, deviceWidth } from '../helpers/constants';
 import { Context as AuthContext } from '../../../context/UserContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { NavigationEvents } from 'react-navigation';
 
 const ImageContainer = ({
   scrollY,
   imageHeight,
   navigation
 }) => { 
-  const { state, signout} = useContext(AuthContext)
+  const {state, signout} = useContext(AuthContext)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
+  const [modalCovid, setModalCovid] = useState(false)
   const Notification = ["Baj", "Weakaloski", "Lucitian", "Wwww", "Yeoj"];
 
   const changeVal = () => {
       if(toggleN == true){
-          setToggleN(false);
-          setToggleP(true)
+        setToggleN(false)
+        setToggleP(true)
+        setModalCovid(true)
       }
       else if (toggleN == false) {
-          setToggleN(true)
-          setToggleP(false)
+        setToggleN(true)
+        setToggleP(false)
+        setModalCovid(false)
       }
-       
   }
   return (
-      <Animated.View style={[
-              styles.topImage,
-              {
-                transform: [
-                  {
-                    scale: scrollY.interpolate({
-                      inputRange: [0, imageHeight],
-                      outputRange: [1, .9],
-                      extrapolate: 'clamp'
-                    })
-                  }
-                ]
-              }
-            ]}>
-        {/* <Modal
-          animationType="none"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}>
-            <View style={styles.containerView}>
-              <View style={styles.modalView}>
-                <Text style={styles.modalText}>Notifications</Text>
-                <FlatList
-                  data={Notification}
-                  keyExtractor={(item, index) => index.toString()}
-                  renderItem={(notif) => {
-                    return (
-                      <View style={styles.listItem}>
-                        <Text>{notif.item}</Text>
-                      </View>
-                        );
-                      }}
-                />
-              </View>
+    <Animated.View style={[
+      styles.topImage,
+      {
+        transform: [
+          {
+            scale: scrollY.interpolate({
+              inputRange: [0, imageHeight],
+              outputRange: [1, .9],
+              extrapolate: 'clamp'
+            })
+          }
+        ]
+      }
+    ]}>
+      {/* <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          Alert.alert("Modal has been closed.");
+          setModalVisible(!modalVisible);
+        }}>
+          <View style={styles.containerView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Notifications</Text>
+              <FlatList
+                data={Notification}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={(notif) => {
+                  return (
+                    <View style={styles.listItem}>
+                      <Text>{notif.item}</Text>
+                    </View>
+                      );
+                    }}
+              />
             </View>
           </View>
+        </View>
       </Modal> */}
-
       <Modal 
         animationType="fade"
         transparent={true}
@@ -84,24 +86,24 @@ const ImageContainer = ({
           >
           </Pressable> 
         </View>               
-            <View style={styles.containerView}>
-              <TouchableOpacity style = {styles.modalView}>
-                <Text style = {styles.notifTitle}> Notifications</Text>
-                  <SafeAreaView>
-                    <ScrollView style={styles.scrollView}>
-                      <Text style={styles.textNotif}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
-                      </Text>
-                    </ScrollView>
-                  </SafeAreaView>
-              </TouchableOpacity>
-            </View>
+        <View style={styles.containerView}>
+          <TouchableOpacity style = {styles.modalView}>
+            <Text style = {styles.notifTitle}> Notifications</Text>
+            <SafeAreaView>
+              <ScrollView style={styles.scrollView}>
+                <Text style={styles.textNotif}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. Duis aute irure dolor in
+                  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                  culpa qui officia deserunt mollit anim id est laborum.
+                </Text>
+              </ScrollView>
+            </SafeAreaView>
+          </TouchableOpacity>
+        </View>
       </Modal> 
       <Modal 
         animationType="slide"
@@ -116,47 +118,73 @@ const ImageContainer = ({
             onPress ={() => {setModalVisible1(false)}}
           >
           </Pressable> 
-        </View>                */}
-            <View style={styles.containerHistory}>
-              <TouchableOpacity style = {styles.modalHistory}>
-                <View style={styles.headerHistory}>
-                  <Text style = {styles.notifTitle}> History</Text>
-                  <Pressable
-                  style={styles.closeBttn} 
-                  activeOpacity={1} 
-                  onPress ={() => {setModalVisible1(false)}}
-                  >
-                  <MaterialCommunityIcons name="close" size={25} color="black"/>
-                  </Pressable> 
-                </View>
-                  <SafeAreaView>
-                    <ScrollView style={styles.scrollView}>
-                      <Text style={styles.textHistory}>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                        eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-                        minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat. Duis aute irure dolor in
-                        reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
-                        culpa qui officia deserunt mollit anim id est laborum.
-                      </Text>
-                    </ScrollView>
-                  </SafeAreaView>
-              </TouchableOpacity>
+        </View> */}
+        <View style={styles.containerHistory}>
+          <TouchableOpacity style = {styles.modalHistory}>
+            <View style={styles.headerHistory}>
+              <Text style = {styles.notifTitle}> History</Text>
+              <Pressable
+                style={styles.closeBttn} 
+                activeOpacity={1} 
+                onPress ={() => {setModalVisible1(false)}}>
+                <MaterialCommunityIcons name="close" size={25} color="black"/>
+              </Pressable> 
             </View>
+            <SafeAreaView>
+              <ScrollView style={styles.scrollView}>
+                <Text style={styles.textHistory}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                  eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+                  minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                  aliquip ex ea commodo consequat. Duis aute irure dolor in
+                  reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                  pariatur. Excepteur sint occaecat cupidatat non proident, sunt in
+                  culpa qui officia deserunt mollit anim id est laborum.
+                </Text>
+              </ScrollView>
+            </SafeAreaView>
+          </TouchableOpacity>
+        </View>
       </Modal> 
-
+      <Modal
+        animationType='fade'
+        transparent={true}
+        visible={modalCovid}
+        onRequestClose={() => {setModalCovid(!modalCovid)}}
+      >
+        <View style = {styles.containerCovid}>
+          <View style={styles.covidHeader}>
+            <Text style={styles.covidHeaderText}>You are about to change your covid status</Text>
+          </View>
+          <View style={styles.covidParagraph}>
+            <Text style={styles.covidParagraphText}>Please upload a screenshot of the swab test result from the Red Cross website.</Text>
+          </View>
+          <View style={styles.modalCovidButtons}>
+            <Pressable onPress = {() => changeVal(!toggleN)}>
+              <TouchableOpacity style={styles.modalCovidCancelButton}>
+                <Text style={styles.modalCancelButtonText}>
+                  Cancel
+                </Text>
+              </TouchableOpacity>
+            </Pressable>
+            <TouchableOpacity style={styles.modalCovidConfirmButton}>
+              <Text style={styles.modalConfirmText}>
+                Confirm
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </Modal>
       <View style = {styles.containerMain}>
         <View style = {styles.notif}>
           <TouchableOpacity style = {styles.containerBttn} onPress={() => setModalVisible(true)}>
             <MaterialCommunityIcons name="bell" size={25} color="white"/>
           </TouchableOpacity>  
-
           <TouchableOpacity style = {styles.containerBttn} onPress={() => setModalVisible1(true)}>
             <MaterialCommunityIcons name="history" size={25} color="white"/>
           </TouchableOpacity>  
         </View>
-        <View style = {styles.container}> 
+        <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>Hi, {state.token.userInfo.data.userInfo.firstname}!</Text>
           </View>
@@ -173,8 +201,7 @@ const ImageContainer = ({
           </View>
         </View>
       </View>
-      </Animated.View>
-
+    </Animated.View>
   )
 }
 
@@ -203,15 +230,15 @@ const styles = StyleSheet.create({
     flex: 1
   },
 
-infoText: {
-    fontSize: 40,
-    color: 'white',
-    fontWeight: 'bold',
-    textAlign: 'left',
-    marginRight: 60,
-    marginBottom: 10,
-    // marginTop: 20,
-},
+  infoText: {
+      fontSize: 40,
+      color: 'white',
+      fontWeight: 'bold',
+      textAlign: 'left',
+      marginRight: 60,
+      marginBottom: 10,
+      // marginTop: 20,
+  },
 
   covidStatContainer: {
     flexDirection: 'row',
@@ -266,12 +293,12 @@ infoText: {
     marginBottom: 20
   },
 
-notif:{
-  marginTop: 50,
-  marginBottom: 40,
-  marginRight: 20,
-  direction: 'rtl'
-},
+  notif:{
+    marginTop: 50,
+    marginBottom: 40,
+    marginRight: 20,
+    direction: 'rtl'
+  },
 
   notif1:{
     marginTop: 40,
@@ -281,7 +308,6 @@ notif:{
     height: 25,
     width: 25,
   },
-
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -289,13 +315,12 @@ notif:{
     marginTop: 22,
     position: 'absolute',
     // direction: 'rtl',
-    
   },
-
   containerView: {
-    marginLeft: 180
+    alignItems: 'flex-end',
+    top: 5,
+    right: 15,
   },
-
   modalView: {
     backgroundColor: "white",
     width: 200,
@@ -355,14 +380,12 @@ notif:{
     marginTop: deviceHeight/4,
     opacity: .9
   },
-
   headerHistory:{
     width: 350,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
   },
-
   modalHistory: {
     width:350,
     justifyContent: 'center',
@@ -377,8 +400,66 @@ notif:{
   },
   textHistory:{
     padding: 15
+  },
+  containerCovid: {
+    width: 340,
+    height: 250,
+    flexDirection: 'column',
+    backgroundColor: "white",
+    borderRadius: 25,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'center',
+    // height: deviceHeight/3,
+    marginTop: deviceHeight/4,
+    opacity: .9
+  },
+  covidHeader: {
+    top: 30,
+    marginLeft: 30,
+    marginRight: 30
+  },
+  covidHeaderText: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  covidParagraph: {
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  covidParagraphText: {
+    fontSize: 15,
+  },
+  modalCovidButtons: {
+    bottom: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    width: '100%'
+  },
+  modalCovidCancelButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 7.5,
+    backgroundColor: '#C1C1C1',
+    width: 140,
+    height: 45,
+    borderRadius: 30
+  },
+  modalCancelButtonText: {
+    fontSize: 15,
+  },
+  modalCovidConfirmButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 7.5,
+    backgroundColor: '#8CD4F5',
+    width: 140,
+    height: 45,
+    borderRadius: 30
+  },
+  modalConfirmText: {
+    fontSize: 15
   }
-
 })
 
 export default ImageContainer;
