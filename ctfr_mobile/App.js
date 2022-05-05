@@ -19,31 +19,33 @@ import { Provider as AuthProvider } from './context/UserContext'
 import { Provider as FillProvider } from './context/IntroContext'
 import { setNavigator } from './navigation'
 import resolveAuth from './screens/resolveAuth'
+import CameraScreenMask from './screens/intro/cameraMask'
 
 const deviceWidth = Dimensions.get('window').width
 
 const switchNavigator = createSwitchNavigator({
-    // resolveAuth: resolveAuth,
-    // login: createStackNavigator({
-    //     login: LoginScreen,
-    //     signup: SignupScreen
-    // },
-    // {
-    //     headerMode: 'none',
-    //     navigationOptions: {
-    //         headerVisible: false
-    //     }
-    // }),
-    // intro: createStackNavigator({
-    //     fill: FillScreen,
-    //     camera: CameraScreen,
-    // },
-    // {
-    //     headerMode: 'none',
-    //     navigationOptions: {
-    //         headerVisible: false
-    //     },
-    // }),
+    resolveAuth: resolveAuth,
+    login: createStackNavigator({
+        login: LoginScreen,
+        signup: SignupScreen
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        }
+    }),
+    intro: createStackNavigator({
+        fill: FillScreen,
+        camera: CameraScreen,
+        cameraMask: CameraScreenMask,
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        },
+    }),
     home: createStackNavigator({
         // main: createBottomTabNavigator({
             profile: ProfileScreen,

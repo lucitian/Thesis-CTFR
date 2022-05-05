@@ -59,7 +59,7 @@ const camera_upload = (dispatch) => async (formData) => {
             payload: response.data.token
         })
 
-        navigate('profile')
+        navigate('cameraMask')
     } catch (err) {
         dispatch({
             type: 'add_error',

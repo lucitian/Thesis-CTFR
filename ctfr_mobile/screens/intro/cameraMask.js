@@ -1,15 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native'
 import { Camera } from 'expo-camera'
-import DefaultImage from '../../assets/faceid.png'
-import png from '../../assets/leftV.png'
-import png1 from '../../assets/frontV.png'
-import png2 from '../../assets/rightV.png'
+import DefaultImage from '../../assets/faceid1.png'
+import png from '../../assets/leftW.png'
+import png1 from '../../assets/frontW.png'
+import png2 from '../../assets/rightW.png'
 
 import { Context as IntroContext } from '../../context/IntroContext'
 import instance from '../../api/api'
 
-function CameraScreen ({ navigation }) {
+function CameraScreenMask ({ navigation }) {
     const def = Image.resolveAssetSource(DefaultImage).uri
     const Png = Image.resolveAssetSource(png).uri
     const Png1 = Image.resolveAssetSource(png1).uri
@@ -131,10 +131,10 @@ function CameraScreen ({ navigation }) {
     return (
         <View style = {styles.container}>
             <View style = { styles.TextContainer }>
-                <Text style = { styles.boldText }>Almost!</Text>
+                <Text style = { styles.boldText }>Lastly!</Text>
             </View>
             <View>
-                <Text style = { styles.infoText }>Now, we need to see your face to perform our face recognition</Text>
+                <Text style = { styles.infoText }>We need to see your face with your face mask on.</Text>
             </View>
             <View style={styles.camContainer}>
             
@@ -193,7 +193,7 @@ function CameraScreen ({ navigation }) {
                             : Camera.Constants.Type.back
                         );
                         }}>
-                        <Image style = {styles.button} source={require('../../assets/flip.png')}/>
+                        <Image style = {styles.button} source={require('../../assets/flip1.png')}/>
                     </TouchableOpacity>
                 </View>
                 <View>
@@ -203,7 +203,7 @@ function CameraScreen ({ navigation }) {
                 </View>   
                 <View>
                     <TouchableOpacity style={styles.button3} title = 'Submit Photos' onPress = {Upload_Photos}>
-                        <Image style = {styles.button} source={require('../../assets/done.png')}/> 
+                        <Image style = {styles.button} source={require('../../assets/done1.png')}/> 
                     </TouchableOpacity>
                 </View>    
             </View>   
@@ -211,12 +211,14 @@ function CameraScreen ({ navigation }) {
     )
 }
 
-export default CameraScreen
+export default CameraScreenMask
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        margin: 15
+        // margin: 15,
+        padding: 15,
+        backgroundColor: '#A18AFF'
     },
 
     camContainer: {
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
         alignSelf: 'flex-start',
     },
     boldText: {
-        color: '#6948f4',
+        color: 'white',
         fontWeight: 'bold',
         fontSize: 70,
     },
@@ -295,7 +297,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         textAlign: 'center',
         marginTop: 15,
-        marginBottom: 30
+        marginBottom: 30,
+        color: 'white'
     },
     discard: {
       height: 20,
