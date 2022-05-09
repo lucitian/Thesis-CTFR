@@ -1,10 +1,11 @@
-import { Alert, Animated, StyleSheet, View, Text, Modal, FlatList, Pressable, ScrollView, SafeAreaView, Dimensions} from 'react-native';
+import { Alert, Animated, StyleSheet, View, Text, Modal, FlatList, Image, Pressable, ScrollView, SafeAreaView, Dimensions} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
 import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { deviceHeight, deviceWidth } from '../helpers/constants';
 import { Context as AuthContext } from '../../../context/UserContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation';
+import * as ImagePicker from 'expo-image-picker';
 
 const ImageContainer = ({
   scrollY,
@@ -17,6 +18,7 @@ const ImageContainer = ({
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [modalCovid, setModalCovid] = useState(false)
+  const [imageSource, setImageSource] = useState(null);
   const Notification = ["Baj", "Weakaloski", "Lucitian", "Wwww", "Yeoj"];
 
   const changeVal = () => {
@@ -31,6 +33,22 @@ const ImageContainer = ({
         setModalCovid(false)
       }
   }
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(result);
+
+    if (!result.cancelled) {
+      setImageSource(result.uri);
+    }
+  };
   return (
     <Animated.View style={[
       styles.topImage,
@@ -159,6 +177,26 @@ const ImageContainer = ({
           <View style={styles.covidParagraph}>
             <Text style={styles.covidParagraphText}>Please upload a screenshot of the swab test result from the Red Cross website.</Text>
           </View>
+          <View style={styles.documentContainer}>
+              <Pressable style = {styles.button} onPress={pickImage}>
+                {/* <Image style = {styles.ss} source={require('../../../assets/image-upload-placeholder.jpg')}></Image> */}
+                <TouchableOpacity style = {styles.button}>
+                  {imageSource === null ? (
+                      <Image
+                          source={require('../../../assets/image-upload-placeholder.jpg')}
+                          style={styles.ss}
+                          resizeMode='contain'
+                      />
+                      ) : (
+                      <Image
+                          source={{ uri: imageSource }}
+                          style={styles.ss}
+                          resizeMode='contain'
+                      />
+                      )}
+                </TouchableOpacity>    
+              </Pressable>
+          </View>
           <View style={styles.modalCovidButtons}>
             <Pressable onPress = {() => changeVal(!toggleN)}>
               <TouchableOpacity style={styles.modalCovidCancelButton}>
@@ -186,7 +224,9 @@ const ImageContainer = ({
         </View>
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
-            <Text style = { styles.infoText }>Hi, {state.token.userInfo.data.userInfo.firstname}!</Text>
+            <Text style = { styles.infoText }>Hi, 
+            {/* {state.token.userInfo.data.userInfo.firstname}! */}
+            </Text>
           </View>
           <View style = {styles.msgContainer}>
             <Text style = { styles.message }>We advise the you update your Covid-19 status!</Text>
@@ -285,6 +325,16 @@ const styles = StyleSheet.create({
     color: 'white',
     fontWeight: "bold",
     fontSize: 20
+  },
+
+  ss:{
+    // width: 280,
+    // height: 110
+  },
+
+  button:{
+    width: 280,
+    height: 110,
   },
 
   msgContainer: {
@@ -403,7 +453,7 @@ const styles = StyleSheet.create({
   },
   containerCovid: {
     width: 340,
-    height: 250,
+    height: 350,
     flexDirection: 'column',
     backgroundColor: "white",
     borderRadius: 25,
@@ -411,7 +461,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     // height: deviceHeight/3,
-    marginTop: deviceHeight/4,
+    marginTop: deviceHeight/5,
     opacity: .9
   },
   covidHeader: {
@@ -457,6 +507,14 @@ const styles = StyleSheet.create({
     height: 45,
     borderRadius: 30
   },
+
+  documentContainer:{
+    height: 110,
+    width: 280,
+    marginTop: -20,
+    marginBottom: 5 
+  },
+
   modalConfirmText: {
     fontSize: 15
   }
