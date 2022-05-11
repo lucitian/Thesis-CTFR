@@ -4,6 +4,7 @@ import { deviceHeight, deviceWidth } from '../helpers/constants';
 import { Context as AuthContext } from '../../../context/UserContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { NavigationEvents } from 'react-navigation'
+import * as ImagePicker from 'expo-image-picker';
 
 
 const BottomContainer = ({
@@ -13,11 +14,58 @@ const BottomContainer = ({
     ...props
 }) => {  
     const { state, signout} = useContext(AuthContext)
+    const [imageSource, setImageSource] = useState(null);
     const animateBorderRadius = scrollY.interpolate({
         inputRange: [0, 450 - 100],
         outputRange: [40, 0],
   })
+
+    // function selectImage() {
+    //     let options = {
+    //     title: 'You can choose one image',
+    //     maxWidth: 256,
+    //     maxHeight: 256,
+    //     noData: true,
+    //     mediaType: 'photo',
+    //     storageOptions: {
+    //         skipBackup: true
+    //     }
+    //     };
+
+    //     ImagePicker.launchImageLibrary(options, response => {
+    //     if (response.didCancel) {
+    //         console.log('User cancelled photo picker');
+    //         Alert.alert('You did not select any image');
+    //     } else if (response.error) {
+    //         console.log('ImagePicker Error: ', response.error);
+    //     } else if (response.customButton) {
+    //         console.log('User tapped custom button: ', response.customButton);
+    //     } else {
+    //         let source = { uri: response.uri };
+
+    //         // ADD THIS
+    //         setImageSource(source.uri);
+    //     }
+    //     });
+    // }
+
+    const pickImage = async () => {
+        // No permissions request is necessary for launching the image library
+        let result = await ImagePicker.launchImageLibraryAsync({
+          mediaTypes: ImagePicker.MediaTypeOptions.All,
+          allowsEditing: true,
+          aspect: [4, 3],
+          quality: 1,
+        });
     
+        console.log(result);
+    
+        if (!result.cancelled) {
+          setImageSource(result.uri);
+        }
+      };
+
+      
   return (
     <Animated.ScrollView
       showsVerticalScrollIndicator={false}
@@ -43,9 +91,26 @@ const BottomContainer = ({
         <View style = {styles.card}>
             <View style = {styles.picContainer}>
                 <View style = {styles.picRim}>
-                    <Image style = { styles.pic } source={require('../../../assets/Cars-2006.jpg')}/>
+                    {/* <Image style = { styles.pic2 } source={require('../../../assets/Cars-2006.jpg')}/> */}
+                    {imageSource === null ? (
+                    <Image
+                        source={require('../../../assets/placeholderimage.png')}
+                        style={styles.pic}
+                        resizeMode='contain'
+                    />
+                    ) : (
+                    <Image
+                        source={{ uri: imageSource }}
+                        style={styles.pic}
+                        resizeMode='contain'
+                    />
+                    )}
                 </View>
             </View>
+            <TouchableOpacity onPress={pickImage}>
+                {/* <Image style = {styles.pic2} source={require('../../../assets/minus.png')}/> */}
+                <Text style = {styles.change}>change picture</Text>
+            </TouchableOpacity>
             {/* <View style = {styles.nameContainer}>
                 <Text style = { styles.name }>{state.token.userInfo.data.userInfo.firstname} {state.token.userInfo.data.userInfo.middleinitial}. {state.token.userInfo.data.userInfo.lastname}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('edit')}>
@@ -111,11 +176,18 @@ const styles = StyleSheet.create({
         marginTop: 40,
         justifyContent: 'center',
         alignItems: 'center',
+        // backgroundColor: 'black'
     },  
     pic: {
-        width: 120,
-        height: 120,
-        borderRadius: 60,
+        width: 130,
+        height: 130,
+        borderRadius: 280,
+        alignSelf: 'center'
+    },  
+    change: {
+        fontSize: 15,
+        color: '#A18AFF',
+        margin: 5 
     },  
 
     nameContainer: {
@@ -224,8 +296,10 @@ const styles = StyleSheet.create({
         width: 140,
         height: 140,
         borderRadius: 70,
-        borderWidth: 3,
+        borderWidth: 5,
         borderColor:'#A18AFF',
-        padding: 7
+        alignSelf: 'center'
+        // padding: 7,
+        // backgroundColor: 'blue'
     },
 })
