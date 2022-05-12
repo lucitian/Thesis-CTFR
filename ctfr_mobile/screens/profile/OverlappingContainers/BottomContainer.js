@@ -102,7 +102,7 @@ const BottomContainer = ({
                     <Image
                         source={{ uri: imageSource }}
                         style={styles.pic}
-                        resizeMode='contain'
+                        resizeMode='cover'
                     />
                     )}
                 </View>

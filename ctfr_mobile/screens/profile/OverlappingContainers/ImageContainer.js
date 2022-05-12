@@ -31,6 +31,7 @@ const ImageContainer = ({
         setToggleN(true)
         setToggleP(false)
         setModalCovid(false)
+        setImageSource(null)
       }
   }
 
@@ -38,8 +39,8 @@ const ImageContainer = ({
     // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
-      allowsEditing: true,
-      aspect: [4, 3],
+      allowsEditing: false,
+      aspect: [6, 9],
       quality: 1,
     });
 
@@ -180,7 +181,7 @@ const ImageContainer = ({
           <View style={styles.documentContainer}>
               <Pressable style = {styles.button} onPress={pickImage}>
                 {/* <Image style = {styles.ss} source={require('../../../assets/image-upload-placeholder.jpg')}></Image> */}
-                <TouchableOpacity style = {styles.button}>
+                <View style = {styles.button}>
                   {imageSource === null ? (
                       <Image
                           source={require('../../../assets/image-upload-placeholder.jpg')}
@@ -191,10 +192,10 @@ const ImageContainer = ({
                       <Image
                           source={{ uri: imageSource }}
                           style={styles.ss}
-                          resizeMode='contain'
+                          resizeMode='cover'
                       />
                       )}
-                </TouchableOpacity>    
+                </View>    
               </Pressable>
           </View>
           <View style={styles.modalCovidButtons}>
@@ -328,8 +329,8 @@ const styles = StyleSheet.create({
   },
 
   ss:{
-    // width: 280,
-    // height: 110
+    width: 280,
+    height: 110,
   },
 
   button:{
