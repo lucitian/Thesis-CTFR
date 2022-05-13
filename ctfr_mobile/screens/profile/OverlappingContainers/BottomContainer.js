@@ -56,7 +56,7 @@ const BottomContainer = ({
           allowsEditing: true,
           aspect: [4, 3],
           quality: 1,
-        });
+        }); 
     
         console.log(result);
     
@@ -111,14 +111,14 @@ const BottomContainer = ({
                 {/* <Image style = {styles.pic2} source={require('../../../assets/minus.png')}/> */}
                 <Text style = {styles.change}>change picture</Text>
             </TouchableOpacity>
-            {/* <View style = {styles.nameContainer}>
+            <View style = {styles.nameContainer}>
                 <Text style = { styles.name }>{state.token.userInfo.data.userInfo.firstname} {state.token.userInfo.data.userInfo.middleinitial}. {state.token.userInfo.data.userInfo.lastname}</Text>
                 <TouchableOpacity onPress={() => navigation.navigate('edit')}>
                     <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
                 </TouchableOpacity>  
             </View>
             <View>
-                <Text style = { styles.email }>{state.token.userInfo.data.userInfo.email}</Text>
+                <Text style = {styles.email}>{state.token.userInfo.data.user.email}</Text>
             </View>
             
             <View style = {styles.infoContainer}>
@@ -144,7 +144,7 @@ const BottomContainer = ({
                         <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
                     </View>
                 </TouchableOpacity>
-            </View> */}
+            </View>
         </View>
       </Animated.View>
       <View style={{ height: 0.4 * deviceHeight }}></View>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     email: {
-        fontSize: 18,
+        fontSize: 16,
         color: "gray",
         marginBottom: 30,
     },
