@@ -15,6 +15,7 @@ import CameraScreen from './screens/intro/camera'
 import ProfileScreen from './screens/profile/OverlappingContainers/profile'
 import HistoryScreen from './screens/profile/history'
 import EditScreen from './screens/profile/edit.js'
+import Agreement from './screens/intro/agreement'
 import { Provider as AuthProvider } from './context/UserContext'
 import { Provider as FillProvider } from './context/IntroContext'
 import { setNavigator } from './navigation'
@@ -35,17 +36,18 @@ const switchNavigator = createSwitchNavigator({
     //         headerVisible: false
     //     }
     // }),
-    // intro: createStackNavigator({
-    //     fill: FillScreen,
-    //     camera: CameraScreen,
-    //     cameraMask: CameraScreenMask,
-    // },
-    // {
-    //     headerMode: 'none',
-    //     navigationOptions: {
-    //         headerVisible: false
-    //     },
-    // }),
+    intro: createStackNavigator({
+        agreement: Agreement,
+        fill: FillScreen,
+        camera: CameraScreen,
+        cameraMask: CameraScreenMask,
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        },
+    }),
     home: createStackNavigator({
         // main: createBottomTabNavigator({
         profile: ProfileScreen,
