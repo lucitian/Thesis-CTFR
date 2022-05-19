@@ -1,4 +1,23 @@
+from app import app
+from flask import Response
 import cv2
+
+def gen(camera):
+    while True:
+        frame = camera.get_frame()
+        yield (b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
+
+@app.route('/open_cam')
+def open_cam():
+    return Response(gen(camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route('/close_cam')
+def close_cam():
+    return Response(camera().close_cam())
+
+@app.route('/getcovid')
+def get_covid_result():
+    return None
 
 class camera(object):
     def __init__(self):

@@ -9,8 +9,9 @@ readData = (row) => {
     formData['lastName'] = column.getElementsByClassName('data__lastname')[0].innerHTML
     formData['contact'] = column.getElementsByClassName('data__contact')[0].innerHTML
     formData['birthdate'] = column.getElementsByClassName('data__birthdate')[0].innerHTML
-    formData['vaxStatus'] = column.getElementsByClassName('data__vaxstatus')[0].innerHTML
+    formData['vaxstatus'] = column.getElementsByClassName('data__vaxstatus')[0].innerHTML
     formData['address'] = column.getElementsByClassName('data__address')[0].innerHTML
+    formData['covidstatus'] = column.getElementsByClassName('data__covidstatus')[0].innerHTML
 
     return formData
 }
@@ -51,7 +52,7 @@ editUsers = (tableRow) => {
             <label>Date of Birth</label>
         </div>
         <div class="edit__info__group">
-            <select required class="edit__info__content" name="edit__vaxstatus" id="edit__vaxstatus" selected="${readData(tableRow).vaxStatus}">
+            <select required class="edit__info__content" name="edit__vaxstatus" id="edit__vaxstatus" selected="${readData(tableRow).vaxstatus}">
                 <option value="Not yet Vaccinated">Not yet Vaccinated</option>
                 <option value="Partially Vaccinated">Partially Vaccinated</option>
                 <option value="Fully Vaccinated">Fully Vaccinated</option>
@@ -62,6 +63,13 @@ editUsers = (tableRow) => {
             <input type="text" required class="edit__info__content" id="edit__address" value="${readData(tableRow).address}">
             <label>Address</label>
         </div> 
+        <div class="edit__info__group">
+            <select required class="edit__info__content" name="edit__covidstatus" id="edit__covidstatus" selected="${readData(tableRow).covidstatus}">
+                <option value="Positive">Positive</option>
+                <option value="Negative">Negative</option>
+            </select>
+            <label>Covid Status</label>
+        </div>
     `
 }
 
@@ -96,6 +104,7 @@ confirmUpdate = () => {
     postData['editBirthdate'] = document.forms['edit__form']['edit__birthdate'].value
     postData['editVaxStatus'] = document.forms['edit__form']['edit__vaxstatus'].value
     postData['editAddress'] = document.forms['edit__form']['edit__address'].value
+    postData['editCovidStatus'] = document.forms['edit__form']['edit__covidstatus'].value
 
     fetch(`http://localhost:5000/edituser/${postData['editID']}`, {
         method: 'PATCH',
@@ -123,6 +132,7 @@ statusUpdate = (data) => {
             alert('Nothing to update!')
             break
         case 'fail':
+            alert('Something went wrong!')
             break
     }
 }

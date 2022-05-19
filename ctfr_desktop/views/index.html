@@ -8,6 +8,7 @@
         <link rel="stylesheet" type="text/css" href="../css/camera.css">
         <link rel="stylesheet" type="text/css" href="../css/roomdb.css">
         <link rel="stylesheet" type="text/css" href="../css/database.css">
+        <link rel="stylesheet" type="text/css" href="../css/covid.css">
         <link rel="stylesheet" type="text/css" href="../css/add.css">
         <link rel="stylesheet" type="text/css" href="../css/edit.css">
         <link rel="stylesheet" type="text/css" href="../css/delete.css">
@@ -22,8 +23,11 @@
                 <li data-tab-target="#room-pane" class="dashboard-tab">
                     <i class="fas fa-table"></i> 
                 </li>
-                <li data-tab-target="#database-pane" class="active dashboard-tab">
+                <li data-tab-target="#database-pane" class="dashboard-tab">
                     <i class="fas fa-database"></i> 
+                </li>
+                <li data-tab-target="#covid-pane" class="active dashboard-tab">
+                    <i class="fas fa-file"></i> 
                 </li>
             </ul>
             <div class="dashboard-container" id="dashboard-container">
@@ -77,19 +81,37 @@
                 </div>
 
                 <!-- User Database -->
-                <div id="database-pane" class="active database-pane" data-tab-content>
+                <div id="database-pane" class="database-pane" data-tab-content>
                     <div class="title">
                         <h1>Database</h1>
                     </div>
                     <div class="db__input" id="db__input">
                         <div class="db__filter__title__container">
-                            <h2>Name</h2>
+                            <div class="db__filter__title">
+                                <h2>Email</h2>
+                            </div>
+                            <div class="db__filter__title">
+                                <h2>Name</h2>
+                            </div>
+                            <div class="db__filter__title">
+                                <h2>Covid Status</h2>
+                            </div>
                         </div>
                         <div class="db__filter__input__container">
-                            <div class="filter__name__group">
-                                <input type="text" required class="filter__name" id="filter__name" onkeyup="myFunction()">
-                                <label>Name</label>
-                            </div>                        
+                            <div class="db__filter__group">
+                                <div class="filter__group">
+                                    <input type="text" required class="filter__email" id="filter__email" onkeyup="emailFilter()">
+                                    <label>Email</label>
+                                </div> 
+                                <div class="filter__group">
+                                    <input type="text" required class="filter__name" id="filter__name" onkeyup="nameFilter()">
+                                    <label>Name</label>
+                                </div>       
+                                <div class="filter__group">
+                                    <input type="text" required class="filter__covid" id="filter__covid" onkeyup="covidFilter()">
+                                    <label>Covid Status</label>
+                                </div>                    
+                            </div>
                             <div class="db__buttons__container">
                                 <div class="db__buttons">
                                     <button class="add__user" onclick="addUser()">Add user</button>
@@ -113,12 +135,26 @@
                                     <th class="db__header__cell">Date of Birth</th>
                                     <th class="db__header__cell">Vaccination Status</th>
                                     <th class="db__header__cell">Address</th>
+                                    <th class="db__header__cell">Covid Status</th>
                                 </tr>
                             </thead>
                             <tbody id="userList">
                                 
                             </tbody>
                         </table>
+                    </div>
+                </div>
+
+                <!-- COVID Details -->
+                <div id="covid-pane" class="active covid-pane" data-tab-content>
+                    <div class="title">
+                        <h1>COVID Details</h1>
+                    </div>
+                    <div class="covid-notif">
+
+                    </div>
+                    <div class="covid-container">
+
                     </div>
                 </div>
             </div>
@@ -179,6 +215,13 @@
                         <div class="add__info__group">
                             <input type="text" required class="add__info__content" name="add__address" id="add__address"/>
                             <label>Address</label>
+                        </div>
+                        <div class="add__info__group">
+                            <select type="text" required class="add__info__content" name="add__covidstatus" id="add__covidstatus">
+                                <option value="Negative">Negative</option>
+                                <option value="Positive">Positive</option>
+                            </select>
+                            <label>Covid Status</label>
                         </div>
                     </form>
                     <div class="add__buttons">
