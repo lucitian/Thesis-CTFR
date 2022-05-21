@@ -108,7 +108,7 @@ const BottomContainer = ({
                 </View>
             </View>
             <TouchableOpacity onPress={pickImage}>
-                {/* <Image style = {styles.pic2} source={require('../../../assets/minus.png')}/> */}
+                <Image style = {styles.pic2} source={require('../../../assets/minus.png')}/>
                 <Text style = {styles.change}>change picture</Text>
             </TouchableOpacity>
             <View style = {styles.nameContainer}>
