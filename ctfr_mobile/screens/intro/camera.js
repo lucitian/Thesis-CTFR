@@ -79,31 +79,26 @@ function CameraScreen () {
                 animationType="slide"
                 transparent={true}
                 visible={modalVisible1}
-                onRequestClose={() => {setModalVisible(!modalVisible1)}}
+                onRequestClose={() => {setModalVisible1(!modalVisible1)}}
             >
-                {/* <View style = {styles.containerrrrrrrr}>
-                <Pressable
-                    style={styles.notif1} 
-                    activeOpacity={1} 
-                    onPress ={() => {setModalVisible1(false)}}
-                >
-                </Pressable> 
-                </View> */}
                 <View style={styles.containerHistory}>
-                <TouchableOpacity style = {styles.modalHistory}>
                     <View style={styles.headerHistory}>
-                    <Text style = {styles.notifTitle}> History</Text>
-                    <Pressable
-                        style={styles.closeBttn} 
-                        activeOpacity={1} 
-                        onPress ={() => {setModalVisible1(false)}}>
-                        <MaterialCommunityIcons name="close" size={25} color="black"/>
-                    </Pressable> 
+                        <Pressable
+                            style={styles.closeBttn} 
+                            activeOpacity={1} 
+                            onPress ={() => {setModalVisible1(false)}}>
+                            <MaterialCommunityIcons name="close" size={25} color="black"/>
+                        </Pressable> 
                     </View>
                     <View>
-                        <Image style = {styles.gif} source={require('../../assets/rotating head.gif')}/>
+                        <Text style = {styles.Tip}>Instruction</Text>
                     </View>
-                </TouchableOpacity>
+                    <View>
+                        <Text style = {styles.instruction}>Follow the pattern below when taking the video of your face. This will help us optimize our feature extraction as a part of our facial recognition.</Text>
+                    </View>
+                    <View>
+                        <Image style = {styles.gif} source={require('../../assets/rotating-head.gif')}/>
+                    </View>
                 </View>
             </Modal>
             <View style = { styles.TextContainer }>
@@ -231,47 +226,46 @@ const styles = StyleSheet.create({
         height: 50,
         width: 50
     },
-
-
-
     containerHistory:{
         width: 350,
-        height: 400,
+        height: 420,
         backgroundColor: "white",
         borderRadius: 25,
-        justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'center',
         // height: deviceHeight/3,
-        marginTop: 150,
-        opacity: 1
+        marginTop: 130,
+        opacity: 1,
+        padding: 20
+
     },
     headerHistory:{
         width: 350,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
     },
     modalHistory: {
         width:350,
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: 15,
-        height: 400,
     },
     closeBttn:{
-        marginTop:-25,
         alignSelf: 'flex-end',
-        marginRight: 15
+        marginRight: 20
     },
-    textHistory:{
-        padding: 15
+    gif: { 
+        marginTop: 15,
+        height: 200,
+        width: 200
     },
 
-    textHistory: {
-        marginBottom: 15,
-        textAlign: "center",
+    instruction: {
+        margin: 10,
+        // fontWeight: 'bold',
+        fontSize: 15,
+        textAlign: 'justify'
     },
-    
+    Tip: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#A18AFF'
+    }
+
       
 })

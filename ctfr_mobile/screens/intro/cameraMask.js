@@ -1,131 +1,76 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal, Pressable, SafeAreaView, ScrollView, ImageBackground } from 'react-native'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera'
-import DefaultImage from '../../assets/faceid1.png'
-import png from '../../assets/leftW.png'
-import png1 from '../../assets/frontW.png'
-import png2 from '../../assets/rightW.png'
-
-import { Context as IntroContext } from '../../context/IntroContext'
-import instance from '../../api/api'
+import * as ImagePicker from 'expo-image-picker'
+import * as MediaLibrary from 'expo-media-library'
 
 function CameraScreenMask ({ navigation }) {
-    const def = Image.resolveAssetSource(DefaultImage).uri
-    const Png = Image.resolveAssetSource(png).uri
-    const Png1 = Image.resolveAssetSource(png1).uri
-    const Png2 = Image.resolveAssetSource(png2).uri
-
-    const { camera_upload } = useContext(IntroContext)
-
-    const [ hasPermission, setHasPermission ] = useState(null)
-    const [ camera, setCamera ] = useState(null)
-    const [ image, setImage ] = useState(def)
-    const [ image1, setImage1 ] = useState(def) 
-    const [ image2, setImage2 ] = useState(def)
-    const [ fit, setFit ] = useState(Png)
-    const [ type, setType ] = useState(Camera.Constants.Type.back)
+    const [hasCameraPermission, setHasCameraPermission ] = useState(false)
+    const [hasGalleryPermission, setHasGalleryPermission ] = useState(false)
+    const [galleryItems, setGalleryItems] = useState([])
+    const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.front)
+    const [ cameraRef, setCameraRef ] = useState(null)
+    const [ isCameraReady, setIsCameraReady ] = useState(false)
+    const [modalVisible1, setModalVisible1] = useState(true);
+    
 
     useEffect(() => {
         (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync()
-            setHasPermission(status === 'granted')
-        })()
+            const cameraStatus = await Camera.requestPermissionsAsync()
+            setHasCameraPermission(cameraStatus.status == 'granted')
+
+            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
+            setHasGalleryPermission(galleryStatus.status == 'granted')
+
+            if(galleryStatus.status == 'granted'){
+                const userGalleryMedia = await MediaLibrary.getAssetsAsync({sortBy: ['creationTime'], mediaType: ['video']})
+                setGalleryItems(userGalleryMedia.assets)
+            }
+        })()     
     }, [])
 
-    const splitFilename = function (str) {
-        return str.split('\\').pop().split('/').pop()
-    }
-
-    const rem = () => {
-        setImage(def);
-        setFit(Png)
-    }
-    const rem1 = () => {
-        setImage1(def);
-        setFit(Png1)
-    }
-    const rem2 = () => {
-        setImage2(def);
-        setFit(Png2)
-    }
-
-    const takePicture = async () => {
-        if(camera && image == def){        
-            const data = await camera.takePictureAsync(null); 
-            setImage(data.uri);
-            if(image1 == def){
-                setFit(Png1) 
+    const recordVideo = async () => {
+        if(cameraRef){
+            try{
+                const options = {maxDuration: 10, quality: Camera.Constants.VideoQuality['720'], mute: true}
+                const videoRecordPromise = cameraRef.recordAsync(options)
+                if(videoRecordPromise){
+                    const data = await videoRecordPromise;
+                    const source = data.uri
+                }
+            } catch(error) {
+                console.warn(error)
             }
-            else if(image2 == def){
-                setFit(Png2)
-            }
-            else{
-                setFit(null)
-            }    
         }
-        else if (camera && image1 == def) {    
-            const data1 = await camera.takePictureAsync(null); 
-            setImage1(data1.uri);
-            if(image2 == def){
-                setFit(Png2) 
-            }
-            else if(image == def){
-                setFit(Png)
-            }
-            else{
-                setFit(null)
-            } 
-        }
-        else if (camera && image2 == def) {  
-            const data2 = await camera.takePictureAsync(null); 
-            setImage2(data2.uri);
-            if(image == def){
-                setFit(Png) 
-            }
-            else if(image1 == def){
-                setFit(Png1)
-            }
-            else{
-                setFit(null)
-            }   
-        }
-        
     }
 
-    if (hasPermission === null) {
-        return <View />;
+    const stopVideo = async () => {
+        if(cameraRef){
+           cameraRef.stopRecording()
+        }
     }
-    if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+
+    const pickFromGallery = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+            allowsEditing: true,
+            aspect: [1,1],
+            quality: 1
+        })
+        if(!result.cancelled){
+            //NOTE: dito yung pag save sa database @tian  
+            //iyak nanaman mga kakampwet wahaha
+        }
     }
-    
-    const Upload_Photos = () => {
-        const imageFile = {
-            uri: image,
-            name: splitFilename(image),
-            type: 'image/jpg'
-        }
 
-        const imageFile1 = {
-            uri: image1,
-            name: splitFilename(image1),
-            type: 'image/jpg'
-        }
 
-        const imageFile2 = {
-            uri: image2,
-            name: splitFilename(image2),
-            type: 'image/jpg'
-        }
-
-        const images = [imageFile, imageFile1, imageFile2]
-        const formData = new FormData()
-
-        for (let image in images) {
-            formData.append('image', images[image])
-        }
-
-        camera_upload(formData)
+    if(!hasCameraPermission || !hasGalleryPermission){
+        return (
+            <View>
+                <Text>You do not have permissions</Text>
+            </View>
+        )
     }
 
     return (
@@ -137,75 +82,51 @@ function CameraScreenMask ({ navigation }) {
                 <Text style = { styles.infoText }>We need to see your face with your face mask on.</Text>
             </View>
             <View style={styles.camContainer}>
-            
                 <Camera
-                    ref = {ref => setCamera(ref)}  
+                    ref = {ref => setCameraRef(ref)}  
                     style={styles.camera} 
-                    type={type}
+                    type={cameraType}
                     ratio= {'1:1'}
+                    onMountError={(error) => {
+                        console.log("cammera error", error);
+                      }}
                 />
-                <View style = {styles.CamPng}>
-                    {fit && <ImageBackground style = {styles.placeholderPNG} source={{uri: fit}}></ImageBackground>}
-                </View>
             </View>
-            <View style = {styles.picContainer}>
-                <View>
-                    {image && <ImageBackground style = {styles.placeholder} source={{uri: image}}>
-                        <TouchableOpacity disabled = {image === def ? true : false} onPress = {(()=>rem())}>
-                            {
-                                image !== def ?
-                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>}
-                </View>
-                <View>
-                    {image1 && <ImageBackground style = {styles.placeholder} source={{uri: image1}}>
-                        <TouchableOpacity disabled = {image1 === def ? true : false} onPress = {(()=>rem1())}>
-                            {
-                                image1 !== def ?
-                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>}
-                </View>
-                <View>
-                    {image2 && <ImageBackground style = {styles.placeholder} source={{uri: image2}}>
-                        <TouchableOpacity disabled = {image2 === def ? true : false} onPress = {(()=>rem2())}>
-                            {
-                                image2 !== def ?
-                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>}
-                </View>
-            </View>
-    
             <View style={styles.buttonContainer} >
                 <View>
                     <TouchableOpacity
                         style={styles.button}
                         title = "Flip Camera"
                         onPress={() => {
-                        setType(
-                            type === Camera.Constants.Type.back
-                            ? Camera.Constants.Type.front
-                            : Camera.Constants.Type.back
+                        setCameraType(
+                            cameraType === Camera.Constants.Type.front
+                            ? Camera.Constants.Type.back
+                            : Camera.Constants.Type.front
                         );
                         }}>
-                        <Image style = {styles.button} source={require('../../assets/flip1.png')}/>
+                        <Image style = {styles.button} source={require('../../assets/flip.png')}/>
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.button2} title = 'Take Picture' onPress = {() => takePicture()}>
-                        {/* <Image style = {styles.button} source={require('../../assets/flip.png')}/> */}
+                    <TouchableOpacity 
+                        style={styles.button2} title = 'Take Picture'
+                        disabled={!isCameraReady} 
+                        onLongPress = {() => recordVideo()}
+                        onPressOut = {() => stopVideo()}>
                     </TouchableOpacity>
-                </View>   
+                </View>  
                 <View>
-                    <TouchableOpacity style={styles.button3} title = 'Submit Photos' onPress = {Upload_Photos}>
-                        <Image style = {styles.button} source={require('../../assets/done1.png')}/> 
+                    <TouchableOpacity 
+                        onPress={() => pickFromGallery()}
+                        style= {styles.galleryButton}>
+                        {galleryItems[0] == undefined ?
+                        <></>:
+                        <Image 
+                            style = {styles.galleryButtonImage}
+                            source = {{uri: galleryItems[0].uri}}/>
+                        }
                     </TouchableOpacity>
-                </View>    
+                </View>  
             </View>   
         </View>
     )
@@ -216,21 +137,13 @@ export default CameraScreenMask
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // margin: 15,
-        padding: 15,
-        backgroundColor: '#A18AFF'
+        margin: 15
     },
 
     camContainer: {
-        flex: .8,
+        flex: 1,
         alignSelf: 'center',
-        margin: 10
-    },
-    
-    picContainer: {
-        marginTop: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        padding: 30
     },
 
     camera: {
@@ -238,17 +151,11 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
     },
 
-    CamPng: {
-        position: 'absolute',
-        alignSelf: 'center',
-        justifyContent: 'center',
-        flex: 1
-    },
     buttonContainer:{
-      marginTop: 40,
-
       flexDirection: 'row',
-      justifyContent: 'space-evenly'
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
+      bottom: 0
       
     },
     button: {
@@ -257,52 +164,82 @@ const styles = StyleSheet.create({
         
     },
     button2: {
-      borderWidth:3,
-      borderColor:'#6948f4',
-      width:100,
-      height:100,
-      backgroundColor:'#fff',
+      borderWidth:8,
+      borderColor:'#ff404087',
+      width:80,
+      height:80,
+      backgroundColor:'#ff4040',
       borderRadius:100,
-      // width: 50,
-      // height: 50,
-    },
-    button3: {
-      width: 50,
-      height: 50,
-      
-    },
-    placeholder: {
-        width: 50,
-        height: 50,
-    },
-
-    placeholderPNG: {
-        width: 300,
-        height: 300,
-        opacity: 0.5
     },
 
     TextContainer: {
-        marginTop: 50,
-        flexDirection: 'row',
-        alignSelf: 'flex-start',
+        marginTop: 20,
+        marginHorizontal: 10
     },
     boldText: {
-        color: 'white',
+        color: '#6948f4',
         fontWeight: 'bold',
-        fontSize: 70,
+        fontSize: 50,
     },
     infoText: {
         fontSize: 17,
         justifyContent: 'center',
         textAlign: 'center',
-        marginTop: 15,
-        marginBottom: 30,
-        color: 'white'
+        marginTop: 10,
+        marginBottom: 10
     },
-    discard: {
-      height: 20,
-      width: 20,
-      alignSelf: 'flex-end'
+    galleryButton: {
+        borderWidth: 2,
+        borderColor: 'white',
+        borderRadius: 10,
+        overflow: 'hidden',
+        height: 50,
+        width: 50
+    },
+    galleryButtonImage:{
+        height: 50,
+        width: 50
+    },
+    containerHistory:{
+        width: 350,
+        height: 420,
+        backgroundColor: "white",
+        borderRadius: 25,
+        alignItems: 'center',
+        alignSelf: 'center',
+        // height: deviceHeight/3,
+        marginTop: 130,
+        opacity: 1,
+        padding: 20
+
+    },
+    headerHistory:{
+        width: 350,
+    },
+    modalHistory: {
+        width:350,
+    },
+    closeBttn:{
+        alignSelf: 'flex-end',
+        marginRight: 20
+    },
+    gif: { 
+        marginTop: 15,
+        height: 200,
+        width: 200
+    },
+
+    instruction: {
+        margin: 10,
+        // fontWeight: 'bold',
+        fontSize: 15,
+        textAlign: 'justify'
+    },
+    Tip: {
+        fontWeight: 'bold',
+        fontSize: 20,
+        color: '#A18AFF'
     }
+
+      
 })
