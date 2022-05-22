@@ -37,7 +37,7 @@ const switchNavigator = createSwitchNavigator({
     //     }
     // }),
     intro: createStackNavigator({
-        agreement: Agreement,
+        // agreement: Agreement,
         fill: FillScreen,
         camera: CameraScreen,
         cameraMask: CameraScreenMask,

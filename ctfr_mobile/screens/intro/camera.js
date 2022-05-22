@@ -1,135 +1,111 @@
 import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, ImageBackground } from 'react-native'
+import { StyleSheet, Text, View, Image, TouchableOpacity, Modal, Pressable } from 'react-native'
 import { Camera } from 'expo-camera'
-import DefaultImage from '../../assets/faceid.png'
-import png from '../../assets/leftV.png'
-import png1 from '../../assets/frontV.png'
-import png2 from '../../assets/rightV.png'
-
-import { Context as IntroContext } from '../../context/IntroContext'
+import { Audio } from 'expo-av'
+import * as ImagePicker from 'expo-image-picker'
+import * as MediaLibrary from 'expo-media-library'
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import instance from '../../api/api'
 
 function CameraScreen ({ navigation }) {
-    const def = Image.resolveAssetSource(DefaultImage).uri
-    const Png = Image.resolveAssetSource(png).uri
-    const Png1 = Image.resolveAssetSource(png1).uri
-    const Png2 = Image.resolveAssetSource(png2).uri
+    const [hasCameraPermissions, setHasCameraPermissions] = useState(false)
+    const [hasAudioPermissions, setHasAudioPermissions] = useState(false)
+    const [hasGalleryPermissions, setHasGalleryPermissions] = useState(false)
 
-    const { camera_upload } = useContext(IntroContext)
+    const [galleryItems, setGalleryItems] = useState([])
 
-    const [ hasPermission, setHasPermission ] = useState(null)
-    const [ camera, setCamera ] = useState(null)
-    const [ image, setImage ] = useState(def)
-    const [ image1, setImage1 ] = useState(def) 
-    const [ image2, setImage2 ] = useState(def)
-    const [ fit, setFit ] = useState(Png)
-    const [ type, setType ] = useState(Camera.Constants.Type.back)
+    const [cameraRef, setCameraRef] = useState(null)
+    const [cameraType, setCameraType] = useState(Camera.Constants.Type.front)
+    const [isCameraReady, setIsCameraReady] = useState(false)
+    const [modalVisible1, setModalVisible1] = useState(true);
+
 
     useEffect(() => {
         (async () => {
-            const { status } = await Camera.requestCameraPermissionsAsync()
-            setHasPermission(status === 'granted')
+            const cameraStatus = await Camera.requestPermissionsAsync()
+            setHasCameraPermissions(cameraStatus.status == 'granted')
+
+            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
+            setHasGalleryPermissions(galleryStatus.status == 'granted')
+
+            if (galleryStatus.status == 'granted') {
+                const userGalleryMedia = await MediaLibrary.getAssetsAsync({ sortBy: ['creationTime'], mediaType: ['video'] })
+                setGalleryItems(userGalleryMedia.assets)
+            }
         })()
     }, [])
 
-    const splitFilename = function (str) {
-        return str.split('\\').pop().split('/').pop()
-    }
-
-    const rem = () => {
-        setImage(def);
-        setFit(Png)
-    }
-    const rem1 = () => {
-        setImage1(def);
-        setFit(Png1)
-    }
-    const rem2 = () => {
-        setImage2(def);
-        setFit(Png2)
-    }
-
-    const takePicture = async () => {
-        if(camera && image == def){        
-            const data = await camera.takePictureAsync(null); 
-            setImage(data.uri);
-            if(image1 == def){
-                setFit(Png1) 
+    const recordVideo = async () => {
+        if (cameraRef) {
+            try {
+                const options = { maxDuration: 10, quality: Camera.Constants.VideoQuality['720'], mute: true }
+                const videoRecordPromise = cameraRef.recordAsync(options)
+                if (videoRecordPromise) {
+                    const data = await videoRecordPromise;
+                    const source = data.uri
+                    let sourceThumb = await generateThumbnail(source)
+                    navigation.navigate('savePost', { source, sourceThumb })
+                }
+            } catch (error) {
+                console.warn(error)
             }
-            else if(image2 == def){
-                setFit(Png2)
-            }
-            else{
-                setFit(null)
-            }    
         }
-        else if (camera && image1 == def) {    
-            const data1 = await camera.takePictureAsync(null); 
-            setImage1(data1.uri);
-            if(image2 == def){
-                setFit(Png2) 
-            }
-            else if(image == def){
-                setFit(Png)
-            }
-            else{
-                setFit(null)
-            } 
-        }
-        else if (camera && image2 == def) {  
-            const data2 = await camera.takePictureAsync(null); 
-            setImage2(data2.uri);
-            if(image == def){
-                setFit(Png) 
-            }
-            else if(image1 == def){
-                setFit(Png1)
-            }
-            else{
-                setFit(null)
-            }   
-        }
-        
     }
 
-    if (hasPermission === null) {
-        return <View />;
+    const stopVideo = async () => {
+        if (cameraRef) {
+            cameraRef.stopRecording()
+        }
     }
-    if (hasPermission === false) {
-        return <Text>No access to camera</Text>;
+
+    const pickFromGallery = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Videos,
+            allowsEditing: true,
+            aspect: [1, 1],
+            quality: 1
+        })
+        if (!result.cancelled) {
+            //@boss Lucitianism, try mo dito magcreate nung para sa db para di na siguro tayo gagawa pa panibagong button alaws na kasi pwesto wahahahahhaa
+        }
     }
-    
-    const Upload_Photos = () => {
-        const imageFile = {
-            uri: image,
-            name: splitFilename(image),
-            type: 'image/jpg'
-        }
 
-        const imageFile1 = {
-            uri: image1,
-            name: splitFilename(image1),
-            type: 'image/jpg'
-        }
-
-        const imageFile2 = {
-            uri: image2,
-            name: splitFilename(image2),
-            type: 'image/jpg'
-        }
-
-        const images = [imageFile, imageFile1, imageFile2]
-        const formData = new FormData()
-
-        for (let image in images) {
-            formData.append('image', images[image])
-        }
-
-        camera_upload(formData)
+    if (!hasCameraPermissions || !hasGalleryPermissions) {
+        return (
+            <View>
+                <Text>You do not have permissions</Text>
+            </View>
+        )
     }
 
     return (
         <View style = {styles.container}>
+            <Modal 
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible1}
+                onRequestClose={() => {setModalVisible(!modalVisible1)}}
+            >
+                <View style={styles.containerHistory}>
+                    <View style={styles.headerHistory}>
+                        <Text style = {styles.notifTitle}> Instruction</Text>
+                        <Pressable
+                            style={styles.closeBttn} 
+                            activeOpacity={1} 
+                            onPress ={() => {setModalVisible1(false)}}>
+                            <MaterialCommunityIcons name="close" size={16} color="black"/>
+                        </Pressable> 
+                    </View>
+                    <View>
+                        <Text style={styles.textHistory}>
+                        Follow the pattern seen below when taking video of your face as a part of our requirements. This is to optimize our feature extraction process as a part of our facial recognition.
+                        </Text>
+                    </View>
+                    <View>
+                        <Image style = {styles.gif} source={require('../../assets/rotating-head.gif')}/>
+                    </View>
+                </View>
+            </Modal> 
             <View style = { styles.TextContainer }>
                 <Text style = { styles.boldText }>Almost!</Text>
             </View>
@@ -137,78 +113,48 @@ function CameraScreen ({ navigation }) {
                 <Text style = { styles.infoText }>Now, we need to see your face to perform our face recognition</Text>
             </View>
             <View style={styles.camContainer}>
-            
                 <Camera
-                    ref = {ref => setCamera(ref)}  
-                    style={styles.camera} 
-                    type={type}
-                    ratio= {'1:1'}
+                   ref={ref => setCameraRef(ref)}
+                   style={styles.camera}
+                   ratio={'1:1'}
+                   type={cameraType}
+                   onCameraReady={() => setIsCameraReady(true)}
                 />
-                <View style = {styles.CamPng}>
-                    {fit && <ImageBackground style = {styles.placeholderPNG} source={{uri: fit}}></ImageBackground>}
-                </View>
-            </View>
-            <View style = {styles.picContainer}>
-                <View>
-                    {image && <ImageBackground style = {styles.placeholder} source={{uri: image}}>
-                        <TouchableOpacity disabled = {image === def ? true : false} onPress = {(()=>rem())}>
-                            {
-                                image !== def ?
-                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>}
-                </View>
-                <View>
-                    {image1 && <ImageBackground style = {styles.placeholder} source={{uri: image1}}>
-                        <TouchableOpacity disabled = {image1 === def ? true : false} onPress = {(()=>rem1())}>
-                            {
-                                image1 !== def ?
-                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>}
-                </View>
-                <View>
-                    {image2 && <ImageBackground style = {styles.placeholder} source={{uri: image2}}>
-                        <TouchableOpacity disabled = {image2 === def ? true : false} onPress = {(()=>rem2())}>
-                            {
-                                image2 !== def ?
-                                (<Image style = {styles.discard} source={require('../../assets/minus.png')}/> ) : null
-                            }
-                        </TouchableOpacity>
-                    </ImageBackground>}
-                </View>
-            </View>
-    
+            </View>   
             <View style={styles.buttonContainer} >
                 <View>
                     <TouchableOpacity
                         style={styles.button}
                         title = "Flip Camera"
-                        onPress={() => {
-                        setType(
-                            type === Camera.Constants.Type.back
-                            ? Camera.Constants.Type.front
-                            : Camera.Constants.Type.back
-                        );
-                        }}>
+                        onPress={() => setCameraType(cameraType === Camera.Constants.Type.front ? Camera.Constants.Type.back : Camera.Constants.Type.front)}>
                         <Image style = {styles.button} source={require('../../assets/flip.png')}/>
                     </TouchableOpacity>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.button2} title = 'Take Picture' onPress = {() => takePicture()}>
+                    <TouchableOpacity style={styles.button2} title = 'Take Picture' 
+                        disabled={!isCameraReady}
+                        onLongPress={() => recordVideo()}
+                        onPressOut={() => stopVideo()}>
                         {/* <Image style = {styles.button} source={require('../../assets/flip.png')}/> */}
                     </TouchableOpacity>
                 </View>   
                 <View>
-                    <TouchableOpacity style={styles.button3} title = 'Submit Photos' onPress = {Upload_Photos}>
-                        <Image style = {styles.button} source={require('../../assets/done.png')}/> 
+                    <TouchableOpacity style={styles.button3} title = 'Submit Photos' onPress={() => pickFromGallery()}>
+                            {galleryItems[0] == undefined ?
+                            <></>
+                            :
+                            <Image
+                                style={styles.galleryButtonImage}
+                                source={{ uri: galleryItems[0].uri }}
+                            />} 
                     </TouchableOpacity>
                 </View>    
             </View>   
         </View>
     )
+
+
+    
 }
 
 export default CameraScreen
@@ -220,15 +166,9 @@ const styles = StyleSheet.create({
     },
 
     camContainer: {
-        flex: .8,
+        flex: 1,
         alignSelf: 'center',
-        margin: 10
-    },
-    
-    picContainer: {
-        marginTop: 20,
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        margin: 30
     },
 
     camera: {
@@ -236,17 +176,10 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
     },
 
-    CamPng: {
-        position: 'absolute',
-        alignSelf: 'center',
-        justifyContent: 'center',
-        flex: 1
-    },
     buttonContainer:{
-      marginTop: 40,
-
       flexDirection: 'row',
-      justifyContent: 'space-evenly'
+      justifyContent: 'space-evenly',
+      alignItems: 'center',
       
     },
     button: {
@@ -255,49 +188,85 @@ const styles = StyleSheet.create({
         
     },
     button2: {
-      borderWidth:3,
-      borderColor:'#6948f4',
-      width:100,
-      height:100,
-      backgroundColor:'#fff',
+      borderWidth:8,
+      borderColor:'#ff404087',
+      width:80,
+      height:80,
+      backgroundColor:'#ff4040',
       borderRadius:100,
     },
     button3: {
       width: 50,
       height: 50,
+      borderWidth: 2,
+      borderColor: 'white',
+      borderRadius: 10,
+      overflow: 'hidden'
       
     },
-    placeholder: {
-        width: 50,
-        height: 50,
-    },
-
-    placeholderPNG: {
-        width: 300,
-        height: 300,
-        opacity: 0.5
-    },
-
     TextContainer: {
-        marginTop: 50,
+        marginTop: 20,
         flexDirection: 'row',
         alignSelf: 'flex-start',
     },
     boldText: {
         color: '#6948f4',
         fontWeight: 'bold',
-        fontSize: 70,
+        fontSize: 50,
+        marginLeft: 10
     },
     infoText: {
         fontSize: 17,
         justifyContent: 'center',
         textAlign: 'center',
-        marginTop: 15,
-        marginBottom: 30
+        marginTop: 10,
+        marginBottom: 10,
+        textAlign: 'justify',
+        margin: 10
     },
-    discard: {
-      height: 20,
-      width: 20,
-      alignSelf: 'flex-end'
-    }
+
+    galleryButtonImage: {
+        width: 50,
+        height: 50,
+    },
+
+    containerHistory:{
+        width: 350,
+        height: 400,
+        backgroundColor: "white",
+        borderRadius: 25,
+        alignSelf: 'center',
+        marginTop: 150,
+        opacity: 1
+      },
+      headerHistory:{
+        width: 350,
+        alignItems: 'center',
+        marginTop: 10
+      },
+
+      closeBttn:{
+        marginTop:-25,
+        alignSelf: 'flex-end',
+        marginRight: 15
+      },
+      textHistory:{
+        // padding: 15,
+        textAlign: 'justify',
+        marginHorizontal: 25,
+        marginVertical: 15
+      },
+
+      notifTitle: {
+        fontWeight: 'bold',
+        fontSize: 16,
+        marginBottom: 5,
+        color: '#A18AFF'
+      },
+
+      gif: {
+          width: 210,
+          height: 210,
+          alignSelf: 'center'
+      }
 })
