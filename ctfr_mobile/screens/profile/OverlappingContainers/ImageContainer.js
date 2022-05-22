@@ -1,6 +1,6 @@
-import { Alert, Animated, StyleSheet, View, Text, Modal, FlatList, Image, Pressable, ScrollView, SafeAreaView, Dimensions} from 'react-native';
+import { Alert, Animated, StyleSheet, View, Text, Modal, FlatList, Image, Pressable, TouchableOpacity as TORN, ScrollView, SafeAreaView, Dimensions} from 'react-native';
 import React, { useContext, useEffect, useState } from 'react';
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import { deviceHeight, deviceWidth } from '../helpers/constants';
 import { Context as AuthContext } from '../../../context/UserContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -12,27 +12,32 @@ const ImageContainer = ({
   imageHeight,
   navigation
 }) => { 
-  const {state, signout} = useContext(AuthContext)
+  const {state, covid_upload, signout} = useContext(AuthContext)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
   const [modalVisible1, setModalVisible1] = useState(false);
   const [modalCovid, setModalCovid] = useState(false)
   const [imageSource, setImageSource] = useState(null);
-  const Notification = ["Baj", "Weakaloski", "Lucitian", "Wwww", "Yeoj"];
+
+  
 
   const changeVal = () => {
-      if(toggleN == true){
-        setToggleN(false)
-        setToggleP(true)
-        setModalCovid(true)
-      }
-      else if (toggleN == false) {
-        setToggleN(true)
-        setToggleP(false)
-        setModalCovid(false)
-        setImageSource(null)
-      }
+    if(toggleN == true){
+      setToggleN(false)
+      setToggleP(true)
+      setModalCovid(true)
+    }
+    else if (toggleN == false) {
+      setToggleN(true)
+      setToggleP(false)
+      setModalCovid(false)
+      setImageSource(null)
+    }
+  }
+
+  const splitFilename = function (str) {
+    return str.split('\\').pop().split('/').pop()
   }
 
   const pickImage = async () => {
@@ -49,7 +54,22 @@ const ImageContainer = ({
     if (!result.cancelled) {
       setImageSource(result.uri);
     }
-  };
+  }
+  
+  const Upload_Covid = () => {
+    const covidFile = {
+      uri: imageSource,
+      name: splitFilename(imageSource),
+      type: 'image/jpg'
+    } 
+    
+    const formData = new FormData()
+
+    formData.append('image', covidFile)
+    console.log(formData)
+    covid_upload(formData)
+  }
+
   return (
     <Animated.View style={[
       styles.topImage,
@@ -206,11 +226,11 @@ const ImageContainer = ({
                 </Text>
               </TouchableOpacity>
             </Pressable>
-            <TouchableOpacity style={styles.modalCovidConfirmButton}>
+            <TORN style={styles.modalCovidConfirmButton} onPress={Upload_Covid}>
               <Text style={styles.modalConfirmText}>
                 Confirm
               </Text>
-            </TouchableOpacity>
+            </TORN>
           </View>
         </View>
       </Modal>
@@ -225,9 +245,7 @@ const ImageContainer = ({
         </View>
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
-            <Text style = { styles.infoText }>Hi, 
-            {/* {state.token.userInfo.data.userInfo.firstname}! */}
-            </Text>
+            <Text style = { styles.infoText }>Hi, {state.token.userInfo.data.userInfo.firstname}!</Text>
           </View>
           <View style = {styles.msgContainer}>
             <Text style = { styles.message }>We advise the you update your Covid-19 status!</Text>
@@ -275,8 +293,8 @@ const styles = StyleSheet.create({
       fontSize: 40,
       color: 'white',
       fontWeight: 'bold',
-      textAlign: 'left',
-      marginRight: 60,
+      textAlign: 'center',
+      // marginRight: 60,
       marginBottom: 10,
       // marginTop: 20,
   },
