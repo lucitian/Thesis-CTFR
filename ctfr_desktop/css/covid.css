@@ -1,5 +1,5 @@
 .covid-pane {
-    grid-template-columns: 0.6fr 1fr;
+    grid-template-columns: 0.5fr 1fr;
     grid-template-rows: 0.05fr 1fr;
     grid-template-areas: 
         'title title'
@@ -25,4 +25,46 @@
     border-radius: 5px;
     box-shadow: 1px 1px 3px #b6b6b6;
     background-color: white;
+}
+
+.covid-row {
+    border-radius: 2px;
+    border: 1px solid;
+    height: 75px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-family: 'Poppins', 'monospace';
+}
+
+.covid-row-icon {
+    width: 75px;
+    height: 75px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+}
+
+.covid-row-context {
+    justify-content: center;
+    width: 70%;
+}
+
+.covid-row-title h2 {
+    font-size: 14px;
+}
+
+.covid-row-id p{
+    font-size: 12px;
+}
+
+.covid-row-name p {
+    font-size: 12px;
+}
+
+.covid-row:hover {
+    background-color: #b6b6b6;
+    transition: 0.075s ease-in;
 }
