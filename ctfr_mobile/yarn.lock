@@ -3263,6 +3263,11 @@
     "expo-modules-core" "~0.2.0"
     "invariant" "2.2.4"
 
+"expo-checkbox@^2.1.0":
+  "integrity" "sha512-5zsw45ZTp91fiVVDV5+ZZ8zWRGnHSZGh4RBy5LZo0y6ezf2zAvO3Dp0dZN4m5bWDilk6t8eHzICz3eo4U1AG+A=="
+  "resolved" "https://registry.npmjs.org/expo-checkbox/-/expo-checkbox-2.1.0.tgz"
+  "version" "2.1.0"
+
 "expo-constants@~11.0.2":
   "integrity" "sha512-CVjM+FbOMe/nFOSly5lnj0seMAYsjjc6+q3X8nIXG+gtw9iNBLwMX3Fz308rxiaPRJw+TBdd5/mcGJdNfoS+ew=="
   "resolved" "https://registry.npmjs.org/expo-constants/-/expo-constants-11.0.2.tgz"

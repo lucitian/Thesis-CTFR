@@ -15,6 +15,7 @@ import CameraScreen from './screens/intro/camera'
 import ProfileScreen from './screens/profile/OverlappingContainers/profile'
 import HistoryScreen from './screens/profile/history'
 import EditScreen from './screens/profile/edit.js'
+import Agreement from './screens/intro/agreement'
 import { Provider as AuthProvider } from './context/UserContext'
 import { Provider as FillProvider } from './context/IntroContext'
 import { setNavigator } from './navigation'
@@ -24,6 +25,20 @@ import CameraScreenMask from './screens/intro/cameraMask'
 const deviceWidth = Dimensions.get('window').width
 
 const switchNavigator = createSwitchNavigator({
+    // resolveAuth: resolveAuth,
+    // login: createStackNavigator({
+    //     login: LoginScreen,
+    //     signup: SignupScreen
+    // },
+    // {
+    //     headerMode: 'none',
+    //     navigationOptions: {
+    //         headerVisible: false
+    //     }
+     }),
+    intro: createStackNavigator({
+        agreement: Agreement,
+
     resolveAuth: resolveAuth,
     login: createStackNavigator({
         login: LoginScreen,
@@ -36,6 +51,7 @@ const switchNavigator = createSwitchNavigator({
         }
     }),
     intro: createStackNavigator({
+
         fill: FillScreen,
         camera: CameraScreen,
         cameraMask: CameraScreenMask,
