@@ -32,6 +32,9 @@ const userInfoSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    covidstatus: {
+        type: String
+    }
 })
 
 mongoose.model('UserInfo', userInfoSchema)

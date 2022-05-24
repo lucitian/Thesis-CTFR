@@ -36,6 +36,7 @@ function renderUsers (users) {
                 <td id="db__data__cell" class="data__birthdate">${data.info[0].birthdate}</td>
                 <td id="db__data__cell" class="data__vaxstatus">${data.info[0].vaxstatus}</td>
                 <td id="db__data__cell" class="data__address">${data.info[0].address}</td>
+                <td id="db__data__cell" class="data__covidstatus">${data.info[0].covidstatus}</td>
             </tr>
         `
     })

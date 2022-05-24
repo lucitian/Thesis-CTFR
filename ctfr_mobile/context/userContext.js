@@ -21,6 +21,11 @@ const authReducer = (state, action) => {
                 errorMessage: '',
                 token: action.payload
             }
+        case 'covid_upload':
+            return {
+                errorMessage: '',
+                token: action.payload
+            }
         case 'signout': 
             return {
                 token: null,
@@ -112,10 +117,10 @@ const signin = (dispatch) => async ({ email, password }) => {
     }
 }
 
-const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address}) => {
+const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus }) => {
     try {
         const response = await api.patch('/update/:id', {
-            firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address
+            firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus
         })
 
         dispatch ({
@@ -132,6 +137,30 @@ const update = (dispatch) => async ({ firstname, middleinitial, lastname, contac
     }
 }
 
+const covid_upload = (dispatch) => async (formData) => {
+    try {
+        const response = await api.post('/profile/covid', formData, {
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+
+        dispatch({
+            type: 'camera_upload',
+            payload: response.data.token
+        })
+
+        navigate('home')
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
     dispatch({
@@ -143,6 +172,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn, update },
+    { signup, signin, signout, clearError, localSignIn, update, covid_upload },
     { token: null, errorMessage: '' }
 )

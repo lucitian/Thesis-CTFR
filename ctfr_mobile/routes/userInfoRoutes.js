@@ -1,11 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
+const fs = require('fs')
 const requireAuth = require('../middlewares/requireAuth')
 
 const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
 const UserImages = mongoose.model('UserImages')
+const UserCovidResult = mongoose.model('UserCovidResult')
 const router = express.Router()
 
 router.use(requireAuth)
@@ -43,6 +45,7 @@ router.post('/fill', async (req, res) => {
                 birthdate,
                 vaxstatus,
                 address,
+                covidstatus: 'Negative',
                 userId: req.user._id
             })
     
@@ -73,7 +76,8 @@ router.patch('/update/:id', async (req,res) => {
             contact: contact,
             birthdate: birthdate,
             vaxstatus: vaxstatus,
-            address: address
+            address: address,
+            covidstatus: 'Negative'
         })
 
         await userInfo.save()
@@ -115,6 +119,45 @@ router.post('/camera/upload', upload.array('image'), async (req, res, next) => {
     await userImages.save()
 
     res.send(userImages)
+})
+
+const covidDIR = '../covidresult'
+
+const covidStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, covidDIR)
+    },
+    filename: function (req, file, cb) {
+        cb(null, req.user._id + '_' + file.originalname)
+    }
+})
+
+const uploadCovid = multer({
+    storage: covidStorage,
+    fileFilter: (req, file, cb) => {
+        if(file.mimetype == 'image/png' || file.mimetype == 'image/jpg' || file.mimetype == 'image./jpeg') {
+            cb(null, true)
+        } else {
+            cb(null, false)
+            return cb(new Error('Only, .png, .jpg. and .jpeg format only!'))
+        }
+    }    
+})
+
+router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
+    const url = req.protocol + '://' + req.get('host')
+    const image = new UserCovidResult({
+        userId: req.user._id,
+        name: req.body.name,
+        image: url + '/covidresult/' + req.file.filename
+    })
+    image.save().then(result => {
+        res.send(image)
+    }).catch(err => {
+        res.status(500).json({
+            error: err
+        })
+    })
 })
 
 module.exports = router
