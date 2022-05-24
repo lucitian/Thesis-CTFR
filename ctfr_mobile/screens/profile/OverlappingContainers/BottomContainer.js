@@ -87,11 +87,9 @@ const BottomContainer = ({
             borderTopRightRadius: animateBorderRadius
             }
         ]}>
-        {/* {props.children} */}
         <View style = {styles.card}>
             <View style = {styles.picContainer}>
                 <View style = {styles.picRim}>
-                    {/* <Image style = { styles.pic2 } source={require('../../../assets/Cars-2006.jpg')}/> */}
                     {imageSource === null ? (
                     <Image
                         source={require('../../../assets/placeholderimage.png')}
@@ -108,35 +106,52 @@ const BottomContainer = ({
                 </View>
             </View>
             <TouchableOpacity onPress={pickImage}>
-                <Image style = {styles.pic2} source={require('../../../assets/minus.png')}/>
                 <Text style = {styles.change}>change picture</Text>
             </TouchableOpacity>
             <View style = {styles.nameContainer}>
-                <Text style = { styles.name }>{state.token.userInfo.data.userInfo.firstname} {state.token.userInfo.data.userInfo.middleinitial}. {state.token.userInfo.data.userInfo.lastname}</Text>
+                <Text style = { styles.name }>
+                    {/* {state.token.userInfo.data.userInfo.firstname} {state.token.userInfo.data.userInfo.middleinitial}. {state.token.userInfo.data.userInfo.lastname} */}
+                    James Dela Pena
+                    </Text>
                 <TouchableOpacity onPress={() => navigation.navigate('edit')}>
                     <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
                 </TouchableOpacity>  
             </View>
             <View>
-                <Text style = {styles.email}>{state.token.userInfo.data.user.email}</Text>
+                <Text style = {styles.email}>
+                    {/* {state.token.userInfo.data.user.email} */}
+                    james.delapena@tup.edi.com
+                    </Text>
             </View>
             
             <View style = {styles.infoContainer}>
                 <View style = {styles.containerStrips}>
                     <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.vaxstatus}</Text>
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                        {/* {state.token.userInfo.data.userInfo.vaxstatus} */}
+                        Fully Vaccinated
+                        </Text>
                 </View>
                 <View style = {styles.containerStrips}>
                     <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.birthdate}</Text>
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                        {/* {state.token.userInfo.data.userInfo.birthdate} */}
+                        03/25/2000
+                        </Text>
                 </View>
                 <View style = {styles.containerStrips}>
                     <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.contact}</Text>
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                        {/* {state.token.userInfo.data.userInfo.contact} */}
+                        09550259942
+                        </Text>
                 </View>
                 <View style = {styles.containerStrips}>
                     <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>{state.token.userInfo.data.userInfo.address}</Text>
+                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                        {/* {state.token.userInfo.data.userInfo.address} */}
+                        Noveleta, Cavite
+                        </Text>
                 </View>
                 <TouchableOpacity style = {styles.logout} onPress = {signout}>
                     <View style = {styles.containerStripsLogout}>      
@@ -179,8 +194,8 @@ const styles = StyleSheet.create({
         // backgroundColor: 'black'
     },  
     pic: {
-        width: 130,
-        height: 130,
+        width: 100,
+        height: 100,
         borderRadius: 280,
         alignSelf: 'center'
     },  
@@ -257,7 +272,7 @@ const styles = StyleSheet.create({
         flexDirection: "row"
     },
     containerStripsLogout: {
-        backgroundColor: "#7A3213",
+        backgroundColor: "#C3BBE5",
         width: 300,
         height: 50,
         borderRadius: 25,
@@ -293,13 +308,11 @@ const styles = StyleSheet.create({
         padding: 10
     },
     picRim: {
-        width: 140,
-        height: 140,
+        width: 110,
+        height: 110,
         borderRadius: 70,
         borderWidth: 5,
         borderColor:'#A18AFF',
         alignSelf: 'center'
-        // padding: 7,
-        // backgroundColor: 'blue'
     },
 })
