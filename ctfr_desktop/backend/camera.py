@@ -14,11 +14,7 @@ def open_cam():
 @app.route('/close_cam')
 def close_cam():
     return Response(camera().close_cam())
-
-@app.route('/getcovid')
-def get_covid_result():
-    return None
-
+    
 class camera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)

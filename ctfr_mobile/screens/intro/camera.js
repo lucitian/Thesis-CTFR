@@ -196,6 +196,24 @@ const styles = StyleSheet.create({
       height:80,
       backgroundColor:'#ff4040',
       borderRadius:100,
+<<<<<<< HEAD
+=======
+    },
+    button3: {
+      width: 50,
+      height: 50,
+      
+    },
+    placeholder: {
+        width: 50,
+        height: 50,
+    },
+
+    placeholderPNG: {
+        width: 300,
+        height: 300,
+        opacity: 0.5
+>>>>>>> 8c8bbbff13a730f099555630f5936af5188779f9
     },
 
     TextContainer: {

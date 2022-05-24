@@ -35,9 +35,29 @@ const switchNavigator = createSwitchNavigator({
     //     navigationOptions: {
     //         headerVisible: false
     //     }
+<<<<<<< HEAD
     // }),
     intro: createStackNavigator({
         agreement: Agreement,
+=======
+     }),
+    intro: createStackNavigator({
+        agreement: Agreement,
+
+    resolveAuth: resolveAuth,
+    login: createStackNavigator({
+        login: LoginScreen,
+        signup: SignupScreen
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        }
+    }),
+    intro: createStackNavigator({
+
+>>>>>>> 8c8bbbff13a730f099555630f5936af5188779f9
         fill: FillScreen,
         camera: CameraScreen,
         cameraMask: CameraScreenMask,
