@@ -1,12 +1,20 @@
-import React, { useState, useEffect, useContext } from 'react'
-import { StyleSheet, Text, View, Image, TouchableOpacity, Modal, Pressable, SafeAreaView, ScrollView, ImageBackground } from 'react-native'
+import React, { useState, useEffect, useRef, useContext } from 'react'
+import { StyleSheet, Text, View, Image, TouchableOpacity, ToastAndroid, Modal, Pressable, SafeAreaView, ScrollView, ImageBackground } from 'react-native'
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera'
+import { Audio } from 'expo-av'
 import * as ImagePicker from 'expo-image-picker'
 import * as MediaLibrary from 'expo-media-library'
+import { useNavigation } from '@react-navigation/native'
+
+import { Context as IntroContext } from '../../context/IntroContext'
+
+import instance from '../../api/api'
 
 function CameraScreenMask ({ navigation }) {
+    const { camera_uploadMask } = useContext(IntroContext)
     const [hasCameraPermission, setHasCameraPermission ] = useState(false)
+    const [hasAudioPermissions, setHasAudioPermissions] = useState(false)
     const [hasGalleryPermission, setHasGalleryPermission ] = useState(false)
     const [galleryItems, setGalleryItems] = useState([])
     const [ cameraType, setCameraType ] = useState(Camera.Constants.Type.front)
@@ -19,6 +27,9 @@ function CameraScreenMask ({ navigation }) {
         (async () => {
             const cameraStatus = await Camera.requestPermissionsAsync()
             setHasCameraPermission(cameraStatus.status == 'granted')
+
+            const audioStatus = await Audio.requestPermissionsAsync()
+            setHasAudioPermissions(audioStatus.status == 'granted')
 
             const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
             setHasGalleryPermission(galleryStatus.status == 'granted')
@@ -36,8 +47,11 @@ function CameraScreenMask ({ navigation }) {
                 const options = {maxDuration: 10, quality: Camera.Constants.VideoQuality['720'], mute: true}
                 const videoRecordPromise = cameraRef.recordAsync(options)
                 if(videoRecordPromise){
-                    const data = await videoRecordPromise;
-                    const source = data.uri
+                    const data = await videoRecordPromise.then(data => {
+                    MediaLibrary.saveToLibraryAsync(data.uri)
+                    console.log(data)
+                    });
+                    console.log(data)
                 }
             } catch(error) {
                 console.warn(error)
@@ -51,6 +65,10 @@ function CameraScreenMask ({ navigation }) {
         }
     }
 
+    const splitFilename = function (str) {
+        return str.toString().split('\\').pop().split('/').pop()
+    }
+    
     const pickFromGallery = async () => {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Videos,
@@ -59,13 +77,23 @@ function CameraScreenMask ({ navigation }) {
             quality: 1
         })
         if(!result.cancelled){
-            //NOTE: dito yung pag save sa database @tian  
-            //iyak nanaman mga kakampwet wahaha
+            const videoFile = {
+                uri: result.uri,
+                name: splitFilename(result.uri),
+                type: 'video/mp4'
+            }
+
+            const video = videoFile
+            const formData = new FormData()
+
+            formData.append('video', video)
+            camera_uploadMask(formData)
+            console.log('bruh')
+            console.log(result.uri)
         }
     }
 
-
-    if(!hasCameraPermission || !hasGalleryPermission){
+    if(!hasCameraPermission || !hasAudioPermissions || !hasGalleryPermission){
         return (
             <View>
                 <Text>You do not have permissions</Text>
@@ -87,6 +115,7 @@ function CameraScreenMask ({ navigation }) {
                     style={styles.camera} 
                     type={cameraType}
                     ratio= {'1:1'}
+                    onCameraReady={() => setIsCameraReady(true)}
                     onMountError={(error) => {
                         console.log("cammera error", error);
                       }}

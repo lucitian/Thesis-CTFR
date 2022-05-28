@@ -108,18 +108,23 @@ const upload = multer({
     }
 })
 
-router.post('/camera/upload', upload.array('image'), async (req, res, next) => {
+router.post('/camera/upload', upload.single('video'), async (req, res, next) => {
     const paths = req.files.map(file => file.path)
 
-    const userImages = new UserImages({
-        userId: req.user._id,
-        image: paths
-    })
+    try {
+        const userImages = new UserImages({
+            userId: req.user._id,
+            image: paths
+        })
 
-    await userImages.save()
+        await userImages.save()
+        res.send(userImages)
 
-    res.send(userImages)
+    } catch (err) {
+        return res.status(422).send(err.message)
+    }
 })
+
 
 const covidDIR = '../covidresult'
 

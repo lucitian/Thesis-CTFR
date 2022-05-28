@@ -68,8 +68,32 @@ const camera_upload = (dispatch) => async (formData) => {
     }
 }
 
+const camera_uploadMask = (dispatch) => async (formData) => {
+    try {
+        const response = await api.post('/camera/upload', formData, {
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+
+        dispatch({
+            type: 'camera_uploadMask',
+            payload: response.data.token
+        })
+
+        navigate('profile')
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
 export const { Provider, Context } = createDataContext(
     userReducer,
-    { fillup, camera_upload },
+    { fillup, camera_upload, camera_uploadMask },
     { token: null, errorMessage: '' }
 )

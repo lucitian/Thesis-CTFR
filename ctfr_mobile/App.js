@@ -36,18 +36,18 @@ const switchNavigator = createSwitchNavigator({
     //         headerVisible: false
     //     }
     // }),
-    // intro: createStackNavigator({
-    // //     agreement: Agreement,
-    // //     fill: FillScreen,
-    //     // camera: CameraScreen,
-    //     cameraMask: CameraScreenMask,
-    // },
-    // {
-    //     headerMode: 'none',
-    //     navigationOptions: {
-    //         headerVisible: false
-    //     },
-    // }),
+    intro: createStackNavigator({
+    //     agreement: Agreement,
+    //     fill: FillScreen,
+        camera: CameraScreen,
+        cameraMask: CameraScreenMask,
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        },
+    }),
     home: createStackNavigator({
         // main: createBottomTabNavigator({
         profile: ProfileScreen,

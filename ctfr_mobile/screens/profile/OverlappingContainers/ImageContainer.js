@@ -245,8 +245,9 @@ const ImageContainer = ({
         </View>
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
-            <Text style = { styles.infoText }>Hi, James
-            {/* {state.token.userInfo.data.userInfo.firstname}! */}
+            <Text style = { styles.infoText }>
+              {/* Hi, James */}
+            {state.token.userInfo.data.userInfo.firstname}!
             </Text>
           </View>
           <View style = {styles.msgContainer}>
