@@ -68,3 +68,22 @@
     background-color: #b6b6b6;
     transition: 0.075s ease-in;
 }
+
+.covid-result {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 25px;
+    gap: 25px;
+}
+
+.covid-result-image {
+    display: flex;
+    justify-content: center;
+}
+
+.covid-result-image img {
+    width: 60%;
+    height: auto;
+}

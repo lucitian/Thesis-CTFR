@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
 const fs = require('fs')
+const path = require('path')
 const requireAuth = require('../middlewares/requireAuth')
 
 const User = mongoose.model('User')
@@ -150,11 +151,13 @@ const uploadCovid = multer({
 })
 
 router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
-    const url = req.protocol + '://' + req.get('host')
     const image = new UserCovidResult({
         userId: req.user._id,
         name: req.body.name,
-        image: url + '/covidresult/' + req.file.filename
+        image: {
+            data: fs.readFileSync(path.join(__dirname, '..', '..', 'covidresult', req.file.filename)),
+            contentType: 'image/jpeg'
+        }
     })
     image.save().then(result => {
         res.send(image)

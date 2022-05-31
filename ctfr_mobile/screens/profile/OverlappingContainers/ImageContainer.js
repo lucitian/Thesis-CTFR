@@ -66,8 +66,9 @@ const ImageContainer = ({
     const formData = new FormData()
 
     formData.append('image', covidFile)
-    console.log(formData)
     covid_upload(formData)
+    setToggleP(true)
+    setModalCovid(false)
   }
 
   return (

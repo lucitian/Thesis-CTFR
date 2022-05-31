@@ -2,7 +2,7 @@ const covidRow = document.getElementById('covid-row')
 const covidExpandResult = document.getElementById('covid-result')
 
 var resultData = {}
-
+var getDataID = ""
 const get_covid = () => {
     fetch('http://localhost:5000/getcovid', {
         headers: {
@@ -46,16 +46,26 @@ get_covid()
 const requestExpand = (covidRow) => {
     let getIDNode = covidRow.childNodes[3].childNodes[3].innerText
     let getID = getIDNode.split(" ")
+    getDataID = getID
+    fetch(`http://localhost:5000/getresult/${getID[2]}`)
+    .then(res => covidConvert(res))
+    .catch(error => console.log(error))
+}
 
+const covidConvert = (data) => {
+    console.log(resultData)
     covidExpandResult.innerHTML = ""
     for (let i = 0; i < resultData.length; i++) {
-        if (getID[2] == resultData[i].userId) {
+        if (getDataID[2] == resultData[i].userId) {
             covidExpandResult.innerHTML += `
-                <div>
-                    <h1>${resultData[i].userId}</h1>
+                <div class="covid-result-image">
+                    <img src="${data.url}">
                 </div>
-                <div>
-                    <img src="${resultData[i].image}"></img>
+                <div class="covid-result-context">
+                    <h1>${resultData[i].userId}</h1>
+                    <p>
+                        ${resultData[i].info[i].firstname}
+                    </p>
                 </div>
             `
             break
