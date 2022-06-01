@@ -1,4 +1,4 @@
-const covidRow = document.getElementById('covid-row')
+const covidRow = document.getElementById('covid-notif')
 const covidExpandResult = document.getElementById('covid-result')
 
 var resultData = {}
@@ -23,18 +23,20 @@ function renderCovidRow (covidResult) {
     covidRow.innerHTML = ''
     covidResult.forEach(data => {
         covidRow.innerHTML += `
-            <div class="covid-row-icon">
-                <i class="fas fa-exclamation-triangle"></i>
-            </div>
-            <div class="covid-row-context">
-                <div class="covid-row-title">
-                    <h2>COVID-19 Request</h2>
+            <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
+                <div class="covid-row-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
                 </div>
-                <div class="covid-row-id">
-                    <p>User ID: ${data.userId}</p>
-                </div>
-                <div class="covid-row-name">
-                    <p>Name: ${data.info[0].firstname} ${data.info[0].middleinitial}. ${data.info[0].lastname}</p>
+                <div class="covid-row-context">
+                    <div class="covid-row-title">
+                        <h2>COVID-19 Request</h2>
+                    </div>
+                    <div class="covid-row-id">
+                        <p>User ID: ${data.userId}</p>
+                    </div>
+                    <div class="covid-row-name">
+                        <p>Name: ${data.info[0].firstname} ${data.info[0].middleinitial}. ${data.info[0].lastname}</p>
+                    </div>
                 </div>
             </div>
         `
@@ -53,18 +55,22 @@ const requestExpand = (covidRow) => {
 }
 
 const covidConvert = (data) => {
-    console.log(resultData)
     covidExpandResult.innerHTML = ""
     for (let i = 0; i < resultData.length; i++) {
         if (getDataID[2] == resultData[i].userId) {
             covidExpandResult.innerHTML += `
+                <div class="covid-result-title">
+                    <h1>COVID-19 TEST RESULT</h1>
+                </div>
                 <div class="covid-result-image">
                     <img src="${data.url}">
                 </div>
                 <div class="covid-result-context">
-                    <h1>${resultData[i].userId}</h1>
+                    <h1>User ID: ${resultData[i].userId}</h1>
                     <p>
-                        ${resultData[i].info[i].firstname}
+                        Name: ${resultData[i].info[0].firstname} ${resultData[i].info[0].middleinitial}. ${resultData[i].info[0].lastname}<br>
+                        Email: ${resultData[i].email[0].email} <br>
+                        Covid Status: <span class="covid-status">${resultData[i].info[0].covidstatus}<span>
                     </p>
                 </div>
             `

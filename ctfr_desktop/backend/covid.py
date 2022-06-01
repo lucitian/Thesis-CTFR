@@ -56,10 +56,13 @@ def get_file(id):
         im = Image.open(BytesIO(base64.b64decode(img_encode)))
         
         img_io = BytesIO()
-        im = im.save(img_io, 'jpeg')
+        try:
+            im = im.save(img_io, 'png')
+        except KeyError:
+            im = im.save(img_io, 'jpeg/jpg')
         img_io.seek(0)
 
-        return send_file(img_io, mimetype='image/jpeg', as_attachment=True, attachment_filename='result.jpg')
+        return send_file(img_io, mimetype='image/*', as_attachment=True, attachment_filename='result.jpg')
 
     except Exception as ex:
         print(ex)
