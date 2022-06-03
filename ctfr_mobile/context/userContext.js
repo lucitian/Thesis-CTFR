@@ -45,11 +45,12 @@ const localSignIn = (dispatch) => async () => {
     const token = await AsyncStorage.getItem('token')
 
     if (token) {
-        if (await AsyncStorage.getItem('userInfo')) {
-            const userInfo = await api.get('/profile/:id')
+        if (await AsyncStorage.getItem('userinfo_exist')) {
+            const userInfo = await AsyncStorage.getItem('userinfo')
+
             dispatch({
                 type:'signin',
-                payload: {token: token, userInfo: userInfo}
+                payload: {token: token, userInfo: JSON.parse(userInfo)}
             })
     
             navigate('home')
@@ -96,12 +97,13 @@ const signin = (dispatch) => async ({ email, password }) => {
         await AsyncStorage.setItem('token', response.data.token)
 
         if (response.data.userInfo) {
-            await AsyncStorage.setItem('userInfo', 'true')
-            const userInfo = await api.get('/profile/:id')
+            await AsyncStorage.setItem('userinfo_exist', 'true')
+            const userInfo = await api.get('/profile')
+            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfo.data))
 
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, userInfo: userInfo}
+                payload: {token: response.data.token, userInfo: userInfo.data}
             })
 
             navigate('home')
@@ -162,6 +164,7 @@ const covid_upload = (dispatch) => async (formData) => {
 }
 
 const signout = (dispatch) => async () => {
+    await AsyncStorage.removeItem('userinfo')
     await AsyncStorage.removeItem('token')
     dispatch({
         type: 'signout'

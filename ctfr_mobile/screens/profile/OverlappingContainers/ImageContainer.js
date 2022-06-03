@@ -20,8 +20,6 @@ const ImageContainer = ({
   const [modalCovid, setModalCovid] = useState(false)
   const [imageSource, setImageSource] = useState(null);
 
-  
-
   const changeVal = () => {
     if(toggleN == true){
       setToggleN(false)
@@ -247,8 +245,7 @@ const ImageContainer = ({
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>
-              {/* Hi, James */}
-            {state.token.userInfo.data.userInfo.firstname}!
+              {state.token.userInfo.userInfo.firstname}!
             </Text>
           </View>
           <View style = {styles.msgContainer}>

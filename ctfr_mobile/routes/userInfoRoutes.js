@@ -13,14 +13,14 @@ const router = express.Router()
 
 router.use(requireAuth)
 
-router.get('/profile/:id', async (req, res) => {
+router.get('/profile', async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
         const userInfo = await UserInfo.findOne({ userId: req.user._id})
         
         res.status(200).json({user: user, userInfo: userInfo})
     } catch (err) {
-        res.status(300).send(err)
+        res.status(304).send(err.message)
     }
 })
 
