@@ -20,6 +20,16 @@ const ImageContainer = ({
   const [modalCovid, setModalCovid] = useState(false)
   const [imageSource, setImageSource] = useState(null);
 
+  useEffect(() => {
+    if ((state.token.userInfo.covidstatus).toLowerCase() == 'negative') {
+      setToggleN(true)
+      setToggleP(false)
+    } else {
+      setToggleN(false)
+      setToggleP(true)
+    }
+  })
+
   const changeVal = () => {
     if(toggleN == true){
       setToggleN(false)
@@ -245,7 +255,7 @@ const ImageContainer = ({
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>
-              {state.token.userInfo.userInfo.firstname}!
+              {state.token.userInfo.firstname}!
             </Text>
           </View>
           <View style = {styles.msgContainer}>

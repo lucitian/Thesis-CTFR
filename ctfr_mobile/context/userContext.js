@@ -29,6 +29,8 @@ const authReducer = (state, action) => {
         case 'signout': 
             return {
                 token: null,
+                user: null,
+                userinfo: null,
                 errorMessage: ''
             }
         case 'clear_error':
@@ -46,14 +48,15 @@ const localSignIn = (dispatch) => async () => {
 
     if (token) {
         if (await AsyncStorage.getItem('userinfo_exist')) {
+            const user = await AsyncStorage.getItem('user')
             const userInfo = await AsyncStorage.getItem('userinfo')
 
             dispatch({
                 type:'signin',
-                payload: {token: token, userInfo: JSON.parse(userInfo)}
+                payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo)}
             })
     
-            navigate('home')
+            navigate('profile')
         } else {
             dispatch({
                 type:'signin',
@@ -98,15 +101,18 @@ const signin = (dispatch) => async ({ email, password }) => {
 
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userinfo_exist', 'true')
-            const userInfo = await api.get('/profile')
-            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfo.data))
-
+            const userresponse = await api.get('/profile')
+            const user = userresponse.data.user
+            const userInfo = userresponse.data.userInfo
+            await AsyncStorage.setItem('user', JSON.stringify(user))
+            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfo))
+            
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, userInfo: userInfo.data}
+                payload: {token: response.data.token, user: user, userInfo: userInfo}
             })
 
-            navigate('home')
+            navigate('profile')
         } else {
             navigate('fill')
         }       
@@ -119,24 +125,32 @@ const signin = (dispatch) => async ({ email, password }) => {
     }
 }
 
-const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus }) => {
+const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus}) => {
     try {
-        const response = await api.patch('/update/:id', {
+        const response = await api.patch('/update', {
             firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus
         })
+        const token = await AsyncStorage.getItem('token')
+        const user = await AsyncStorage.getItem('user')
+        const userresponse = await api.get('/profile')
+        await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
 
         dispatch ({
             type:'update',
-            payload: response.data.token
+            payload: {token: token, user: JSON.parse(user), userInfo: userresponse.data.userInfo}
         })
-        navigate('home')
+
+        navigate('profile')
     } catch (err) {
-        console.log(err)
         dispatch({
             type: 'update_error',
             payload: 'Something went wrong'
         })
     }
+}
+
+const covid_update = (dispatch) => async (covidstatus) => {
+
 }
 
 const covid_upload = (dispatch) => async (formData) => {
@@ -164,8 +178,9 @@ const covid_upload = (dispatch) => async (formData) => {
 }
 
 const signout = (dispatch) => async () => {
-    await AsyncStorage.removeItem('userinfo')
     await AsyncStorage.removeItem('token')
+    await AsyncStorage.removeItem('user')
+    await AsyncStorage.removeItem('userinfo')
     dispatch({
         type: 'signout'
     })

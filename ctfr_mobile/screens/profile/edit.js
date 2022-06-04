@@ -4,23 +4,19 @@ import { TextInput, Button, Provider } from 'react-native-paper'
 import { TextInputMask } from 'react-native-masked-text'
 import { useForm, Controller } from 'react-hook-form'
 import DropDown from 'react-native-paper-dropdown'
-import { NavigationEvents } from 'react-navigation'
-
-import { Context as IntroContext } from '../../context/IntroContext'
 import { Context as AuthContext } from '../../context/UserContext'
 
 function FillScreen ({ navigation }) {
     const { state, update, signout } = useContext(AuthContext)
-
     const { control, reset } = useForm({ mode: 'onBlur' })
 
-    const [ firstname, setFirstName ] = useState(state.token.userInfo.userInfo.firstname)
-    const [ middleinitial, setMiddleInitial ] = useState(state.token.userInfo.userInfo.middleinitial)
-    const [ lastname, setLastName ] = useState(state.token.userInfo.userInfo.lastname)
-    const [ contact, setContact ] = useState(state.token.userInfo.userInfo.contact)
-    const [ birthdate, setBirthdate ] = useState(state.token.userInfo.userInfo.birthdate)
-    const [ vaxstatus, setVaxStatus ] = useState(state.token.userInfo.userInfo.vaxstatus)
-    const [ address, setAddress ] = useState(state.token.userInfo.userInfo.address)
+    const [ firstname, setFirstName ] = useState(state.token.userInfo.firstname)
+    const [ middleinitial, setMiddleInitial ] = useState(state.token.userInfo.middleinitial)
+    const [ lastname, setLastName ] = useState(state.token.userInfo.lastname)
+    const [ contact, setContact ] = useState(state.token.userInfo.contact)
+    const [ birthdate, setBirthdate ] = useState(state.token.userInfo.birthdate)
+    const [ vaxstatus, setVaxStatus ] = useState(state.token.userInfo.vaxstatus)
+    const [ address, setAddress ] = useState(state.token.userInfo.address)
 
     const [showDropDown, setShowDropDown] = useState(false);
     const vaxOptions = [
@@ -68,11 +64,10 @@ function FillScreen ({ navigation }) {
                             })=> (
                                 <TextInput
                                     label = "First Name"
-                                    
                                     value = {firstname}
                                     onBlur={onBlur}            
                                     onChangeText={setFirstName} 
-                                    style = { styles.infoTextInput} 
+                                    style = {styles.infoTextInput} 
                                     mode = 'outlined' 
                                 />
                             )} 
@@ -91,7 +86,7 @@ function FillScreen ({ navigation }) {
                                     value={middleinitial}
                                     onBlur={onBlur}            
                                     onChangeText={setMiddleInitial} 
-                                    style = { styles.infoTextInput} 
+                                    style = {styles.infoTextInput} 
                                     mode = 'outlined' 
                                 />
                             )} 
@@ -112,7 +107,7 @@ function FillScreen ({ navigation }) {
                                     value={lastname}
                                     onBlur={onBlur}            
                                     onChangeText={setLastName} 
-                                    style = { styles.infoTextInput} 
+                                    style = {styles.infoTextInput} 
                                     mode = 'outlined' 
                                 />
                             )} 
@@ -134,7 +129,7 @@ function FillScreen ({ navigation }) {
                                     value={(contact).toString()}
                                     onBlur={onBlur}         
                                     onChangeText={setContact} 
-                                    style = { styles.infoTextInput } 
+                                    style = {styles.infoTextInput } 
                                     mode = 'outlined' 
                                 />
                             )} 
@@ -169,7 +164,7 @@ function FillScreen ({ navigation }) {
                                             }}
                                         />
                                     )}
-                                    style = { styles.infoTextInput }
+                                    style = {styles.infoTextInput }
                                     mode = 'outlined'
                                 />
                             )}

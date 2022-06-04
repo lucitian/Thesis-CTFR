@@ -59,8 +59,8 @@ router.post('/fill', async (req, res) => {
     }
 })
 
-router.patch('/update/:id', async (req,res) => {
-    const { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address } = req.body
+router.patch('/update', async (req,res) => {
+    const { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus } = req.body
 
     if ( !firstname || !middleinitial || !lastname || !contact || !birthdate || !vaxstatus || !address ) {
         console.log(firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address)
@@ -78,11 +78,11 @@ router.patch('/update/:id', async (req,res) => {
             birthdate: birthdate,
             vaxstatus: vaxstatus,
             address: address,
-            covidstatus: 'Negative'
+            covidstatus: covidstatus
         })
 
         await userInfo.save()
-        res.send(userInfo)
+        res.status(200).send(userInfo)
     } catch (err) {
         console.log(err)
         return res.status(404).send(err)
@@ -148,6 +148,11 @@ const uploadCovid = multer({
             return cb(new Error('Only, .png, .jpg. and .jpeg format only!'))
         }
     }    
+})
+
+router.patch('/covidupdate', async (req,res) => {
+    const covidstatus = req.body
+
 })
 
 router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
