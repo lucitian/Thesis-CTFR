@@ -12,7 +12,7 @@ const ImageContainer = ({
   imageHeight,
   navigation
 }) => { 
-  const {state, covid_upload, signout} = useContext(AuthContext)
+  const {state, covid_upload} = useContext(AuthContext)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
@@ -227,6 +227,8 @@ const ImageContainer = ({
                 </View>    
               </Pressable>
           </View>
+
+          {/* Covid-19 Modal */}
           <View style={styles.modalCovidButtons}>
             <Pressable onPress = {() => changeVal(!toggleN)}>
               <TouchableOpacity style={styles.modalCovidCancelButton}>
@@ -243,6 +245,8 @@ const ImageContainer = ({
           </View>
         </View>
       </Modal>
+      
+      {/* Main Menu */}
       <View style = {styles.containerMain}>
         <View style = {styles.notif}>
           <TouchableOpacity style = {styles.containerBttn} onPress={() => setModalVisible(true)}>
@@ -255,7 +259,7 @@ const ImageContainer = ({
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>
-              {state.token.userInfo.firstname}!
+              {/* {state.token.userInfo.firstname}! */}
             </Text>
           </View>
           <View style = {styles.msgContainer}>

@@ -4,8 +4,7 @@ import { deviceHeight, deviceWidth } from '../helpers/constants';
 import BottomContainer from './BottomContainer';
 import ImageContainer from './ImageContainer';
 import Background from './Background';
-import { NavigationEvents } from 'react-navigation'
-
+import { Context as AuthContext } from '../../../context/UserContext'
 
 const OverlappingContainers = (props) => {
   const [scrollY, setScrollY] = useState(new Animated.Value(0));

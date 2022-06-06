@@ -28,10 +28,15 @@ const userReducer = (state, action) => {
 
 const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus }) => {
     try {
-        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus })
+        await api.post('/fill', { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus })
+        const token = await AsyncStorage.getItem('token')
+        const user = await AsyncStorage.getItem('user')
+        const userresponse = await api.get('/profile')
+        await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
+        
         dispatch({
             type: 'fillup',
-            payload: response.data.token
+            payload: {token: token, user: JSON.parse(user), userInfo: userresponse.data.userInfo}
         })
 
         navigate('home')

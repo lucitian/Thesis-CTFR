@@ -153,6 +153,18 @@ const uploadCovid = multer({
 router.patch('/covidupdate', async (req,res) => {
     const covidstatus = req.body
 
+    try {
+        const userInfo = await UserInfo.findOneAndUpdate(
+            {userId: req.user._id},
+            {covidstatus: covidstatus}
+        )
+
+        await userInfo.save()
+        res.status(200).send(userInfo)
+    } catch(err) {
+        console.log(err)
+        return res.status(404).send(err)
+    }
 })
 
 router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {

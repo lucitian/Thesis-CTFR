@@ -29,8 +29,6 @@ const authReducer = (state, action) => {
         case 'signout': 
             return {
                 token: null,
-                user: null,
-                userinfo: null,
                 errorMessage: ''
             }
         case 'clear_error':
@@ -56,7 +54,7 @@ const localSignIn = (dispatch) => async () => {
                 payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo)}
             })
     
-            navigate('profile')
+            navigate('home')
         } else {
             dispatch({
                 type:'signin',
@@ -106,13 +104,13 @@ const signin = (dispatch) => async ({ email, password }) => {
             const userInfo = userresponse.data.userInfo
             await AsyncStorage.setItem('user', JSON.stringify(user))
             await AsyncStorage.setItem('userinfo', JSON.stringify(userInfo))
-            
+
             dispatch({
                 type: 'signin',
                 payload: {token: response.data.token, user: user, userInfo: userInfo}
             })
 
-            navigate('profile')
+            navigate('home')
         } else {
             navigate('fill')
         }       
@@ -127,7 +125,7 @@ const signin = (dispatch) => async ({ email, password }) => {
 
 const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus}) => {
     try {
-        const response = await api.patch('/update', {
+        await api.patch('/update', {
             firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus
         })
         const token = await AsyncStorage.getItem('token')
@@ -140,7 +138,7 @@ const update = (dispatch) => async ({ firstname, middleinitial, lastname, contac
             payload: {token: token, user: JSON.parse(user), userInfo: userresponse.data.userInfo}
         })
 
-        navigate('profile')
+        navigate('home')
     } catch (err) {
         dispatch({
             type: 'update_error',
@@ -150,7 +148,24 @@ const update = (dispatch) => async ({ firstname, middleinitial, lastname, contac
 }
 
 const covid_update = (dispatch) => async (covidstatus) => {
+    try {
+        const response = await api.patch('/covidupdate', {covidstatus})
+        const token = await AsyncStorage.getItem('token')
+        const user = await AsyncStorage.getItem('user')
+        const userresponse = await api.get('/profile')
+        await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
 
+        dispatch({
+            type: 'update',
+            payload: {token: token, user: JSON.parse(user)}
+        })
+        
+    } catch (err) {
+        dispatch({
+            type: 'update_error',
+            payload: 'Something went wrong'
+        })
+    }
 }
 
 const covid_upload = (dispatch) => async (formData) => {
@@ -167,8 +182,6 @@ const covid_upload = (dispatch) => async (formData) => {
             type: 'camera_upload',
             payload: response.data.token
         })
-
-        navigate('home')
     } catch (err) {
         dispatch({
             type: 'add_error',
@@ -179,8 +192,7 @@ const covid_upload = (dispatch) => async (formData) => {
 
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
-    await AsyncStorage.removeItem('user')
-    await AsyncStorage.removeItem('userinfo')
+
     dispatch({
         type: 'signout'
     })

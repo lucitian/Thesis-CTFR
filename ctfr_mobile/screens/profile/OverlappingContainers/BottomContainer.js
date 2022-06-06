@@ -3,9 +3,8 @@ import { Animated, StyleSheet,TouchableOpacity, Image, ImageBackground, View, Te
 import { deviceHeight, deviceWidth } from '../helpers/constants';
 import { Context as AuthContext } from '../../../context/UserContext';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { NavigationEvents } from 'react-navigation'
+import { navigate } from '../../../navigation'
 import * as ImagePicker from 'expo-image-picker';
-
 
 const BottomContainer = ({
     navigation,
@@ -18,7 +17,7 @@ const BottomContainer = ({
     const animateBorderRadius = scrollY.interpolate({
         inputRange: [0, 450 - 100],
         outputRange: [40, 0],
-  })
+    })
 
     // function selectImage() {
     //     let options = {
@@ -52,115 +51,113 @@ const BottomContainer = ({
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
-          mediaTypes: ImagePicker.MediaTypeOptions.All,
-          allowsEditing: true,
-          aspect: [4, 3],
-          quality: 1,
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        allowsEditing: true,
+        aspect: [4, 3],
+        quality: 1,
         }); 
     
         console.log(result);
     
         if (!result.cancelled) {
-          setImageSource(result.uri);
+        setImageSource(result.uri);
         }
-      };
+    };
 
-      
-  return (
-    <Animated.ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={{
-        paddingBottom: 200,
-        backgroundColor: 'transparent',
-        marginTop: -100,
-      }}
-      onScroll={Animated.event(
-        [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-        { useNativeDriver: true },
-        () => { },          // Optional async listener
-      )}
-      style={[{ paddingTop: imageHeight }]}>
-      <Animated.View style={[
-        styles.block,
-            {
-            borderTopLeftRadius: animateBorderRadius,
-            borderTopRightRadius: animateBorderRadius
-            }
-        ]}>
-        <View style = {styles.card}>
-            <View style = {styles.picContainer}>
-                <View style = {styles.picRim}>
-                    {imageSource === null ? (
-                    <Image
-                        source={require('../../../assets/placeholderimage.png')}
-                        style={styles.pic}
-                        resizeMode='contain'
-                    />
-                    ) : (
-                    <Image
-                        source={{ uri: imageSource }}
-                        style={styles.pic}
-                        resizeMode='cover'
-                    />
-                    )}
-                </View>
-            </View>
-            <TouchableOpacity onPress={pickImage}>
-                <Text style = {styles.change}>change picture</Text>
-            </TouchableOpacity>
-            <View style = {styles.nameContainer}>
-                <Text style = { styles.name }>
-                    {state.token.userInfo.firstname} {state.token.userInfo.middleinitial}. {state.token.userInfo.lastname}
-                    </Text>
-                <TouchableOpacity onPress={() => navigation.navigate('edit')}>
-                    <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
-                </TouchableOpacity>  
-            </View>
-            <View>
-                <Text style = {styles.email}>
-                    {state.token.userInfo.email}
-                    </Text>
-            </View>
-            
-            <View style = {styles.infoContainer}>
-                <View style = {styles.containerStrips}>
-                    <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                        {state.token.userInfo.vaxstatus}
-                        </Text>
-                </View>
-                <View style = {styles.containerStrips}>
-                    <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                        {state.token.userInfo.birthdate}
-                        </Text>
-                </View>
-                <View style = {styles.containerStrips}>
-                    <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                        {state.token.userInfo.contact}
-                        </Text>
-                </View>
-                <View style = {styles.containerStrips}>
-                    <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
-                    <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                        {state.token.userInfo.address}
-                        </Text>
-                </View>
-                <TouchableOpacity style = {styles.logout} onPress = {signout}>
-                    <View style = {styles.containerStripsLogout}>      
-                        <MaterialCommunityIcons name="logout" size={20} color="white" style = {styles.icons} />
-                        <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
+    return (
+        <Animated.ScrollView
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+                paddingBottom: 200,
+                backgroundColor: 'transparent',
+                marginTop: -100,
+            }}
+            onScroll={Animated.event(
+                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                { useNativeDriver: true },
+                () => { },          // Optional async listener
+            )}
+            style={[{ paddingTop: imageHeight }]}>
+            <Animated.View style={[
+                styles.block,
+                    {
+                        borderTopLeftRadius: animateBorderRadius,
+                        borderTopRightRadius: animateBorderRadius
+                    }
+                ]}>
+                <View style = {styles.card}>
+                    <View style = {styles.picContainer}>
+                        <View style = {styles.picRim}>
+                            {imageSource === null ? (
+                            <Image
+                                source={require('../../../assets/placeholderimage.png')}
+                                style={styles.pic}
+                                resizeMode='contain'
+                            />
+                            ) : (
+                            <Image
+                                source={{ uri: imageSource }}
+                                style={styles.pic}
+                                resizeMode='cover'
+                            />
+                            )}
+                        </View>
                     </View>
-                </TouchableOpacity>
-            </View>
-        </View>
-      </Animated.View>
-      <View style={{ height: 0.4 * deviceHeight }}></View>
-    </Animated.ScrollView>
-  )
+                    <TouchableOpacity onPress={pickImage}>
+                        <Text style = {styles.change}>change picture</Text>
+                    </TouchableOpacity>
+                    <View style = {styles.nameContainer}>
+                        <Text style = { styles.name }>
+                            {/* {state.token.userInfo.firstname} {state.token.userInfo.middleinitial}. {state.token.userInfo.lastname} */}
+                        </Text>
+                        <TouchableOpacity onPress={() => navigation.navigate('edit')}>
+                            <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
+                        </TouchableOpacity>  
+                    </View>
+                    <View>
+                        <Text style = {styles.email}>
+                            {/* {state.token.userInfo.email} */}
+                        </Text>
+                    </View>
+                    
+                    <View style = {styles.infoContainer}>
+                        <View style = {styles.containerStrips}>
+                            <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
+                            <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                                {/* {state.token.userInfo.vaxstatus} */}
+                            </Text>
+                        </View>
+                        <View style = {styles.containerStrips}>
+                            <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
+                            <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                                {/* {state.token.userInfo.birthdate} */}
+                            </Text>
+                        </View>
+                        <View style = {styles.containerStrips}>
+                            <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
+                            <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                                {/* {state.token.userInfo.contact} */}
+                            </Text>
+                        </View>
+                        <View style = {styles.containerStrips}>
+                            <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
+                            <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
+                                {/* {state.token.userInfo.address} */}
+                            </Text>
+                        </View>
+                        <TouchableOpacity style = {styles.logout} onPress = {signout}>
+                            <View style = {styles.containerStripsLogout}>      
+                                <MaterialCommunityIcons name="logout" size={20} color="white" style = {styles.icons} />
+                                <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Animated.View>
+            <View style={{ height: 0.4 * deviceHeight }}></View>
+        </Animated.ScrollView>
+    )
 }
-
 
 export default BottomContainer;
 
