@@ -87,6 +87,8 @@ formatDate = (date) => {
     return [year, month, day].join('-')
 }
 
+
+
 confirmButton = () => {
     document.getElementById('edit__confirm__window').style.display = 'flex'
 }

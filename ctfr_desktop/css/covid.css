@@ -94,7 +94,7 @@
 }
 
 .covid-result-image img {
-    width: 275px;
+    max-width: 260px;
     height: auto;
     border: 3px solid;
     border-radius: 10px;
@@ -105,10 +105,94 @@
 }
 
 .covid-result-context h1, p {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .covid-status {
     font-weight: bold;
     color: red;
+}
+
+.covid-result-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin: 20px;
+}
+
+.covid-result-button {
+    display: flex;
+}
+
+.covid-button {
+    width: 200px;
+    height: 35px;
+    border: transparent;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.covid-button:hover {
+    background-color: #b6b6b6;
+}
+
+.delete__covid__window {
+    font-family: 'Poppins', 'monospace';
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.delete__covid__content {
+    background-color: white;
+    position: fixed;
+    width: 420px;
+    height: 180px;
+    padding: 10px 20px 0 25px;
+    border-radius: 10px;
+}
+
+.delete__covid__title {
+    font-size: 15px;
+    padding: 0 0 5px 0;
+}
+
+.delete__covid__buttons {
+    margin: 15px 0 30px 0;
+}
+
+.delete__covid__confirm {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #339900;
+    float: left;
+}
+
+.delete__covid__cancel {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #cc3300;
+    float: right;
+}
+
+.delete__covid__confirm:hover {
+    background-color: #99cc33;
+}
+
+.delete__covid__cancel:hover {
+    background-color: #ff4101;
 }

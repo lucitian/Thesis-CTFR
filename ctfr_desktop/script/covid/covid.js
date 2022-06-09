@@ -73,8 +73,67 @@ const covidConvert = (data) => {
                         Covid Status: <span class="covid-status">${resultData[i].info[0].covidstatus}<span>
                     </p>
                 </div>
+                <div class="covid-result-actions">
+                    <div class="covid-result-button">
+                        <button class="covid-button" onclick="delete_covid()">Delete</button>
+                    </div>
+                    <div class="covid-result-button">
+                        <button class="covid-button">Approve</button>
+                    </div>
+                </div>
             `
             break
         }
     }
+}
+
+const delete_covid = () => {
+    document.getElementById('delete__covid__window').style.display = 'flex'
+    document.getElementById('delete__covid__window').innerHTML = `
+        <div class="delete__covid__content">
+            <div class="delete__covid__title"><h1>Delete a request?</h1></div>
+            <div><p>Are you sure that you want to permanently delete this request?</p></div>
+            <div class="delete__covid__buttons">
+                <button class="delete__covid__confirm" onclick="fetch_delete()">CONFIRM</button>
+                <button class="delete__covid__cancel" onclick="">CANCEL</button>
+            </div>
+        </div>
+    `
+}
+
+const fetch_delete = () => {
+    let h1 = document.getElementsByClassName('covid-result-context')[0].firstChild.nextSibling.innerText.split(" ")
+    let id = h1[2]
+    //console.log(id)
+
+    fetch(`http://localhost:5000/deletecovid/${id}`, {
+        method: 'DELETE',
+        header: {
+            'Content-Type': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        statusCovidDelete(data)
+    })
+}
+
+const statusCovidDelete = (data) => {
+    switch(data.send) {
+        case 'success':
+            alert('Deleted successfully!')
+            document.getElementById('delete__covid__window').style.display = 'none'
+            get_covid()
+            break
+        case 'nothing':
+            alert('Request not found!')
+            break
+        case 'fail':
+            alert('Failed to delete request!')
+            break
+    }
+}
+
+const covidCloseWindow = () => {
+    document.getElementById('delete__covid__window').style.display = 'none'
 }

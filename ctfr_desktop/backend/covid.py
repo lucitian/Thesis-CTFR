@@ -1,8 +1,8 @@
 from email.mime import base
 from app import app
 from mongo import mongo
-from database import db_usersInfo, JSONEncoder
-from flask import jsonify, make_response, send_file, Response
+from database import db_users, db_usersInfo, JSONEncoder
+from flask import jsonify, send_file, Response
 from bson.objectid import ObjectId
 
 from PIL import Image
@@ -73,4 +73,38 @@ def get_file(id):
             }),
             status = 500,
             mimetype = 'application/json'
+        )
+
+@app.route('/deletecovid/<id>', methods=['DELETE'])
+def delete_covid(id):
+    try:
+        dbResponse = db_covid_results.delete_one({
+            'userId': ObjectId(id)
+        })
+
+        if dbResponse.deleted_count == 1:
+            return Response(
+                response=json.dumps({
+                    'message': 'Request Deleted',
+                    'send': 'success'
+                }),
+                status=200,
+                mimetype='application/json'
+            )
+        return Response(
+            response=json.dumps({
+                'message': 'Request not found!',
+                'send': 'nothing'
+            }),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        return Response(
+            reponse=json.dumps({
+                'message': 'Failed',
+                'send': 'fail'
+            }),
+            status=500,
+            mimetype='application/json'
         )

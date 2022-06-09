@@ -17,7 +17,7 @@
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="active dashboard-tab">
+                <li data-tab-target="#camera-pane" class="dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
                 <li data-tab-target="#room-pane" class="dashboard-tab">
@@ -26,13 +26,13 @@
                 <li data-tab-target="#database-pane" class="dashboard-tab">
                     <i class="fas fa-database"></i> 
                 </li>
-                <li data-tab-target="#covid-pane" class="dashboard-tab">
+                <li data-tab-target="#covid-pane" class="active dashboard-tab">
                     <i class="fas fa-file"></i> 
                 </li>
             </ul>
             <div class="dashboard-container" id="dashboard-container">
                 <!-- Main Camera Pane -->
-                <div id="camera-pane" class="active camera-pane" data-tab-content>
+                <div id="camera-pane" class="camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -113,10 +113,10 @@
                             </div>
                             <div class="db__buttons__container">
                                 <div class="db__buttons">
-                                    <button class="add__user" onclick="addUser()">Add user</button>
+                                    <button class="add__user" onclick="addWindow()">Add user</button>
                                 </div>
                                 <div class="db__buttons">
-                                    <button class="refresh__button" onclick="refreshUser()">Refresh</button>
+                                    <button class="refresh__button" onclick="get_users()">Refresh</button>
                                 </div>
                             </div>
                         </div>
@@ -145,7 +145,7 @@
                 </div>
 
                 <!-- COVID Details -->
-                <div id="covid-pane" class="covid-pane" data-tab-content>
+                <div id="covid-pane" class="active covid-pane" data-tab-content>
                     <div class="title">
                         <h1>COVID Details</h1>
                     </div>
@@ -160,92 +160,10 @@
                 </div>
             </div>
 
-            <!-- Modal forms -->
+            <!-- Modal forms Database -->
 
             <!-- Add Modal -->
-            <div class="add__window" id="add__window">
-                <div class="add__content">
-                    <div class="add__title">
-                        <h1>Add a User</h1>
-                    </div>
-                    <form class="add__form" name="add__form" id="add__form" method="POST">
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" value="Auto-generated" disabled/>
-                            <label>Account ID</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__username" id="add__username"/>
-                            <label>Username</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__email" id="add__email"/>
-                            <label>Email</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__password" id="add__password" value="Student12345" disabled/>
-                            <label>Password</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__firstname" id="add__firstname"/>
-                            <label>First name</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__middleinitial" id="add__middleinitial"/>
-                            <label>Middle initial</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__lastname" id="add__lastname"/>
-                            <label>Last name</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__contact" id="add__contact" maxlength="12"/>
-                            <label>Contact No.</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="date" required class="add__info__content" name="add__birthdate" id="add__birthdate"/>
-                            <label>Date of Birth</label>
-                        </div>
-                        <div class="add__info__group">
-                            <select type="text" required class="add__info__content" name="add__vaxstatus" id="add__vaxstatus">
-                                <option value="Not yet Vaccinated">Not yet Vaccinated</option>
-                                <option value="Partially Vaccinated">Partially Vaccinated</option>
-                                <option value="Fully Vaccinated">Fully Vaccinated</option>
-                            </select>
-                            <label>Vaccination Status</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__address" id="add__address"/>
-                            <label>Address</label>
-                        </div>
-                        <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__covidstatus" id="add__covidstatus" value="Negative" disabled/>
-                            <label>Covid Status</label>
-                        </div>
-                    </form>
-                    <div class="add__buttons">
-                        <button class="add__confirm" type="submit" onclick="addConfirmWindow()">CONFIRM</button>
-                        <button class="add__cancel" id="add__cancel" onclick="addCancel(0)">CANCEL</button>
-                    </div>
-                </div>
-                <div class="add__confirm__window" id="add__confirm__window">
-                    <div class="add__confirm__content" id="add__confirm__content">
-                        <div><p>Do you wish to continue and add a new user?</p></div>
-                        <div class="add__buttons">
-                            <button class="add__confirm__yes" type="submit" onclick="addConfirm()">CONFIRM</button>
-                            <button class="add__confirm__no" id="add__cancel" onclick="addCancel(1)">CANCEL</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="add__cancel__window" id="add__cancel__window">
-                    <div class="add__cancel__content" id="add__cancel__content">
-                        <div><p>Changes you've made will not be saved. Do you want to cancel and go back?</p></div>
-                        <div class="add__buttons">
-                            <button class="add__cancel__yes" onclick="addCancelConfirm()">CONFIRM</button>
-                            <button class="add__cancel__no" onclick="addCancel(2)">CANCEL</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="add__window" id="add__window"></div>
 
             <!-- Edit Modal -->
             <div class="edit__window" id="edit__window">
@@ -292,15 +210,20 @@
                     </div>
                 </div>
             </div>
+
+            <!-- End -->
+            <!-- Modal forms Covid -->
+            <div class="delete__covid__window" id="delete__covid__window"></div>
+            <!-- End -->
         </div>
         <script src='../script/pymongo.js'></script>
         <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
-        <script src='../script/add.js'></script>
-        <script src='../script/edit.js'></script>
-        <script src='../script/delete.js'></script>
         <script src='../script/sort.js'></script>
-        <script src='../script/covid.js'></script>
+        <script src='../script/database/add.js'></script>
+        <script src='../script/database/edit.js'></script>
+        <script src='../script/database/delete.js'></script>
+        <script src='../script/covid/covid.js'></script>
         
     </body>
 </html>
