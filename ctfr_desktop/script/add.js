@@ -38,6 +38,7 @@ addConfirm = () => {
     addData['addAddress'] = document.forms['add__form']['add__address'].value
     addData['addCovidStatus'] = document.forms['add__form']['add__covidstatus'].value
 
+    console.log(addData)
     fetch('http://localhost:5000/adduser', {
         method: 'POST',
         headers: {

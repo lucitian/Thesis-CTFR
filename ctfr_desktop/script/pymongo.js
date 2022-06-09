@@ -11,7 +11,7 @@ const get_users = () => {
     .catch(error => console.log(error))
 }
 
-function renderUsers (users) {
+const renderUsers = (users) => {
     userList.innerHTML = ''
     users.forEach(data => {
         userList.innerHTML += `

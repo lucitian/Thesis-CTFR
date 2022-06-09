@@ -147,27 +147,6 @@ const update = (dispatch) => async ({ firstname, middleinitial, lastname, contac
     }
 }
 
-const covid_update = (dispatch) => async (covidstatus) => {
-    try {
-        const response = await api.patch('/covidupdate', {covidstatus})
-        const token = await AsyncStorage.getItem('token')
-        const user = await AsyncStorage.getItem('user')
-        const userresponse = await api.get('/profile')
-        await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
-
-        dispatch({
-            type: 'update',
-            payload: {token: token, user: JSON.parse(user)}
-        })
-        
-    } catch (err) {
-        dispatch({
-            type: 'update_error',
-            payload: 'Something went wrong'
-        })
-    }
-}
-
 const covid_upload = (dispatch) => async (formData) => {
     try {
         const response = await api.post('/profile/covid', formData, {
@@ -182,6 +161,8 @@ const covid_upload = (dispatch) => async (formData) => {
             type: 'camera_upload',
             payload: response.data.token
         })
+
+        navigate('profile')
     } catch (err) {
         dispatch({
             type: 'add_error',

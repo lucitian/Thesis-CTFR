@@ -50,7 +50,7 @@ def add_user():
             'password': bcrypt.hashpw(request.json['addPassword'].encode('utf-8'), bcrypt.gensalt())
         }     
         if (user['username'] != "" or user['email'] != ""):
-            dbResponse = db_users.insert_one(user)
+            dbResponse = db_users.insert_one(user)  
         else:
             return Response(
                 response = json.dumps({
@@ -72,16 +72,16 @@ def add_user():
             'address': request.json['addAddress'],
             'covidstatus': request.json['addCovidStatus']
         }
-        if (user['firstname'] != "" or
-            user['middleinitial'] != "" or
-            user['lastname'] != "" or
-            user['contact'] != "" or
-            user['birthdate'] != "" or
-            user['vaxstatus'] != "" or
-            user['address'] != "" or
-            user['covidstatus'] != ""
+        if (userInfo['firstname'] != "" or
+            userInfo['middleinitial'] != "" or
+            userInfo['lastname'] != "" or
+            userInfo['contact'] != "" or
+            userInfo['birthdate'] != "" or
+            userInfo['vaxstatus'] != "" or
+            userInfo['address'] != "" or
+            userInfo['covidstatus'] != ""
         ):
-            dbResponseInfo = db_usersInfo.insert(userInfo)
+            dbResponseInfo = db_usersInfo.insert_one(userInfo)
         else:
             return Response(
                 response = json.dumps({

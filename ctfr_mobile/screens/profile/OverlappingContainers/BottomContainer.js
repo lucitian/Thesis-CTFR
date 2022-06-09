@@ -108,7 +108,7 @@ const BottomContainer = ({
                     </TouchableOpacity>
                     <View style = {styles.nameContainer}>
                         <Text style = { styles.name }>
-                            {/* {state.token.userInfo.firstname} {state.token.userInfo.middleinitial}. {state.token.userInfo.lastname} */}
+                            {state.token.userInfo.firstname} {state.token.userInfo.middleinitial}. {state.token.userInfo.lastname}
                         </Text>
                         <TouchableOpacity onPress={() => navigation.navigate('edit')}>
                             <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
@@ -116,7 +116,7 @@ const BottomContainer = ({
                     </View>
                     <View>
                         <Text style = {styles.email}>
-                            {/* {state.token.userInfo.email} */}
+                            {state.token.userInfo.email}
                         </Text>
                     </View>
                     
@@ -124,25 +124,25 @@ const BottomContainer = ({
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.vaxstatus} */}
+                                {state.token.userInfo.vaxstatus}
                             </Text>
                         </View>
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.birthdate} */}
+                                {state.token.userInfo.birthdate}
                             </Text>
                         </View>
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.contact} */}
+                                {state.token.userInfo.contact}
                             </Text>
                         </View>
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.address} */}
+                                {state.token.userInfo.address}
                             </Text>
                         </View>
                         <TouchableOpacity style = {styles.logout} onPress = {signout}>

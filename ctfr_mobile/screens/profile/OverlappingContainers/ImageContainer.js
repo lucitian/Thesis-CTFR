@@ -32,14 +32,10 @@ const ImageContainer = ({
 
   const changeVal = () => {
     if(toggleN == true){
-      setToggleN(false)
-      setToggleP(true)
       setModalCovid(true)
-    }
-    else if (toggleN == false) {
-      setToggleN(true)
-      setToggleP(false)
-      setModalCovid(false)
+      setImageSource(null)
+    } else if (toggleN == false) {
+      setModalCovid(true)
       setImageSource(null)
     }
   }
@@ -63,19 +59,19 @@ const ImageContainer = ({
       setImageSource(result.uri);
     }
   }
-  
+
   const Upload_Covid = () => {
     const covidFile = {
       uri: imageSource,
       name: splitFilename(imageSource),
-      type: 'image/jpg'
+      type: 'image/jpg',
     } 
-    
+
     const formData = new FormData()
 
     formData.append('image', covidFile)
     covid_upload(formData)
-    setToggleP(true)
+    alert('Thank you for your cooperation! Please wait until we verify your covid test result.')
     setModalCovid(false)
   }
 
@@ -194,6 +190,9 @@ const ImageContainer = ({
           </TouchableOpacity>
         </View>
       </Modal> 
+
+      
+      {/* Covid-19 Modal */}
       <Modal
         animationType='fade'
         transparent={true}
@@ -208,36 +207,32 @@ const ImageContainer = ({
             <Text style={styles.covidParagraphText}>Please upload a screenshot of the swab test result from the Red Cross website.</Text>
           </View>
           <View style={styles.documentContainer}>
-              <Pressable style = {styles.button} onPress={pickImage}>
-                {/* <Image style = {styles.ss} source={require('../../../assets/image-upload-placeholder.jpg')}></Image> */}
-                <View style = {styles.button}>
-                  {imageSource === null ? (
-                      <Image
-                          source={require('../../../assets/image-upload-placeholder.jpg')}
-                          style={styles.ss}
-                          resizeMode='contain'
-                      />
-                      ) : (
-                      <Image
-                          source={{ uri: imageSource }}
-                          style={styles.ss}
-                          resizeMode='cover'
-                      />
-                      )}
-                </View>    
-              </Pressable>
-          </View>
-
-          {/* Covid-19 Modal */}
-          <View style={styles.modalCovidButtons}>
-            <Pressable onPress = {() => changeVal(!toggleN)}>
-              <TouchableOpacity style={styles.modalCovidCancelButton}>
-                <Text style={styles.modalCancelButtonText}>
-                  Cancel
-                </Text>
-              </TouchableOpacity>
+            <Pressable style = {styles.button} onPress={pickImage}>
+              {/* <Image style = {styles.ss} source={require('../../../assets/image-upload-placeholder.jpg')}></Image> */}
+              <View style = {styles.button}>
+                {imageSource === null ? (
+                    <Image
+                        source={require('../../../assets/image-upload-placeholder.jpg')}
+                        style={styles.ss}
+                        resizeMode='contain'
+                    />
+                    ) : (
+                    <Image
+                        source={{ uri: imageSource }}
+                        style={styles.ss}
+                        resizeMode='cover'
+                    />
+                    )}
+              </View>    
             </Pressable>
-            <TORN style={styles.modalCovidConfirmButton} onPress={Upload_Covid}>
+          </View>
+          <View style={styles.modalCovidButtons}>
+            <TORN style={styles.modalCovidCancelButton} onPress = {() => setModalCovid(false)}>
+              <Text style={styles.modalCancelButtonText}>
+                Cancel
+              </Text>
+            </TORN>
+            <TORN style={styles.modalCovidConfirmButton} onPress={()=> Upload_Covid()}>
               <Text style={styles.modalConfirmText}>
                 Confirm
               </Text>
@@ -259,17 +254,17 @@ const ImageContainer = ({
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>
-              {/* {state.token.userInfo.firstname}! */}
+              {state.token.userInfo.firstname}!
             </Text>
           </View>
           <View style = {styles.msgContainer}>
             <Text style = { styles.message }>We advise the you update your Covid-19 status!</Text>
           </View>
           <View style = { styles.covidStatContainer}>
-            <TouchableOpacity style = {[ toggleN == true ? styles.covidStatTrue : styles.covidStatFalse]} onPress = {() => changeVal()}>
+            <TouchableOpacity style = {[ toggleN == true ? styles.covidStatTrue : styles.covidStatFalse]} onPress = {() => changeVal()} disabled={(state.token.userInfo.covidstatus).toLowerCase() == 'negative' ? true : false}>
               <Text style = {[ toggleN == true ? styles.labelTrue : styles.labelFalse]}>Negative</Text>
             </TouchableOpacity>
-            <TouchableOpacity style = {[ toggleP == true ? styles.covidStatTrue : styles.covidStatFalse]} onPress = {() => changeVal()}>
+            <TouchableOpacity style = {[ toggleP == true ? styles.covidStatTrue : styles.covidStatFalse]} onPress = {() => changeVal()} disabled={(state.token.userInfo.covidstatus).toLowerCase() == 'positive' ? true : false}>
               <Text style = {[ toggleP == true ? styles.labelTrue : styles.labelFalse]}>Positive</Text>
             </TouchableOpacity>
           </View>

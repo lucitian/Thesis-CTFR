@@ -12,9 +12,11 @@ content.forEach(tab => {
         })
         tab.classList.add('active')
         target.classList.add('active')
-        console.log(target.classList[0])
-        if(target.classList[0] == 'covid-pane') {
-            covidExpandResult.innerHTML = ""
+
+        switch(target.classList[0]) {
+            case 'covid-pane':
+                covidExpandResult.innerHTML = ""
+                break
         }
     })
 })

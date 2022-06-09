@@ -7,8 +7,8 @@ const imageSchema = new mongoose.Schema({
     },
     image: {
         data: Buffer,
-        contentType: String
-    }
+        contentType: String,
+    },
 })
 
 mongoose.model('UserCovidResult', imageSchema)

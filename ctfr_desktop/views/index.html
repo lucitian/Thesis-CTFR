@@ -17,7 +17,7 @@
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="dashboard-tab">
+                <li data-tab-target="#camera-pane" class="active dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
                 <li data-tab-target="#room-pane" class="dashboard-tab">
@@ -26,13 +26,13 @@
                 <li data-tab-target="#database-pane" class="dashboard-tab">
                     <i class="fas fa-database"></i> 
                 </li>
-                <li data-tab-target="#covid-pane" class="active dashboard-tab">
+                <li data-tab-target="#covid-pane" class="dashboard-tab">
                     <i class="fas fa-file"></i> 
                 </li>
             </ul>
             <div class="dashboard-container" id="dashboard-container">
                 <!-- Main Camera Pane -->
-                <div id="camera-pane" class="camera-pane" data-tab-content>
+                <div id="camera-pane" class="active camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -145,7 +145,7 @@
                 </div>
 
                 <!-- COVID Details -->
-                <div id="covid-pane" class="active covid-pane" data-tab-content>
+                <div id="covid-pane" class="covid-pane" data-tab-content>
                     <div class="title">
                         <h1>COVID Details</h1>
                     </div>
@@ -198,7 +198,7 @@
                             <label>Last name</label>
                         </div>
                         <div class="add__info__group">
-                            <input type="text" required class="add__info__content" name="add__contact" id="add__contact"/>
+                            <input type="text" required class="add__info__content" name="add__contact" id="add__contact" maxlength="12"/>
                             <label>Contact No.</label>
                         </div>
                         <div class="add__info__group">
@@ -218,10 +218,7 @@
                             <label>Address</label>
                         </div>
                         <div class="add__info__group">
-                            <select type="text" required class="add__info__content" name="add__covidstatus" id="add__covidstatus">
-                                <option value="Negative">Negative</option>
-                                <option value="Positive">Positive</option>
-                            </select>
+                            <input type="text" required class="add__info__content" name="add__covidstatus" id="add__covidstatus" value="Negative" disabled/>
                             <label>Covid Status</label>
                         </div>
                     </form>
@@ -296,7 +293,7 @@
                 </div>
             </div>
         </div>
-        <script type='module' src='../script/pymongo.js'></script>
+        <script src='../script/pymongo.js'></script>
         <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
         <script src='../script/add.js'></script>
