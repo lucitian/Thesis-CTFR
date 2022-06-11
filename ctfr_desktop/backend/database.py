@@ -133,7 +133,6 @@ def update_user(id):
                 'birthdate': request.json['editBirthdate'],
                 'vaxstatus': request.json['editVaxStatus'],
                 'address': request.json['editAddress'],
-                'covidstatus': request.json['editCovidStatus'],
             }}
         )
 

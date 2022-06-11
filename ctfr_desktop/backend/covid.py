@@ -2,7 +2,7 @@ from email.mime import base
 from app import app
 from mongo import mongo
 from database import db_users, db_usersInfo, JSONEncoder
-from flask import jsonify, send_file, Response
+from flask import jsonify, send_file, request, Response
 from bson.objectid import ObjectId
 
 from PIL import Image
@@ -85,7 +85,7 @@ def delete_covid(id):
         if dbResponse.deleted_count == 1:
             return Response(
                 response=json.dumps({
-                    'message': 'Request Deleted',
+                    'message': 'COVID-19 Request Deleted Successfully!',
                     'send': 'success'
                 }),
                 status=200,
@@ -93,8 +93,8 @@ def delete_covid(id):
             )
         return Response(
             response=json.dumps({
-                'message': 'Request not found!',
-                'send': 'nothing'
+                'message': 'COVID-19 Request not found!',
+                'send': 'none'
             }),
             status=200,
             mimetype='application/json'
@@ -102,7 +102,44 @@ def delete_covid(id):
     except Exception as ex:
         return Response(
             reponse=json.dumps({
-                'message': 'Failed',
+                'message': 'Failed to delete COVID-19 request.',
+                'send': 'fail'
+            }),
+            status=500,
+            mimetype='application/json'
+        )
+
+@app.route('/updatecovid/<id>', methods=['PATCH'])
+def update_covid(id):
+    try:
+        dbResponse = db_usersInfo.update_one(
+            {'userId': ObjectId(id)},
+            {'$set': {
+                'covidstatus': request.json['approveCovidStatus']
+            }}
+        )
+
+        if dbResponse.modified_count == 1:
+            return Response(
+                response = json.dumps({
+                    'message': 'COVID-19 status updated successfully!',
+                    'send': 'success'
+                }),
+                status = 200,
+                mimetype='application/json'
+            )
+        return Response(
+            response=json.dumps({
+                'message': 'Nothing to update!',
+                'send': 'none'
+            }),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        return Response(
+            response=json.dumps({
+                'message': 'Failed to update COVID-19 Status!',
                 'send': 'fail'
             }),
             status=500,

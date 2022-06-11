@@ -75,10 +75,10 @@ const covidConvert = (data) => {
                 </div>
                 <div class="covid-result-actions">
                     <div class="covid-result-button">
-                        <button class="covid-button" onclick="delete_covid()">Delete</button>
+                        <button class="covid-button" onclick="deleteCovid(${i})">Delete</button>
                     </div>
                     <div class="covid-result-button">
-                        <button class="covid-button">Approve</button>
+                        <button class="covid-button" onclick="approveCovid(${i})">Approve</button>
                     </div>
                 </div>
             `
@@ -87,26 +87,26 @@ const covidConvert = (data) => {
     }
 }
 
-const delete_covid = () => {
+const deleteCovid = (fetchedIndex) => {
+    console.log(resultData[fetchedIndex].userId)
     document.getElementById('delete__covid__window').style.display = 'flex'
     document.getElementById('delete__covid__window').innerHTML = `
         <div class="delete__covid__content">
             <div class="delete__covid__title"><h1>Delete a request?</h1></div>
             <div><p>Are you sure that you want to permanently delete this request?</p></div>
             <div class="delete__covid__buttons">
-                <button class="delete__covid__confirm" onclick="fetch_delete()">CONFIRM</button>
-                <button class="delete__covid__cancel" onclick="">CANCEL</button>
+                <button class="delete__covid__confirm" onclick="fetchDelete(${fetchedIndex})">CONFIRM</button>
+                <button class="delete__covid__cancel" onclick="covidDeleteCloseWindow()">CANCEL</button>
             </div>
         </div>
     `
 }
 
-const fetch_delete = () => {
-    let h1 = document.getElementsByClassName('covid-result-context')[0].firstChild.nextSibling.innerText.split(" ")
-    let id = h1[2]
-    //console.log(id)
+const fetchDelete = (fetchedId) => {
+    //let h1 = document.getElementsByClassName('covid-result-context')[0].firstChild.nextSibling.innerText.split(" ")
+    //let id = h1[2]
 
-    fetch(`http://localhost:5000/deletecovid/${id}`, {
+    fetch(`http://localhost:5000/deletecovid/${resultData[fetchedId].userId}`, {
         method: 'DELETE',
         header: {
             'Content-Type': 'application/json'
@@ -121,19 +121,81 @@ const fetch_delete = () => {
 const statusCovidDelete = (data) => {
     switch(data.send) {
         case 'success':
-            alert('Deleted successfully!')
+            alert(data.message)
             document.getElementById('delete__covid__window').style.display = 'none'
             get_covid()
+            covidExpandResult.innerHTML = ''
             break
         case 'nothing':
-            alert('Request not found!')
+            alert(data.message)
             break
         case 'fail':
-            alert('Failed to delete request!')
+            alert(data.message)
             break
     }
 }
 
-const covidCloseWindow = () => {
+const covidDeleteCloseWindow = () => {
     document.getElementById('delete__covid__window').style.display = 'none'
+}
+
+const approveCovid = (fetchedIndex) => {
+    document.getElementById('approve__covid__window').style.display = 'flex'
+    document.getElementById('approve__covid__window').innerHTML = `
+        <div class="approve__covid__content">
+            <div class="approve__covid__title"><h1>Change covid status?</h1></div>
+            <div><p>Are you sure that you want to change this user's covid-19 status to:</p></div>
+            <form class="approve__covid__options" id="approve__covid__options" method="PATCH" action="">
+                <select required class="approve__covidstatus" id="approve__covidstatus" name="approve__covidstatus">
+                    <option value="Negative">Negative</option>    
+                    <option value="Positive">Positive</option>
+                </select>
+            </form>
+            <div class="approve__covid__buttons">
+                <button class="approve__covid__confirm" onclick="fetchApprove(${fetchedIndex})">CONFIRM</button>
+                <button class="approve__covid__cancel" onclick="covidApproveCloseWindow()">CANCEL</button>
+            </div>
+        </div>
+    `
+}
+
+const fetchApprove = (fetchedIndex) => {
+    console.log(resultData[fetchedIndex].userId)
+    var approveData = {}
+
+    approveData['approveCovidStatus'] = document.forms['approve__covid__options']['approve__covidstatus'].value
+
+    console.log(approveData['approveCovidStatus'])
+    fetch(`http://localhost:5000/updatecovid/${resultData[fetchedIndex].userId}`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(approveData)
+    })
+    .then(res=>res.json())
+    .then(data=>{
+        statusApprove(data)
+    })
+}
+
+const statusApprove = (data) => {
+    switch(data.send) {
+        case 'success':
+            alert(data.message)
+            document.getElementById('approve__covid__window').style.display = 'none'
+            get_covid()
+            covidExpandResult.innerHTML = ''
+            break
+        case 'none':
+            alert(data.message)
+            break
+        case 'fail':
+            alert(data.message)
+            break
+    }
+}
+
+const covidApproveCloseWindow = () => {
+    document.getElementById('approve__covid__window').style.display = 'none'
 }
