@@ -3,3 +3,5 @@ secret.js
 secret_api.js
 images/
 covidresult/
+yolov4-obj_best.weights
+yolov4-obj.cfg
