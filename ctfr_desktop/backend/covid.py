@@ -51,7 +51,6 @@ def get_file(id):
     try:
         dbResult = db_covid_results.find_one_or_404({'userId': ObjectId(id)})
         data = dbResult['image']['data']
-        #print(data)
         img_encode = base64.b64encode(data)
         im = Image.open(BytesIO(base64.b64decode(img_encode)))
         
@@ -63,7 +62,6 @@ def get_file(id):
         img_io.seek(0)
 
         return send_file(img_io, mimetype='image/*', as_attachment=True, attachment_filename='result.jpg')
-
     except Exception as ex:
         print(ex)
         return Response(

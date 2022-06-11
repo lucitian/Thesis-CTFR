@@ -13,6 +13,7 @@ const ImageContainer = ({
   navigation
 }) => { 
   const {state, covid_upload} = useContext(AuthContext)
+  console.log(state)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
@@ -132,7 +133,7 @@ const ImageContainer = ({
         </View>               
         <View style={styles.containerView}>
           <TouchableOpacity style = {styles.modalView}>
-            <Text style = {styles.notifTitle}> Notifications</Text>
+            <Text style = {styles.notifTitle}>Notifications</Text>
             <SafeAreaView>
               <ScrollView style={styles.scrollView}>
                 <Text style={styles.textNotif}>

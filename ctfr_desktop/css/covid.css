@@ -1,16 +1,16 @@
 .covid-pane {
-    grid-template-columns: 0.5fr 1fr;
+    grid-template-columns: 0.6fr 1fr 0.6fr;
     grid-template-rows: 0.05fr 1fr;
     grid-template-areas: 
-        'title title'
-        'covid-notif covid-container';
+        'title title title'
+        'covid-notif-request covid-container covid-notif-positive';
     padding: 15px;
     gap: 15px;
     height: 100vh;
 }
 
-.covid-notif {
-    grid-area: covid-notif;
+.covid-notif-request {
+    grid-area: covid-notif-request;
     width: 100%;
     height: 100%;
     border-radius: 5px;
@@ -22,6 +22,15 @@
     grid-area: covid-container;
     width: 100%;
     max-height: 1fr;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px #b6b6b6;
+    background-color: white;
+}
+
+.covid-notif-positive {
+    grid-area: covid-notif-positive;
+    width: 100%;
+    height: 100%;
     border-radius: 5px;
     box-shadow: 1px 1px 3px #b6b6b6;
     background-color: white;
