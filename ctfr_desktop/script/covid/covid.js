@@ -16,31 +16,57 @@ const get_covid = () => {
 
 const passDataResult = (data) => {
     resultData = data
-    renderCovidRow(data)
+    for (i=0; i < data.length; i++) {
+        if (data[i].info[0].covidstatus == 'Negative') {
+            renderCovidRow(data[i])
+        } else {
+            //resultPositive = data[i]
+        }
+    }
+
 }
 
-function renderCovidRow (covidResult) {
+const renderCovidRow = (covidResult) => {
     covidRow.innerHTML = ''
-    covidResult.forEach(data => {
-        covidRow.innerHTML += `
-            <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
-                <div class="covid-row-icon">
-                    <i class="fas fa-exclamation-triangle"></i>
+    covidRow.innerHTML += `
+        <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
+            <div class="covid-row-icon">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <div class="covid-row-context">
+                <div class="covid-row-title">
+                    <h2>COVID-19 Request</h2>
                 </div>
-                <div class="covid-row-context">
-                    <div class="covid-row-title">
-                        <h2>COVID-19 Request</h2>
-                    </div>
-                    <div class="covid-row-id">
-                        <p>User ID: ${data.userId}</p>
-                    </div>
-                    <div class="covid-row-name">
-                        <p>Name: ${data.info[0].firstname} ${data.info[0].middleinitial}. ${data.info[0].lastname}</p>
-                    </div>
+                <div class="covid-row-id">
+                    <p>User ID: ${covidResult.userId}</p>
+                </div>
+                <div class="covid-row-name">
+                    <p>Name: ${covidResult.info[0].firstname} ${covidResult.info[0].middleinitial}. ${covidResult.info[0].lastname}</p>
                 </div>
             </div>
-        `
-    })
+        </div>
+    `
+    // Array.from(covidResult).forEach(data => {
+    //     console.log(data)
+    //     covidRow.innerHTML += `
+    //         <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
+    //             <div class="covid-row-icon">
+    //                 <i class="fas fa-exclamation-triangle"></i>
+    //             </div>
+    //             <div class="covid-row-context">
+    //                 <div class="covid-row-title">
+    //                     <h2>COVID-19 Request</h2>
+    //                 </div>
+    //                 <div class="covid-row-id">
+    //                     <p>User ID: ${data.userId}</p>
+    //                 </div>
+    //                 <div class="covid-row-name">
+    //                     <p>Name: ${data.info[0].firstname} ${data.info[0].middleinitial}. ${data.info[0].lastname}</p>
+    //                 </div>
+    //             </div>
+    //         </div>
+    //     `
+    // })
 }
  
 get_covid()
