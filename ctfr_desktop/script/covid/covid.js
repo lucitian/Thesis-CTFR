@@ -1,4 +1,5 @@
-const covidRow = document.getElementById('covid-notif')
+const covidRow = document.getElementById('covid-notif-request')
+const covidPositive = document.getElementById('covid-notif-positive')
 const covidExpandResult = document.getElementById('covid-result')
 
 var resultData = {}
@@ -15,19 +16,21 @@ const get_covid = () => {
 }
 
 const passDataResult = (data) => {
+    covidRow.innerHTML = ''
+    covidPositive.innerHTML = ''
     resultData = data
     for (i=0; i < data.length; i++) {
         if (data[i].info[0].covidstatus == 'Negative') {
             renderCovidRow(data[i])
         } else {
-            //resultPositive = data[i]
+            renderCovidPositive(data[i])
         }
     }
 
 }
 
 const renderCovidRow = (covidResult) => {
-    covidRow.innerHTML = ''
+
     covidRow.innerHTML += `
         <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
             <div class="covid-row-icon">
@@ -46,27 +49,27 @@ const renderCovidRow = (covidResult) => {
             </div>
         </div>
     `
-    // Array.from(covidResult).forEach(data => {
-    //     console.log(data)
-    //     covidRow.innerHTML += `
-    //         <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
-    //             <div class="covid-row-icon">
-    //                 <i class="fas fa-exclamation-triangle"></i>
-    //             </div>
-    //             <div class="covid-row-context">
-    //                 <div class="covid-row-title">
-    //                     <h2>COVID-19 Request</h2>
-    //                 </div>
-    //                 <div class="covid-row-id">
-    //                     <p>User ID: ${data.userId}</p>
-    //                 </div>
-    //                 <div class="covid-row-name">
-    //                     <p>Name: ${data.info[0].firstname} ${data.info[0].middleinitial}. ${data.info[0].lastname}</p>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     `
-    // })
+}
+
+const renderCovidPositive = (covidPosResult) => {
+    covidPositive.innerHTML += `
+        <div class="covid-row" id="covid-row" onclick="requestExpand(this)">
+            <div class="covid-row-icon">
+                <i class="fas fa-virus"></i>
+            </div>
+            <div class="covid-row-context">
+                <div class="covid-row-title">
+                    <h2>COVID-19 Positive</h2>
+                </div>
+                <div class="covid-row-id">
+                    <p>User ID: ${covidPosResult.userId}</p>
+                </div>
+                <div class="covid-row-name">
+                    <p>Name: ${covidPosResult.info[0].firstname} ${covidPosResult.info[0].middleinitial}. ${covidPosResult.info[0].lastname}</p>
+                </div>
+            </div>
+        </div>
+    `
 }
  
 get_covid()
