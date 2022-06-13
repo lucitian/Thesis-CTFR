@@ -72,11 +72,9 @@ const roomNumber = (clickRow) => {
         'time': newTime()
     })
     array_append.push(temp_array_append)
-    // console.log(temp_array_append[0]["roomNo"])
-    console.log(array_append)
-    // console.log(array_append[1][0]["time"])
 
     tempList.innerHTML += `
+    <tr>    
         <td class="temp__data__cell__actions">
             <button id="button__actions" onclick="deleteUserAppend(this)">
                 <i class="fa fa-trash-o"></i>
@@ -90,6 +88,7 @@ const roomNumber = (clickRow) => {
         </td>
         <td id="temp__data__cell">${newDate()}</td>
         <td id="temp__data__cell">${newTime()}</td>
+    </tr>
     `
 }
 
@@ -108,21 +107,33 @@ const appendRoom = () => {
     tempList.innerHTML = ''
 }
 
+function deleteUserAppend(datas) {
+    index_row = 0
+    deleted = false
+    parent = datas.parentElement.parentElement
+    child = parent.childNodes
 
-// const openCamera = document.getElementById('camera__screen')
+    roomNo = child[3].innerText
+    name_ = child[5].innerText.replace(".","")
+    date = child[7].innerText
+    time = child[9].innerText
 
-// function open__camera() {
-//     open_cam = fetch('http://localhost:5000/open_cam')
-//     openCamera.innerHTML += `<img src="http://localhost:5000/open_cam" height="100%" width="100%">`
+    for (i = 0; i<array_append.length; i++){
+        if (array_append[i][0]["roomNo"] == roomNo){
+            if (array_append[i][0]["time"] == time){
+                if (array_append[i][0]["date"] == date){
+                    if (array_append[i][0]["name"] == name_){
+                        index_row = i                    
+                        deleted = true
+                        break
+                    }                    
+                }
+            }
+        }
+    }
 
-//     document.getElementById('open__camera').disabled = true
-//     document.getElementById('open__camera').classList.add('disable')
-// }
-
-// function close__camera() {
-//     open_cam = fetch('http://localhost:5000/close_cam')
-//     openCamera.innerHTML = ''
-
-//     document.getElementById('open__camera').disabled = false
-//     document.getElementById('open__camera').classList.remove('disable')
-// }
+    if (deleted == true){
+        array_append.splice(index_row, 1)
+        parent.remove()        
+    }
+}

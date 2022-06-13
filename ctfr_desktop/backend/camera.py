@@ -69,7 +69,7 @@ def fetch_name():
     # print(max_name, max_val )
 
     # temp_name = (max_name.replace('_', " "))
-    temp_name = 'Marc Rovic Baja'
+    temp_name = 'Christian Olandesca'
     # print(temp_name)
 
     # print(camera().test_name)
@@ -77,7 +77,6 @@ def fetch_name():
 
     try:
         users = db_users.aggregate(userInfo)
-        print('sheesh')
 
         output = [{
             '_id': user['_id'],

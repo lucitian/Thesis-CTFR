@@ -82,6 +82,7 @@
     border-radius: 5px;
     box-shadow: 1px 1px 3px#b6b6b6;
     background-color: white;
+    max-height: 489.45px;
 }
 
 .room__db__table table {
