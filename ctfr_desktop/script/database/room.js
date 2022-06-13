@@ -1,7 +1,6 @@
 const roomList = document.getElementById('roomList')
 
 const get_rooms = () => {
-    console.log('hotdog')
     fetch('http://localhost:5000/getrooms', {
         headers: {
             'Content-Type': 'application/json'

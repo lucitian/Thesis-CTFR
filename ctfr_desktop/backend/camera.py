@@ -112,7 +112,7 @@ def append_room():
 
         to_append = [{
             'roomNo': user[0]['roomNo'],
-            'userId': user[0]['userId'],
+            'userId': ObjectId(user[0]['userId']),
             'name': user[0]['name'],
             'date': user[0]['date'],
             'time': user[0]['time'],
