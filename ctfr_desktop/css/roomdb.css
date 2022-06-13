@@ -76,8 +76,7 @@
     transition: 0.15s;
 }
 
-
-.room-db-table {
+.room__db__table {
     grid-area: room-db-table;
     overflow: auto;
     border-radius: 5px;
@@ -85,11 +84,42 @@
     background-color: white;
 }
 
-.room-db-table table {
+.room__db__table table {
     table-layout: fixed;
     border-collapse: collapse;
     overflow-wrap: break-word;
     width: 100%;
     margin: 0;
     padding: 0;
+}
+
+.room__header {
+    font-family: 'Poppins', monospace;
+    font-size: 12px;
+    height: 20px;
+    border-bottom: 1.35px solid rgba(250, 200, 200, 0.5);
+}
+
+.room__header__cell {
+    color: black;
+    height: 40px;
+    padding: 0 0 0 20px;
+}
+
+.room__header__cell__actions {
+    width: 60px;
+    padding: 0 0 0 10px;
+}
+
+.room__data__cell__actions {
+    padding: 0 0 0 10px;
+    border-bottom: 1.25px solid rgba(250, 200, 200, 0.5);
+}
+
+#room__data__cell {
+    font-family: 'OpenSans', monospace;
+    font-size: 12px;
+    height: 40px;
+    padding: 0 0 0 20px;
+    border-bottom: 1.25px solid rgba(250, 200, 200, 0.5);
 }

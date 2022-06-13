@@ -17,10 +17,10 @@
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="active dashboard-tab">
+                <li data-tab-target="#camera-pane" class="dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
-                <li data-tab-target="#room-pane" class="dashboard-tab">
+                <li data-tab-target="#room-pane" class="active dashboard-tab">
                     <i class="fas fa-table"></i> 
                 </li>
                 <li data-tab-target="#database-pane" class="dashboard-tab">
@@ -32,7 +32,7 @@
             </ul>
             <div class="dashboard-container" id="dashboard-container">
                 <!-- Main Camera Pane -->
-                <div id="camera-pane" class="active camera-pane" data-tab-content>
+                <div id="camera-pane" class="camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -113,7 +113,7 @@
                 </div>
 
                 <!-- Room History Database -->
-                <div id="room-pane" class="room-pane" data-tab-content>
+                <div id="room-pane" class="active room-pane" data-tab-content>
                     <div class="title">
                         <h1>Room section</h1>
                     </div>
@@ -128,8 +128,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="room-db-table">
+                    <div class="room__db__table">
+                        <table id="room__table">
+                            <thead class="room__header">
+                                <tr class="row__head">
+                                    <th class="room__header__cell__actions">Actions</th>
+                                    <th class="room__header__cell">Room No.</th>
+                                    <th class="room__header__cell">User ID</th>
+                                    <th class="room__header__cell">Student Name</th>
+                                    <th class="room__header__cell">Date</th>
+                                    <th class="room__header__cell">Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="roomList">
 
+                            </tbody>
+                        </table>
                     </div>
                 </div>
 
@@ -269,6 +283,7 @@
             <!-- End -->
         </div>
         <script src='../script/pymongo.js'></script>
+        <script src='../script/database/room.js'></script>
         <script src='../script/camera.js'></script>
         <script src='../script/filter.js'></script>
         <script src='../script/sort.js'></script>
@@ -276,6 +291,5 @@
         <script src='../script/database/edit.js'></script>
         <script src='../script/database/delete.js'></script>
         <script src='../script/covid/covid.js'></script>
-        
     </body>
 </html>

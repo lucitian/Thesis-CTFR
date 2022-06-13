@@ -1,19 +1,19 @@
 const mongoose = require('mongoose')
 
 const userRoomSchema = new mongoose.Schema({
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-    },
     roomNumber: {
         type: String, 
         required: true 
     },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     date: {
-        type: Date
+        type: String
     },
     time: {
-        type: Date, 
+        type: String, 
     },
 
 })

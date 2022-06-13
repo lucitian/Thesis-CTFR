@@ -82,14 +82,14 @@ const roomNumber = (clickRow) => {
                 <i class="fa fa-trash-o"></i>
             </button>
         </td>
-        <td id="temp__data__cell" class="data__id">${roomNo}</td>
-        <td id="temp__data__cell" class="data__id">
-            <span class="data__firstname">${tempData.info[0].firstname}</span>
-            <span class="data__middleinitial">${tempData.info[0].middleinitial}</span>.
-            <span class="data__lastname">${tempData.info[0].lastname}</span>
+        <td id="temp__data__cell">${roomNo}</td>
+        <td id="temp__data__cell">
+            <span>${tempData.info[0].firstname}</span>
+            <span>${tempData.info[0].middleinitial}</span>.
+            <span>${tempData.info[0].lastname}</span>
         </td>
-        <td id="temp__data__cell" class="data__id">${newDate()}</td>
-        <td id="temp__data__cell" class="data__id">${newTime()}</td>
+        <td id="temp__data__cell">${newDate()}</td>
+        <td id="temp__data__cell">${newTime()}</td>
     `
 }
 
