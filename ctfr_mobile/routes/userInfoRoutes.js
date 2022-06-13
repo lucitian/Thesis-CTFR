@@ -170,10 +170,9 @@ router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
 
 router.get('/history', async (req, res) => {
     try {
-        const user = await User.findById(req.user._id)
         const userRooms = await UserRoom.findById({ userId: req.user._id})
         
-        res.status(200).json({user: user, userRooms: userRooms})
+        res.status(200).json(userRooms)
     } catch (err) {
         res.status(304).send(err.message)
     }

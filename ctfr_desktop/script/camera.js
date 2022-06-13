@@ -65,18 +65,20 @@ const roomNumber = (clickRow) => {
     let temp_array_append = []
     temp_name = tempData.info[0].firstname + " " + tempData.info[0].middleinitial + " " + tempData.info[0].lastname
     temp_array_append.push({
-        roomNo: roomNo,
-        name: temp_name,
-        date: newDate(),
-        time: newTime()
+        'roomNo': roomNo,
+        'userId': tempData._id,
+        'name': temp_name,
+        'date': newDate(),
+        'time': newTime()
     })
     array_append.push(temp_array_append)
-    console.log(temp_array_append)
+    // console.log(temp_array_append[0]["roomNo"])
     console.log(array_append)
+    // console.log(array_append[1][0]["time"])
 
     tempList.innerHTML += `
         <td class="temp__data__cell__actions">
-            <button id="button__actions" onclick="">
+            <button id="button__actions" onclick="deleteUserAppend(this)">
                 <i class="fa fa-trash-o"></i>
             </button>
         </td>
@@ -92,10 +94,21 @@ const roomNumber = (clickRow) => {
 }
 
 const appendRoom = () => {
-    
+    fetch('http://localhost:5000/appendroom', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(array_append)
+    })
+    .then(response => response.json())
+    .then(data => console.log(data))
+    .catch(error => console.log(error))
     array_append = []
     tempList.innerHTML = ''
 }
+
+
 // const openCamera = document.getElementById('camera__screen')
 
 // function open__camera() {

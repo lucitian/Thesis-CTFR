@@ -1,5 +1,6 @@
 from app import app
-from flask import Response, jsonify
+from mongo import mongo
+from flask import Response, jsonify, request
 import cv2
 import time
 from yolo import YOLO
@@ -93,7 +94,51 @@ def fetch_name():
         # return jsonify(json.loads(JSONEncoder().encode(output)))
     except Exception as ex:
         print(ex)
-        return 'Done'
+        return Response(
+            reponse = json.dumps({
+                'message': 'Failed!',
+                'send': 'fail'
+            }),
+            status=500,
+            mimetype='application/json'
+        )
+
+db_room = mongo.db.rooms
+
+@app.route('/appendroom', methods=['POST'])
+def append_room():
+    try:
+        temp_data = request.json
+
+        to_append = [{
+            'roomNo': user[0]['roomNo'],
+            'userId': user[0]['userId'],
+            'name': user[0]['name'],
+            'date': user[0]['date'],
+            'time': user[0]['time'],
+        }for user in temp_data]
+
+        dbResponse = db_room.insert_many(to_append)
+
+        return Response(
+            response=json.dumps({
+                'message': 'Append succesful!',
+                'send': 'success'
+            }),
+            status=200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response=json.dumps({
+                'message': 'Failed!',
+                'send': 'fail'
+            }),
+            status=500,
+            mimetype='application/json'
+        )
+
 
 class camera(object):
     def __init__(self):

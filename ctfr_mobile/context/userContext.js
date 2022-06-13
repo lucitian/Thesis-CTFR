@@ -36,6 +36,11 @@ const authReducer = (state, action) => {
                 ...state,
                 errorMessage: ''
             }
+        case 'history':
+            return {
+                ...state,
+                errorMessage: ''
+            }
         default:
             return state
     }
@@ -48,10 +53,11 @@ const localSignIn = (dispatch) => async () => {
         if (await AsyncStorage.getItem('userinfo_exist')) {
             const user = await AsyncStorage.getItem('user')
             const userInfo = await AsyncStorage.getItem('userinfo')
+            const roomHistory = await AsyncStorage.getItem('roomHistory')
 
             dispatch({
                 type:'signin',
-                payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo)}
+                payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo), roomHistory: JSON.parse(roomHistory)}
             })
     
             navigate('home')
@@ -92,22 +98,45 @@ const signup = (dispatch) => async ({ username, email, password }) => {
     }
 }
 
-const signin = (dispatch) => async ({ email, password }) => {
+// const history = (dispatch) => async ({roomNumber, date, time}) => {
+//     try {
+//         const historyresponse = await api.get('/history', {roomNumber, date, time})
+//         await AsyncStorage.setItem('userhistory', JSON.stringify(historyresponse))
+
+//         dispatch({
+//             type: "history",
+//             payload: historyresponse.data
+//         })
+
+//     }catch (err) {
+//         console.log(err)
+//         dispatch({
+//             type: 'add_error',
+//             payload: 'Something went wrong'
+//         })  
+//     } 
+// }
+
+const signin = (dispatch) => async ({ email, password}) => {
     try {
         const response = await api.post('/signin', { email, password })
         await AsyncStorage.setItem('token', response.data.token)
 
+
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userinfo_exist', 'true')
             const userresponse = await api.get('/profile')
+            const historyresponse = await api.get('/history', {roomNumber, date, time})
             const user = userresponse.data.user
             const userInfo = userresponse.data.userInfo
+            const roomHistory = historyresponse.data
             await AsyncStorage.setItem('user', JSON.stringify(user))
             await AsyncStorage.setItem('userinfo', JSON.stringify(userInfo))
+            await AsyncStorage.setItem('roomHistory', JSON.stringify(roomHistory))
 
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, user: user, userInfo: userInfo}
+                payload: {token: response.data.token, user: user, userInfo: userInfo, roomHistory: roomHistory}
             })
 
             navigate('home')
@@ -183,6 +212,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn, update, covid_upload },
+    { signup, signin, signout, clearError, localSignIn, update, covid_upload, history },
     { token: null, errorMessage: '' }
 )
