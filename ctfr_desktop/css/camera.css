@@ -20,36 +20,200 @@
     grid-area: table-id;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 0.7fr 1fr 0.175fr;
+    grid-template-rows: 0.7fr 0.175fr 1fr;
     grid-template-areas: 
         'student-info'
-        'temp-camera-table'
-        'camera-table-buttons';
+        'camera-table-buttons'
+        'temp-camera-table';
+    gap: 15px;
+}
+
+.generate__student__room {
+    grid-area: student-info;
+    display: flex;
+    height: 100%;
     gap: 15px;
 }
 
 .student__info {
-    grid-area: student-info;
-    height: 100%;
+    font-family: 'Poppins', monospace;
+    width: 80%;
     border-radius: 5px;
     box-shadow: 1px 1px 3px#b6b6b6;
     background-color: white;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 0.2fr 1fr;
+    grid-template-areas:
+        'student-title'
+        'student-details';
+    max-height: 230px;
+}
+
+.header_stud {
+    grid-area: student-title;
+    display: flex;
+    align-items: center;
+    font-size: 22px;
+    padding: 10px 5px 10px 10px;
+    border-bottom: 2px solid #b6b6b6;
+}
+
+.student__info__context {
+    grid-area: student-details;
+    font-family: 'OpenSans', monospace;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 22px;
+    padding: 5px 5px 5px 5px;  
+    max-height: 230px;
+}
+
+.stud_info {
+    font-size: 18px;
+    margin: 5px 0 5px 0;
+}
+
+.student__info__room {
+    font-family: 'Poppins', monospace;
+    width: 20%;
+    border-radius: 5px;
+    box-shadow: 1px 1px 3px#b6b6b6;
+    background-color: white;
+    overflow-y: auto;
+    max-height: 230px;
+}
+
+.search__room {
+    font-family: 'OpenSans', monospace;
+    width: 100%;
+    outline: none;
+    border: 1px solid #dadce0;
+    padding: 8px;
+    font-size: 12px;
+    border-radius: 5px;
+}
+
+.search__room:focus {
+    border: 1px solid royalblue;
+}
+
+.search__room:valid + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.search__room:focus + label {
+    bottom: 26px;
+    padding: 0 3px;
+    color: royalblue;
+}
+
+.room__number {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+    cursor: pointer;
+}
+
+.room__number:hover {
+    background-color: #CFD8DC;
+}
+
+.filter__group label {
+    font-size: 12px;
+    color: #8d8d8d;
+    position: absolute;
+    bottom: 9px;
+    left: 8.5px;
+    background: #ffffff;
+    transition: 0.15s;
+}
+
+
+.camera__table__buttons {
+    grid-area: camera-table-buttons;
+    display:flex;
+    justify-content: center;
+    height: 100%;
+    background-color: #ECEFF1;
+    gap: 20px;
+}
+
+.camera__table__buttons button {
+    width: 100%;
+    border: transparent;
+    border-radius: 5px;
+    background-color: white;
+    box-shadow: 1px 1px 3px#b6b6b6;
+}
+
+.camera__generate__button .disable {
+    pointer-events: none;
+    background-color: rgb(184, 184, 184);
+}
+
+.camera__table__buttons button:hover {
+    cursor: pointer;
+    font-size: 15px;
+    background-color: royalblue;
 }
 
 .temp__camera__table {
     grid-area: temp-camera-table;
-    height: 100%;
+    overflow: auto;
     border-radius: 5px;
     box-shadow: 1px 1px 3px#b6b6b6;
     background-color: white;
 }
 
-.camera__table__buttons {
-    grid-area: camera-table-buttons;
-    height: 100%;
-    border-radius: 5px;
-    box-shadow: 1px 1px 3px#b6b6b6;
-    background-color: white;
+.temp__camera__table table {
+    table-layout: fixed;
+    border-collapse: collapse;
+    overflow-wrap: break-word;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.temp__db__header {
+    font-family: 'Poppins', monospace;
+    font-size: 12px;
+    height: 20px;
+    border-bottom: 1.35px solid rgba(250, 200, 200, 0.5);
+}
+
+.temp__header__cell {
+    color: black;
+    height: 40px;
+    padding: 0 0 0 20px;
+}
+
+#temp__data__cell {
+    font-family: 'OpenSans', monospace;
+    font-size: 12px;
+    height: 40px;
+    padding: 0 0 0 20px;
+    border-bottom: 1.25px solid rgba(250, 200, 200, 0.5);
+}
+
+.temp__header__cell__actions {
+    width: 60px;
+    padding: 0 0 0 10px;
+}
+
+.temp__data__cell__actions {
+    padding: 0 0 0 10px;
+    border-bottom: 1.25px solid rgba(250, 200, 200, 0.5);
+}
+
+table, th, td {
+    text-align: left;
 }
 
 .camera-container {

@@ -17,7 +17,7 @@
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="dashboard-tab">
+                <li data-tab-target="#camera-pane" class="active dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
                 <li data-tab-target="#room-pane" class="dashboard-tab">
@@ -26,25 +26,79 @@
                 <li data-tab-target="#database-pane" class="dashboard-tab">
                     <i class="fas fa-database"></i> 
                 </li>
-                <li data-tab-target="#covid-pane" class="active dashboard-tab">
+                <li data-tab-target="#covid-pane" class="dashboard-tab">
                     <i class="fas fa-file"></i> 
                 </li>
             </ul>
             <div class="dashboard-container" id="dashboard-container">
                 <!-- Main Camera Pane -->
-                <div id="camera-pane" class="camera-pane" data-tab-content>
+                <div id="camera-pane" class="active camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
                     <div class="camera-db">
-                        <div class="student__info">
+                        <div class="generate__student__room">
+                            <div class="student__info" id="student__info">
+                                <p class = "header_stud">Student Information</p>
+                                <div class="student__info__context" id="student__info__context">
 
-                        </div>
-                        <div class="temp__camera__table">
-
+                                </div>
+                            </div>
+                            <div class="student__info__room">
+                                <div class="filter__group">
+                                    <input type="text" required class="search__room" id="search__room" onkeyup="roomFilter()">
+                                    <label>Room</label>
+                                </div> 
+                                <ul class="classrooms" id="classrooms">
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>COS 320</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>COS 316</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>COS 319</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>CLA 217</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>CLA 225</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>CLA 210</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>CIT 113</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>CIT 205</p>
+                                    </li>
+                                    <li class="room__number" onclick="roomNumber(this)">
+                                        <p>CIT 207</p>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                         <div class="camera__table__buttons">
-                            
+                            <button class="camera__generate__button" id="camera__generate__button" onclick="fetch_name()">GENERATE</button>
+                            <button onclick="appendRoom()">APPEND</button>
+                        </div>
+                        <div class="temp__camera__table">
+                            <table id="temp__db__table">
+                                <thead class="temp__db__header">
+                                    <tr class="temp__row">
+                                        <th class="temp__header__cell">Actions</th>
+                                        <th class="temp__header__cell">Room No.</th>
+                                        <th class="temp__header__cell">Student Name</th>
+                                        <th class="temp__header__cell">Date</th>
+                                        <th class="temp__header__cell">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tempList">
+
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                     <div class="camera-container">
@@ -107,7 +161,7 @@
                                     <label>Name</label>
                                 </div>       
                                 <div class="filter__group">
-                                    <input type="text" required class="filter__covid" id="filter__covid" onkeyup="covidFilter()">
+                                    <input type="text" required class="filter__covid" id="filter__covid" onkeyup="covidFilter()">                                                                                
                                     <label>Covid Status</label>
                                 </div>                    
                             </div>
@@ -145,7 +199,7 @@
                 </div>
 
                 <!-- COVID Details -->
-                <div id="covid-pane" class="active covid-pane" data-tab-content>
+                <div id="covid-pane" class="covid-pane" data-tab-content>
                     <div class="title"><h1>COVID Details</h1></div>
                     <div class="covid-notif-request" id="covid-notif-request"></div>
                     <div class="covid-container"><div class="covid-result" id="covid-result"></div></div>

@@ -9,6 +9,7 @@ const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
 const UserImages = mongoose.model('UserImages')
 const UserCovidResult = mongoose.model('UserCovidResult')
+const UserRoom = mongoose.model('UserRoom')
 const router = express.Router()
 
 router.use(requireAuth)
@@ -165,6 +166,17 @@ router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
             error: err
         })
     })
+})
+
+router.get('/history', async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        const userRooms = await UserRoom.findById({ userId: req.user._id})
+        
+        res.status(200).json({user: user, userRooms: userRooms})
+    } catch (err) {
+        res.status(304).send(err.message)
+    }
 })
 
 module.exports = router

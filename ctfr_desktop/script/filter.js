@@ -47,7 +47,7 @@ function covidFilter() {
 
     input = document.getElementById("filter__covid")
     filter = input.value.toUpperCase()
-    table = document.getElementById("db__table")
+    table = document.getElementById("db__table")    
     tr = table.getElementsByTagName("tr")
 
     for (i = 0; i < tr.length; i++) {
@@ -60,6 +60,26 @@ function covidFilter() {
             } else {
                 tr[i].style.display = "none"
             }
+        }
+    }
+}
+
+function roomFilter() {
+    var input, filter, table, tr, td, i, txtValue
+
+    input = document.getElementById("search__room")
+    filter = input.value.toUpperCase()
+    ul = document.getElementById("classrooms")
+    li = ul.getElementsByTagName("li")
+
+    for (i = 0; i < li.length; i++){
+        a = li[i].getElementsByTagName("p")[0]
+
+        txtValue = a.textContent || a.innerText
+        if(txtValue.toUpperCase().indexOf(filter) > -1){
+            li[i].style.display = ""
+        } else{
+            li[i].style.display = "none"
         }
     }
 }
