@@ -119,12 +119,28 @@
                     </div>
                     <div class="room-db-input">
                         <div class="room-db__filter__title__container">
-                            <h2>Name</h2>
+                            <div class="db__filter__title">
+                                <h2>Room No.</h2>
+                            </div>
+                            <div class="db__filter__title">
+                                <h2>Name</h2>
+                            </div>
                         </div>
                         <div class="room-db__filter__input__container">
-                            <div class="filter__name__group">
-                                <input type="text" required class="filter__name" id="room__filter__name" onkeyup="myFunction()">
-                                <label>Name</label>
+                            <div class="db__filter__group">
+                                <div class="filter__group">
+                                    <input type="text" required class="room__filter__room" id="room__filter__room" onkeyup="roomRoomFilter()">
+                                    <label>Room No.</label>
+                                </div> 
+                                <div class="filter__group">
+                                    <input type="text" required class="room__filter__name" id="room__filter__name" onkeyup="roomStudentFilter()">
+                                    <label>Name</label>
+                                </div>    
+                            </div> 
+                            <div class="db__buttons__container">
+                                <div class="db__buttons">
+                                    <button class="refresh__button" onclick="get_rooms()">Refresh</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -222,7 +238,19 @@
             </div>
 
             <!-- End -->
-
+            
+            <!-- Modal forms Room -->
+            <div class="delete__window" id="delete__window">
+                <div class="delete__content">
+                    <div class="delete__title"><h1>Delete this row?</h1></div>
+                    <div><p>Are you sure that you want to permanently delete this file?</p></div>
+                    <div class="delete__buttons">
+                        <button class="delete__confirm" type="submit" onclick="confirmRoomDelete()">CONFIRM</button>
+                        <button class="delete__cancel" id="delete__cancel" onclick="deleteCancel()">CANCEL</button>
+                    </div>
+                </div>
+            </div>
+            <!-- End -->
             <!-- Modal forms Database -->
 
             <!-- Add Modal -->

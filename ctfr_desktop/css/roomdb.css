@@ -23,25 +23,31 @@
     font-family: 'Poppins', monospace;
     font-size: 12px;
     height: 50%;
+    gap: 60px;
     display: flex;
     align-items: center;
     padding: 20px;
     border-bottom: 1.35px solid rgba(250, 200, 200, 0.5);
 }
 
+.db__filter__title {
+    width: 125px;
+}
+
 .room-db__filter__input__container {
     font-family: 'Poppins', monospace;
     height: 50%;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     padding: 20px;
 }
 
-.filter__name__group {
+.filter__group {
     position: relative;
 }
 
-.filter__name {
+.room__filter__room, .room__filter__name {
     font-family: 'OpenSans', monospace;
     outline: none;
     border: 1px solid #dadce0;
@@ -50,23 +56,23 @@
     border-radius: 5px;
 }
 
-.filter__name__group .filter__name:focus {
+.room__filter__room:focus, .room__filter__name:focus {
     border: 1px solid royalblue;
 }
 
-.filter__name__group .filter__name:valid + label {
+.room__filter__room:valid + label, .room__filter__name:valid + label {
     bottom: 26px;
     padding: 0 3px;
     color: royalblue;
 }
 
-.filter__name__group .filter__name:focus + label {
+.room__filter__room:focus + label, .room__filter__name:focus + label {
     bottom: 26px;
     padding: 0 3px;
     color: royalblue;
 }
 
-.filter__name__group label {
+.filter__group label {
     font-size: 12px;
     color: #8d8d8d;
     position: absolute;

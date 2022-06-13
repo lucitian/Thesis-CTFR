@@ -17,12 +17,12 @@ const renderRooms = (rooms) => {
         roomList.innerHTML += `
             <tr id="roomDetailsList">
                 <td class="room__data__cell__actions">
-                    <button id="button__actions" onclick="deleteUser(this)">
+                    <button id="button__actions" onclick="deleteRoom(this)">
                         <i class="fa fa-trash-o"></i>
                     </button>
                 </td>
                 <td id="room__data__cell">${data.roomNo}</td>
-                <td id="room__data__cell">${data.userId}</td>
+                <td id="room__data__cell" class="data__id">${data.userId}</td>
                 <td id="room__data__cell">${data.name}</td>
                 <td id="room__data__cell">${data.date}</td>
                 <td id="room__data__cell">${data.time}</td>
@@ -32,3 +32,43 @@ const renderRooms = (rooms) => {
 }
 
 get_rooms()
+
+var globalRoom
+
+function deleteRoom(tableRow) {
+    document.getElementById('delete__window').style.display = 'flex'
+
+    globalRoom = tableRow
+}
+
+confirmRoomDelete = () => {
+    let column = globalRoom.parentElement.parentElement
+    var formData
+    formData = column.getElementsByClassName('data__id')[0].innerHTML
+
+    fetch(`http://localhost:5000/deleteroom/${formData}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        statusRoomDelete(data)
+    })
+}
+
+statusRoomDelete = (data) => {
+    switch(data.send) {
+        case 'success':
+            document.getElementById('delete__window').style.display = 'none'
+            alert(data.message)
+            break
+        case 'nothing':
+            alert(data.message)
+            break
+        case 'fail':
+            alert(data.message)
+            break
+    }
+}

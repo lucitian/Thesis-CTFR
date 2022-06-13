@@ -1,6 +1,6 @@
 from app import app
 from mongo import mongo
-from flask import jsonify
+from flask import jsonify, Response
 from bson.objectid import ObjectId
 import json
 
@@ -25,3 +25,38 @@ def get_rooms():
     }for room in rooms]
 
     return jsonify(json.loads(JSONEncoder().encode(output)))
+
+@app.route('/deleteroom/<id>', methods=['DELETE'])
+def delete_room(id):
+    try:
+        dbResponse = db_rooms.delete_one({
+            'userId': ObjectId(id)
+        })
+
+        if dbResponse.deleted_count == 1:
+            return Response(
+                response = json.dumps({
+                    'message': 'Room deleted!',
+                    'send': 'success'
+                }),
+                status = 200,
+                mimetype='application/json'
+            )
+        return Response(
+            response = json.dumps({
+                'message': 'Room not found!',
+                'send': 'nothing'
+            }),
+            status = 200,
+            mimetype='application/json'
+        )
+    except Exception as ex:
+        print(ex)
+        return Response(
+            response = json.dumps({
+                'message': 'Failed',
+                'send': 'fail'
+            }),
+            status = 500,
+            mimetype='application/json'
+        )

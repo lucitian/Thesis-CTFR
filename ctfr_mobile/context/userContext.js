@@ -131,7 +131,7 @@ const signin = (dispatch) => async ({ email, password}) => {
 
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, user: user, userInfo: userInfo}
+                payload: {token: response.data.token, user: user, userInfo: userInfo, roomHistory: historyresponse.data}
             })
 
             navigate('home')

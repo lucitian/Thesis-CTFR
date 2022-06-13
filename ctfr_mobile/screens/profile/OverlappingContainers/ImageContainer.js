@@ -13,7 +13,7 @@ const ImageContainer = ({
   navigation
 }) => { 
   const {state, covid_upload} = useContext(AuthContext)
-  // console.log(state.token.roomHistory)
+  console.log(state.token)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
