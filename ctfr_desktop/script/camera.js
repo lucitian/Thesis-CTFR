@@ -74,21 +74,21 @@ const roomNumber = (clickRow) => {
     array_append.push(temp_array_append)
 
     tempList.innerHTML += `
-    <tr>    
-        <td class="temp__data__cell__actions">
-            <button id="button__actions" onclick="deleteUserAppend(this)">
-                <i class="fa fa-trash-o"></i>
-            </button>
-        </td>
-        <td id="temp__data__cell">${roomNo}</td>
-        <td id="temp__data__cell">
-            <span>${tempData.info[0].firstname}</span>
-            <span>${tempData.info[0].middleinitial}</span>.
-            <span>${tempData.info[0].lastname}</span>
-        </td>
-        <td id="temp__data__cell">${newDate()}</td>
-        <td id="temp__data__cell">${newTime()}</td>
-    </tr>
+        <tr>
+            <td class="temp__data__cell__actions">
+                <button id="button__actions" onclick="deleteUserAppend(this)">
+                    <i class="fa fa-trash-o"></i>
+                </button>
+            </td>
+            <td id="temp__data__cell">${roomNo}</td>
+            <td id="temp__data__cell">
+                <span>${tempData.info[0].firstname}</span>
+                <span>${tempData.info[0].middleinitial}</span>.
+                <span>${tempData.info[0].lastname}</span>
+            </td>
+            <td id="temp__data__cell">${newDate()}</td>
+            <td id="temp__data__cell">${newTime()}</td>
+        </tr>
     `
 }
 

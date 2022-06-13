@@ -13,7 +13,7 @@ const ImageContainer = ({
   navigation
 }) => { 
   const {state, covid_upload} = useContext(AuthContext)
-  console.log(state)
+  // console.log(state.token.roomHistory)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,15 +21,15 @@ const ImageContainer = ({
   const [modalCovid, setModalCovid] = useState(false)
   const [imageSource, setImageSource] = useState(null);
 
-  useEffect(() => {
-    if ((state.token.userInfo.covidstatus).toLowerCase() == 'negative') {
-      setToggleN(true)
-      setToggleP(false)
-    } else {
-      setToggleN(false)
-      setToggleP(true)
-    }
-  })
+  // useEffect(() => {
+  //   if ((state.token.userInfo.covidstatus).toLowerCase() == 'negative') {
+  //     setToggleN(true)
+  //     setToggleP(false)
+  //   } else {
+  //     setToggleN(false)
+  //     setToggleP(true)
+  //   }
+  // })
 
   const changeVal = () => {
     if(toggleN == true){
@@ -248,7 +248,7 @@ const ImageContainer = ({
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>
-              {state.token.userInfo.firstname}!
+              {/* {state.token.userInfo.firstname}! */}
             </Text>
           </View>
           <View style = {styles.msgContainer}>

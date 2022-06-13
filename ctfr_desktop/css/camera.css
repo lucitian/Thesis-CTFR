@@ -135,7 +135,6 @@
     transition: 0.15s;
 }
 
-
 .camera__table__buttons {
     grid-area: camera-table-buttons;
     display:flex;
@@ -167,6 +166,7 @@
 .temp__camera__table {
     grid-area: temp-camera-table;
     overflow: auto;
+    max-height: 328.5px;
     border-radius: 5px;
     box-shadow: 1px 1px 3px#b6b6b6;
     background-color: white;

@@ -14,7 +14,7 @@
     background-color: white;
     position: fixed;
     width: 420px;
-    height: 180px;
+    height: auto;
     padding: 15px 20px 0 20px;
     border-radius: 10px;
 }
@@ -25,7 +25,7 @@
 }
 
 .delete__buttons {
-    margin: 15px 0 30px 0;
+    margin: 15px 0 75px 0;
 }
 
 .delete__confirm {

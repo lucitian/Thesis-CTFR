@@ -52,7 +52,7 @@ const switchNavigator = createSwitchNavigator({
         // main: createBottomTabNavigator({
         profile: ProfileScreen,
         edit: EditScreen,
-        history: HistoryScreen
+        // history: HistoryScreen
     },
     {
         headerMode: 'none',
