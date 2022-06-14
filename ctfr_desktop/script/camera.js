@@ -1,6 +1,6 @@
 const openCamera = document.getElementById('camera__screen')
 const generateID = document.getElementById('student__info__context')
-// document.getElementById('camera__generate__button').disabled = true
+document.getElementById('camera__generate__button').disabled = true
 const tempList = document.getElementById('tempList')
 
 let array_append = []

@@ -17,10 +17,10 @@
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="dashboard-tab">
+                <li data-tab-target="#camera-pane" class="active dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
-                <li data-tab-target="#room-pane" class="active dashboard-tab">
+                <li data-tab-target="#room-pane" class="dashboard-tab">
                     <i class="fas fa-table"></i> 
                 </li>
                 <li data-tab-target="#database-pane" class="dashboard-tab">
@@ -32,7 +32,7 @@
             </ul>
             <div class="dashboard-container" id="dashboard-container">
                 <!-- Main Camera Pane -->
-                <div id="camera-pane" class="camera-pane" data-tab-content>
+                <div id="camera-pane" class="active camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="camera__table__buttons">
-                            <button class="camera__generate__button" id="camera__generate__button" onclick="fetch_name()">GENERATE</button>
+                            <button class="camera__generate__button disable" id="camera__generate__button" onclick="fetch_name()">GENERATE</button>
                             <button onclick="appendRoom()">APPEND</button>
                         </div>
                         <div class="temp__camera__table">
@@ -113,7 +113,7 @@
                 </div>
 
                 <!-- Room History Database -->
-                <div id="room-pane" class="active room-pane" data-tab-content>
+                <div id="room-pane" class="room-pane" data-tab-content>
                     <div class="title">
                         <h1>Room section</h1>
                     </div>

@@ -137,7 +137,7 @@ const signin = (dispatch) => async ({ email, password}) => {
                 type: 'signin',
                 payload: {token: response.data.token, user: userresponse.data.user, userInfo: userresponse.data.userInfo, roomHistory: historyresponse.data}
             })
-
+            alert('YES LODS')
             navigate('home')
         } else {
             navigate('fill')
