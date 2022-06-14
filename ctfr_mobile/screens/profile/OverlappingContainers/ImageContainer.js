@@ -12,8 +12,8 @@ const ImageContainer = ({
   imageHeight,
   navigation
 }) => { 
-  const {state, covid_upload} = useContext(AuthContext)
-  console.log(state.token)
+  const {state, covid_upload, signout} = useContext(AuthContext)
+  console.log(state.token.roomHistory)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
@@ -21,15 +21,15 @@ const ImageContainer = ({
   const [modalCovid, setModalCovid] = useState(false)
   const [imageSource, setImageSource] = useState(null);
 
-  // useEffect(() => {
-  //   if ((state.token.userInfo.covidstatus).toLowerCase() == 'negative') {
-  //     setToggleN(true)
-  //     setToggleP(false)
-  //   } else {
-  //     setToggleN(false)
-  //     setToggleP(true)
-  //   }
-  // })
+  useEffect(() => {
+    if ((state.token.userInfo.covidstatus).toLowerCase() == 'negative') {
+      setToggleN(true)
+      setToggleP(false)
+    } else {
+      setToggleN(false)
+      setToggleP(true)
+    }
+  })
 
   const changeVal = () => {
     if(toggleN == true){
@@ -176,9 +176,20 @@ const ImageContainer = ({
               </Pressable> 
             </View>
             <SafeAreaView>
-              <ScrollView style={styles.scrollView}>
-                <Text style={styles.textHistory}>
-                </Text>
+              <ScrollView style={styles.scrollViewStyle}>
+                <View style={styles.historyRowHeader}>
+                  <Text style={{fontWeight: 'bold'}}>{'\t'} Room No.{'\t'}{'\t'}{'\t'}{'\t'}</Text>
+                  <Text style={{fontWeight: 'bold'}}> Date{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}</Text>
+                  <Text style={{fontWeight: 'bold'}}> Time{'\t'}</Text>
+                </View>
+                {state.token.roomHistory === null ? (<Text style={styles.textHistory}>No Room visited yet!</Text>) : 
+                  state.token.roomHistory.map(room => 
+                  <View style={styles.historyRow}>
+                    <Text key={room.roomNo} style={styles.textHistory}>{room.roomNo}{'\t'}</Text>
+                    <Text key={room.date} style={styles.textHistory}>{room.date}{'\t'}</Text>
+                    <Text key={room.time} style={styles.textHistory}>{room.time}</Text>
+                  </View>
+                )}
               </ScrollView>
             </SafeAreaView>
           </TouchableOpacity>
@@ -248,11 +259,11 @@ const ImageContainer = ({
         <View style = {styles.container}>
           <View style = {styles.hiContainer}>
             <Text style = { styles.infoText }>
-              {/* {state.token.userInfo.firstname}! */}
+              {state.token.userInfo.firstname}!
             </Text>
           </View>
           <View style = {styles.msgContainer}>
-            <Text style = { styles.message }>We advise the you update your Covid-19 status!</Text>
+            <Text style = { styles.message }>We advise that you update your Covid-19 status!</Text>
           </View>
           <View style = { styles.covidStatContainer}>
             <TouchableOpacity style = {[ toggleN == true ? styles.covidStatTrue : styles.covidStatFalse]} onPress = {() => changeVal()} disabled={(state.token.userInfo.covidstatus).toLowerCase() == 'negative' ? true : false}>
@@ -420,29 +431,32 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center"
   },
+  historyRowHeader: {
+    flexDirection: 'row',
+  },
+  historyRow: {
+    flexDirection: 'row',
+    borderBottomWidth: .2,
+  },
   textHistory: {
     marginBottom: 15,
     textAlign: "center"
   },
-
   modalContainer: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     // backgroundColor: 'red'
   },
-
   notifTitle: {
     fontWeight: 'bold',
-    fontSize: 16,
-    marginBottom: 5,
+    fontSize: 20,
   },
   containerBttn: {
     marginBottom: 15
   },
-
   containerHistory:{
-    width: 350,
+    width: 300,
     height: 400,
     backgroundColor: "white",
     borderRadius: 25,
@@ -451,25 +465,31 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     // height: deviceHeight/3,
     marginTop: deviceHeight/4,
-    opacity: .9
+    opacity: .9,
+    elevation: 2,
+  },
+  scrollViewStyle: {
+    margin: 0,
+    width: '100%'
   },
   headerHistory:{
     width: 350,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
+    marginTop: 40,
+    marginBottom: 15,
   },
   modalHistory: {
-    width:350,
     justifyContent: 'center',
     alignItems: 'center',
     padding: 15,
     height: 400,
   },
   closeBttn:{
-    marginTop:-25,
+    marginTop: -25,
     alignSelf: 'flex-end',
-    marginRight: 15
+    marginRight: 45
   },
   textHistory:{
     padding: 15

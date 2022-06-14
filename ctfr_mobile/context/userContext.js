@@ -49,7 +49,6 @@ const localSignIn = (dispatch) => async () => {
             const user = await AsyncStorage.getItem('user')
             const userInfo = await AsyncStorage.getItem('userinfo')
             const history = await AsyncStorage.getItem('history')
-            // const roomHistory = await AsyncStorage.getItem('roomHistory')
 
             dispatch({
                 type:'signin',
@@ -122,16 +121,21 @@ const signin = (dispatch) => async ({ email, password}) => {
             await AsyncStorage.setItem('userinfo_exist', 'true')
             const userresponse = await api.get('/profile')
             const historyresponse = await api.get('/history')
-            const user = userresponse.data.user
-            const userInfo = userresponse.data.userInfo
-            if(userresponse && historyresponse)
-                await AsyncStorage.setItem('user', JSON.stringify(user))
-                await AsyncStorage.setItem('userinfo', JSON.stringify(userInfo))
+            if(userresponse && historyresponse){
+                await AsyncStorage.setItem('user', JSON.stringify(userresponse.data.user))
+                await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
                 await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
+            } else {
+                const userresponse = await api.get('/profile')
+                const historyresponse = await api.get('/history')
+                await AsyncStorage.setItem('user', JSON.stringify(userresponse.data.user))
+                await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
+                await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
+            }
 
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, user: user, userInfo: userInfo, roomHistory: historyresponse.data}
+                payload: {token: response.data.token, user: userresponse.data.user, userInfo: userresponse.data.userInfo, roomHistory: historyresponse.data}
             })
 
             navigate('home')
@@ -197,9 +201,8 @@ const covid_upload = (dispatch) => async (formData) => {
 
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
-    await AsyncStorage.removeItem('user')
-    await AsyncStorage.removeItem('userInfo')
 
+    console.log('signout')
     dispatch({
         type: 'signout'
     })
@@ -209,6 +212,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, signout, clearError, localSignIn, update, covid_upload },
+    { signup, signin, clearError, localSignIn, update, covid_upload, signout },
     { token: null, errorMessage: '' }
 )

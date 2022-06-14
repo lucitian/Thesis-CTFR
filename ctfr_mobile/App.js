@@ -49,7 +49,6 @@ const switchNavigator = createSwitchNavigator({
         },
     }),
     home: createStackNavigator({
-        // main: createBottomTabNavigator({
         profile: ProfileScreen,
         edit: EditScreen,
         // history: HistoryScreen

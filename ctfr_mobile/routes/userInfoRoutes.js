@@ -17,9 +17,9 @@ router.use(requireAuth)
 router.get('/profile', async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
-        const userInfo = await UserInfo.findOne({ userId: req.user._id})
-        
-        res.status(200).json({user: user, userInfo: userInfo})
+        const userInfo = await UserInfo.findOne({userId: req.user._id})
+        const response = {user, userInfo}
+        res.status(200).send(response)
     } catch (err) {
         res.status(304).send(err.message)
     }

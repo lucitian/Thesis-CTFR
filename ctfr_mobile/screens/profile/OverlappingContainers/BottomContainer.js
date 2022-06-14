@@ -64,6 +64,11 @@ const BottomContainer = ({
         }
     };
 
+    const SignOut = () => {
+        signout()
+        navigation.navigate('login')
+    }
+
     return (
         <Animated.ScrollView
             showsVerticalScrollIndicator={false}
@@ -108,7 +113,7 @@ const BottomContainer = ({
                     </TouchableOpacity>
                     <View style = {styles.nameContainer}>
                         <Text style = { styles.name }>
-                            {/* {state.token.userInfo.firstname} {state.token.userInfo.middleinitial}. {state.token.userInfo.lastname} */}
+                            {state.token.userInfo.firstname} {state.token.userInfo.middleinitial}. {state.token.userInfo.lastname}
                         </Text>
                         <TouchableOpacity onPress={() => navigation.navigate('edit')}>
                             <MaterialCommunityIcons name="pencil" size={20} color="#A18AFF" style = {styles.pencil} />
@@ -116,7 +121,7 @@ const BottomContainer = ({
                     </View>
                     <View>
                         <Text style = {styles.email}>
-                            {/* {state.token.userInfo.email} */}
+                            {state.token.userInfo.email}
                         </Text>
                     </View>
                     
@@ -124,28 +129,28 @@ const BottomContainer = ({
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="shield-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.vaxstatus} */}
+                                {state.token.userInfo.vaxstatus}
                             </Text>
                         </View>
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="calendar-month-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.birthdate} */}
+                                {state.token.userInfo.birthdate}
                             </Text>
                         </View>
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="phone-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.contact} */}
+                                {state.token.userInfo.contact}
                             </Text>
                         </View>
                         <View style = {styles.containerStrips}>
                             <MaterialCommunityIcons name="home-outline" size={20} color="white" style = {styles.icons} />
                             <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>
-                                {/* {state.token.userInfo.address} */}
+                                {state.token.userInfo.address}
                             </Text>
                         </View>
-                        <TouchableOpacity style = {styles.logout} onPress = {signout}>
+                        <TouchableOpacity style = {styles.logout} onPress = {SignOut}>
                             <View style = {styles.containerStripsLogout}>      
                                 <MaterialCommunityIcons name="logout" size={20} color="white" style = {styles.icons} />
                                 <Text numberOfLines={1} adjustsFontSizeToFit={true} style = {styles.info}>Logout</Text>
@@ -197,13 +202,14 @@ const styles = StyleSheet.create({
     },  
 
     nameContainer: {
-        alignItems: "center",
-        flexDirection: "row"
+        flexDirection: "row",
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },  
     name: {
         marginTop: 20,
-        marginLeft:40,
-        fontSize: 30,
+        fontSize: 28,
         color: "#A18AFF",
         fontWeight: 'bold'
     },
@@ -255,6 +261,7 @@ const styles = StyleSheet.create({
     },
     containerStrips: {
         backgroundColor: "#C3BBE5",
+        alignItems: 'center',
         width: 300,
         height: 50,
         borderRadius: 25,
@@ -264,6 +271,7 @@ const styles = StyleSheet.create({
     },
     containerStripsLogout: {
         backgroundColor: "#C3BBE5",
+        alignItems: 'center',
         width: 300,
         height: 50,
         borderRadius: 25,
@@ -287,7 +295,7 @@ const styles = StyleSheet.create({
     },
     info: {
         color: 'white',
-        fontSize: 18,
+        fontSize: 19,
         fontWeight: 'bold',
         textAlign: 'center'
     },
@@ -296,7 +304,7 @@ const styles = StyleSheet.create({
         marginRight: 20
     },
     pencil: {
-        padding: 10
+        paddingTop: 20,
     },
     picRim: {
         width: 110,
