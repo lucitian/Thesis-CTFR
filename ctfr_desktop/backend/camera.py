@@ -24,7 +24,6 @@ def open_cam():
     temp_json = list(gen(camera()))
     
     return Response(gen(camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
-    # return Response(gen(camera()), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/close_cam')
 def close_cam():
@@ -51,30 +50,22 @@ class JSONEncoder(json.JSONEncoder):
 
 @app.route('/fetchnames', methods = ['GET'])
 def fetch_name():
-    # temp_dict = {}
-    # for name in global_names:
-    #     if not name in temp_dict:
-    #         temp_dict[name] = 1
-    #     elif name in temp_dict:
-    #         temp_dict[name] += 1
+    temp_dict = {}
+    for name in global_names:
+        if not name in temp_dict:
+            temp_dict[name] = 1
+        elif name in temp_dict:
+            temp_dict[name] += 1
 
-    # max_name = list(temp_dict.keys())[0]
-    # max_val = temp_dict[max_name]
-    # # print(list(temp_dict.keys())[0], max_val)
-    # for name in temp_dict:
-    #     if max_val < temp_dict[name]:
-    #         max_val = temp_dict[name]
-    #         max_name = name
+    max_name = list(temp_dict.keys())[0]
+    max_val = temp_dict[max_name]
+    # print(list(temp_dict.keys())[0], max_val)
+    for name in temp_dict:
+        if max_val < temp_dict[name]:
+            max_val = temp_dict[name]
+            max_name = name
 
-    # print(max_name, max_val )
-
-    # temp_name = (max_name.replace('_', " "))
-    temp_name = 'Christian Olandesca'
-    # print(temp_name)
-
-    # print(camera().test_name)
-    # print(global_names)
-
+    temp_name = max_name
     try:
         users = db_users.aggregate(userInfo)
 
