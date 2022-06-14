@@ -7,12 +7,12 @@ import * as ImagePicker from 'expo-image-picker'
 import * as MediaLibrary from 'expo-media-library'
 import * as VideoThumbnails from 'expo-video-thumbnails';
 
-import { Context as IntroContext } from '../../context/IntroContext'
+import { Context as UserContext } from '../../context/UserContext'
 
 import instance from '../../api/api'
 
 function CameraScreen () {
-    const { camera_upload } = useContext(IntroContext)
+    const { camera_upload } = useContext(UserContext)
     const [hasCameraPermission, setHasCameraPermission ] = useState(false)
     const [hasAudioPermissions, setHasAudioPermissions] = useState(false)
     const [hasGalleryPermission, setHasGalleryPermission ] = useState(false)
@@ -45,14 +45,13 @@ function CameraScreen () {
     const recordVideo = async () => {
         if(cameraRef){
             try{
-                const options = {maxDuration: 10, quality: Camera.Constants.VideoQuality['720'], mute: true}
+                const options = {maxDuration: 10, quality: Camera.Constants.VideoQuality['480'], mute: true}
                 const videoRecordPromise = cameraRef.recordAsync(options)
                 if(videoRecordPromise){
-                    const data = await videoRecordPromise.then(data => {
+                    await videoRecordPromise.then(data => {
                     MediaLibrary.saveToLibraryAsync(data.uri)
-                    console.log(data)
+                        console.log(data)
                     });
-                    console.log(data)
                 }
             } catch(error) {
                 console.warn(error)
@@ -91,8 +90,6 @@ function CameraScreen () {
 
             formData.append('video', video)
             camera_upload(formData)
-            console.log('bruh')
-            console.log(result.uri)
         }
     }
 

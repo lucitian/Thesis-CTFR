@@ -16,6 +16,21 @@ const authReducer = (state, action) => {
                 errorMessage: '',
                 token: action.payload
             }
+        case 'fillup':
+            return {
+                errorMessage: '',
+                token: action.payload
+            }
+        case 'camera_upload':
+            return {
+                errorMessage: '',
+                token: action.payload
+            }
+        case 'camera_uploadMask':
+            return {
+                errorMessage: '',
+                token: action.payload
+            }
         case 'update':
             return {
                 errorMessage: '',
@@ -85,7 +100,6 @@ const signup = (dispatch) => async ({ username, email, password }) => {
 
         navigate('intro')
     } catch (err) {
-        console.log(err)
         dispatch({
             type: 'add_error',
             payload: 'Something went wrong'
@@ -93,51 +107,26 @@ const signup = (dispatch) => async ({ username, email, password }) => {
     }
 }
 
-// const history = (dispatch) => async ({roomNumber, date, time}) => {
-//     try {
-//         const historyresponse = await api.get('/history', {roomNumber, date, time})
-//         await AsyncStorage.setItem('userhistory', JSON.stringify(historyresponse))
-
-//         dispatch({
-//             type: "history",
-//             payload: historyresponse.data
-//         })
-
-//     }catch (err) {
-//         console.log(err)
-//         dispatch({
-//             type: 'add_error',
-//             payload: 'Something went wrong'
-//         })  
-//     } 
-// }
-
 const signin = (dispatch) => async ({ email, password}) => {
     try {
         const response = await api.post('/signin', { email, password })
+
         await AsyncStorage.setItem('token', response.data.token)
 
         if (response.data.userInfo) {
             await AsyncStorage.setItem('userinfo_exist', 'true')
-            const userresponse = await api.get('/profile')
+            const userEmailResponse = await api.get('/profileemail')
+            const userInfoResponse = await api.get('/profileinfo')
             const historyresponse = await api.get('/history')
-            if(userresponse && historyresponse){
-                await AsyncStorage.setItem('user', JSON.stringify(userresponse.data.user))
-                await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
-                await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
-            } else {
-                const userresponse = await api.get('/profile')
-                const historyresponse = await api.get('/history')
-                await AsyncStorage.setItem('user', JSON.stringify(userresponse.data.user))
-                await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
-                await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
-            }
+            await AsyncStorage.setItem('user', JSON.stringify(userEmailResponse.data))
+            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
+            await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
 
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, user: userresponse.data.user, userInfo: userresponse.data.userInfo, roomHistory: historyresponse.data}
+                payload: {token: response.data.token, user: userEmailResponse.data, userInfo: userInfoResponse.data, roomHistory: historyresponse.data}
             })
-            alert('YES LODS')
+
             navigate('home')
         } else {
             navigate('fill')
@@ -158,12 +147,14 @@ const update = (dispatch) => async ({ firstname, middleinitial, lastname, contac
         })
         const token = await AsyncStorage.getItem('token')
         const user = await AsyncStorage.getItem('user')
-        const userresponse = await api.get('/profile')
-        await AsyncStorage.setItem('userinfo', JSON.stringify(userresponse.data.userInfo))
+        const history = await AsyncStorage.getItem('history')
+        const userInfoResponse = await api.get('/profileinfo')
+        const historyResponse = await api.get('/history')
+        await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
 
         dispatch ({
             type:'update',
-            payload: {token: token, user: JSON.parse(user), userInfo: userresponse.data.userInfo}
+            payload: {token: token, user: JSON.parse(user), userInfo: userInfoResponse.data, roomHistory: historyResponse.data}
         })
 
         navigate('home')
@@ -190,7 +181,100 @@ const covid_upload = (dispatch) => async (formData) => {
             payload: response.data.token
         })
 
-        navigate('profile')
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
+const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus }) => {
+    try {
+        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus })
+        await AsyncStorage.setItem('userinfo_exist', 'true')
+        dispatch({
+            type: 'fillup',
+            payload: response.data.token
+        })
+
+        navigate('camera')
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
+const camera_upload = (dispatch) => async (formData) => {
+    try {
+        const response = await api.post('/camera/upload', formData, {
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+        await AsyncStorage.setItem('cameraUpload', 'true')
+
+        dispatch({
+            type: 'camera_upload',
+            payload: response.data.token
+        })
+
+        navigate('cameraMask')
+    } catch (err) {
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
+const camera_uploadMask = (dispatch) => async (formData) => {
+    try {
+        const response = await api.post('/camera/upload1', formData, {
+            body: formData,
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+        })
+        const userEmailResponse = await api.get('/profileemail')
+        const userInfoResponse = await api.get('/profileinfo')
+        const historyresponse = await api.get('/history')
+
+        if(userEmailResponse.status == 200 && userInfoResponse.status == 200){
+            await AsyncStorage.setItem('user', JSON.stringify(userEmailResponse.data))
+            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
+            await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
+            
+            dispatch({
+                type: 'signin',
+                payload: {token: response.data.token, user: userEmailResponse.data, userInfo: userInfoResponse.data, roomHistory: historyresponse.data}
+            })
+
+            navigate('home')
+            alert('It may take a while before the system recognizes you. Thank you for cooperating!')
+        } else {
+            const userEmailResponse = await api.get('/profileemail')
+            const userInfoResponse = await api.get('/profileinfo')
+            const historyresponse = await api.get('/history')
+            
+            await AsyncStorage.setItem('user', JSON.stringify(userEmailResponse.data))
+            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
+            await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
+            
+            dispatch({
+                type: 'signin',
+                payload: {token: response.data.token, user: userEmailResponse.data, userInfo: userInfoResponse.data, roomHistory: historyresponse.data}
+            })
+
+            navigate('home')
+            alert('It may take a while before the system recognizes you. Thank you for cooperating!')
+        }
     } catch (err) {
         dispatch({
             type: 'add_error',
@@ -212,6 +296,6 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, clearError, localSignIn, update, covid_upload, signout },
+    { signup, signin, fillup, camera_upload, camera_uploadMask, clearError, localSignIn, update, covid_upload, signout },
     { token: null, errorMessage: '' }
 )

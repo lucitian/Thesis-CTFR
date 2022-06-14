@@ -36,6 +36,7 @@ function FillScreen ({ navigation }) {
 
     const updateButton = () => {
         update({firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address})
+        navigation.navigate('profile')
     }
 
     return (
@@ -145,8 +146,7 @@ function FillScreen ({ navigation }) {
                             render = {({
                                 field: { onChange, value, onBlur }
                             }) => (
-                                <TextInput
-                                    label = "Date of Birth"                                   
+                                <TextInput                                
                                     placeholder = "yyyy/mm/dd"
                                     keyboardType ='numeric'
                                     onBlur = {onBlur}
@@ -164,7 +164,7 @@ function FillScreen ({ navigation }) {
                                             }}
                                         />
                                     )}
-                                    style = {styles.infoTextInput }
+                                    style = {styles.infoTextInput}
                                     mode = 'outlined'
                                 />
                             )}

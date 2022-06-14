@@ -7,12 +7,12 @@ import * as ImagePicker from 'expo-image-picker'
 import * as MediaLibrary from 'expo-media-library'
 import { useNavigation } from '@react-navigation/native'
 
-import { Context as IntroContext } from '../../context/IntroContext'
+import { Context as UserContext } from '../../context/UserContext'
 
 import instance from '../../api/api'
 
 function CameraScreenMask ({ navigation }) {
-    const { camera_uploadMask } = useContext(IntroContext)
+    const { camera_uploadMask } = useContext(UserContext)
     const [hasCameraPermission, setHasCameraPermission ] = useState(false)
     const [hasAudioPermissions, setHasAudioPermissions] = useState(false)
     const [hasGalleryPermission, setHasGalleryPermission ] = useState(false)

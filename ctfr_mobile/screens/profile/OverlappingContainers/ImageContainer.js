@@ -13,7 +13,7 @@ const ImageContainer = ({
   navigation
 }) => { 
   const {state, covid_upload, signout} = useContext(AuthContext)
-  console.log(state.token.roomHistory)
+  console.log(state.token)
   const [toggleN, setToggleN] = useState(true)
   const [toggleP, setToggleP] = useState(false)
   const [modalVisible, setModalVisible] = useState(false);
@@ -73,6 +73,7 @@ const ImageContainer = ({
     formData.append('image', covidFile)
     covid_upload(formData)
     alert('Thank you for your cooperation! Please wait until we verify your covid test result.')
+    navigation.navigate('profile')
     setModalCovid(false)
   }
 
@@ -91,32 +92,6 @@ const ImageContainer = ({
         ]
       }
     ]}>
-      {/* <Modal
-        animationType="none"
-        transparent={true}
-        visible={modalVisible}
-        onRequestClose={() => {
-          Alert.alert("Modal has been closed.");
-          setModalVisible(!modalVisible);
-        }}>
-          <View style={styles.containerView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>Notifications</Text>
-              <FlatList
-                data={Notification}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={(notif) => {
-                  return (
-                    <View style={styles.listItem}>
-                      <Text>{notif.item}</Text>
-                    </View>
-                      );
-                    }}
-              />
-            </View>
-          </View>
-        </View>
-      </Modal> */}
       <Modal 
         animationType="fade"
         transparent={true}
@@ -156,14 +131,6 @@ const ImageContainer = ({
         visible={modalVisible1}
         onRequestClose={() => {setModalVisible(!modalVisible1)}}
       >
-        {/* <View style = {styles.containerrrrrrrr}>
-          <Pressable
-            style={styles.notif1} 
-            activeOpacity={1} 
-            onPress ={() => {setModalVisible1(false)}}
-          >
-          </Pressable> 
-        </View> */}
         <View style={styles.containerHistory}>
           <TouchableOpacity style = {styles.modalHistory}>
             <View style={styles.headerHistory}>
@@ -182,14 +149,14 @@ const ImageContainer = ({
                   <Text style={{fontWeight: 'bold'}}> Date{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}{'\t'}</Text>
                   <Text style={{fontWeight: 'bold'}}> Time{'\t'}</Text>
                 </View>
-                {state.token.roomHistory === null ? (<Text style={styles.textHistory}>No Room visited yet!</Text>) : 
+                {/* {state.token.roomHistory == null ? (<Text style={styles.textHistory}>No Room visited yet!</Text>) : 
                   state.token.roomHistory.map(room => 
                   <View style={styles.historyRow}>
                     <Text key={room.roomNo} style={styles.textHistory}>{room.roomNo}{'\t'}</Text>
                     <Text key={room.date} style={styles.textHistory}>{room.date}{'\t'}</Text>
                     <Text key={room.time} style={styles.textHistory}>{room.time}</Text>
                   </View>
-                )}
+                )} */}
               </ScrollView>
             </SafeAreaView>
           </TouchableOpacity>

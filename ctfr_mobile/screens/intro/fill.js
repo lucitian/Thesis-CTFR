@@ -7,11 +7,9 @@ import DropDown from 'react-native-paper-dropdown'
 import { NavigationEvents } from 'react-navigation'
 
 import { Context as UserContext } from '../../context/UserContext'
-import { Context as IntroContext } from '../../context/IntroContext'
 
 function FillScreen ({ navigation }) {
-    const { signout } = useContext(UserContext)
-    const { fillup } = useContext(IntroContext)
+    const { fillup, signout } = useContext(UserContext)
 
     const { control, reset } = useForm({ mode: 'onBlur' })
 

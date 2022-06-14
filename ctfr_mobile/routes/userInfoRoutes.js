@@ -4,6 +4,7 @@ const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 const requireAuth = require('../middlewares/requireAuth')
+const e = require('express')
 
 const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
@@ -14,12 +15,21 @@ const router = express.Router()
 
 router.use(requireAuth)
 
-router.get('/profile', async (req, res) => {
+router.get('/profileemail', async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
+
+        res.status(200).json(user)
+    } catch (err) {
+        res.status(304).send(err.message)
+    }
+})
+
+router.get('/profileinfo', async (req, res) => {
+    try {
         const userInfo = await UserInfo.findOne({userId: req.user._id})
-        const response = {user, userInfo}
-        res.status(200).send(response)
+
+        res.status(200).json(userInfo)
     } catch (err) {
         res.status(304).send(err.message)
     }
@@ -90,6 +100,16 @@ router.patch('/update', async (req,res) => {
     }
 })
 
+router.get('/history', async (req, res) => {
+    try {
+        const userRooms = await Room.find({userId: req.user._id})
+            
+        res.status(200).send(userRooms)
+    } catch (err) {
+        res.status(304).send(err.message)
+    }
+})
+
 const DIR = '../images/'
 
 const storage = multer.diskStorage({
@@ -106,17 +126,15 @@ const storage = multer.diskStorage({
 const upload = multer({
     storage: storage,
     limits: {
-        fileSize: 1024 * 1024 * 5
+        fileSize: 20 * 1024 * 1024
     }
 })
 
 router.post('/camera/upload', upload.single('video'), async (req, res, next) => {
-    const paths = req.files.map(file => file.path)
-
     try {
         const userImages = new UserImages({
             userId: req.user._id,
-            image: paths
+            image: req.file.path
         })
 
         await userImages.save()
@@ -127,6 +145,22 @@ router.post('/camera/upload', upload.single('video'), async (req, res, next) => 
     }
 })
 
+router.post('/camera/upload1', upload.single('video'), async (req, res, next) => {
+    const paths = req.file.path
+
+    try {
+    const userImages = await UserImages.findOneAndUpdate({userId: req.user._id},
+            {$push: {image:paths}},
+            {safe: true, upsert: true}
+            )
+
+        await userImages.save()
+        res.send(userImages)
+
+    } catch (err) {
+        return res.status(422).send(err.message)
+    }
+})
 
 const covidDIR = '../covidresult'
 
@@ -166,16 +200,6 @@ router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
             error: err
         })
     })
-})
-
-router.get('/history', async (req, res) => {
-    try {
-        const userRooms = await Room.find({userId: req.user._id})
-
-        res.status(200).send(userRooms)
-    } catch (err) {
-        res.status(304).send(err.message)
-    }
 })
 
 module.exports = router

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
 import { TextInput, Button } from 'react-native-paper'
 import { useForm, Controller } from 'react-hook-form'
 import { NavigationEvents } from 'react-navigation'
@@ -21,6 +21,12 @@ function LoginScreen ({ navigation }) {
     return (
         <View style = { styles.container }>
             <NavigationEvents onWillBlur = {clearError} />
+            <View>
+                <Image
+                    style = {{ width: 200, height: 200, marginBottom: 50}}
+                    source={require('../../assets/logo.png')}
+                />
+            </View>
             <Controller
                 control = { control }
                 rules = {{
@@ -83,7 +89,7 @@ export default LoginScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#F5F5F5',
+        backgroundColor: '#FFFFFF',
         justifyContent: 'center',
         alignItems: 'center',
     },

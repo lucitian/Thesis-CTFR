@@ -17,7 +17,6 @@ import HistoryScreen from './screens/profile/history'
 import EditScreen from './screens/profile/edit.js'
 import Agreement from './screens/intro/agreement'
 import { Provider as AuthProvider } from './context/UserContext'
-import { Provider as FillProvider } from './context/IntroContext'
 import { setNavigator } from './navigation'
 import resolveAuth from './screens/resolveAuth'
 import CameraScreenMask from './screens/intro/cameraMask'
@@ -39,8 +38,8 @@ const switchNavigator = createSwitchNavigator({
     intro: createStackNavigator({
         agreement: Agreement,
         fill: FillScreen,
-        // camera: CameraScreen,
-        // cameraMask: CameraScreenMask,
+        camera: CameraScreen,
+        cameraMask: CameraScreenMask,
     },
     {
         headerMode: 'none',
@@ -66,9 +65,7 @@ const App = createAppContainer(switchNavigator)
 export default () => {
     return (
         <AuthProvider>
-            <FillProvider>
-                <App ref = {( navigator ) => { setNavigator(navigator)}}/>
-            </FillProvider>
+            <App ref = {( navigator ) => { setNavigator(navigator)}}/>
         </AuthProvider>
     )
 }
