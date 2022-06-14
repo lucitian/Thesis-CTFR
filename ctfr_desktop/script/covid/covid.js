@@ -150,22 +150,35 @@ const fetchDelete = (fetchedId) => {
 const statusCovidDelete = (data) => {
     switch(data.send) {
         case 'success':
-            alert(data.message)
+            covidDeleteModal(data.message, 'Success!')
             document.getElementById('delete__covid__window').style.display = 'none'
-            get_covid()
-            covidExpandResult.innerHTML = ''
             break
         case 'nothing':
-            alert(data.message)
+            covidDeleteModal(data.message, 'Warning!')
             break
         case 'fail':
-            alert(data.message)
+            covidDeleteModal(data.message, 'Failed!')
             break
     }
 }
 
 const covidDeleteCloseWindow = () => {
     document.getElementById('delete__covid__window').style.display = 'none'
+}
+
+covidDeleteModal = (data, status) => {
+    document.getElementById('modal__content').style.display = 'flex'
+    document.getElementById('modal__content__info').innerHTML=`
+        <h1>${status}</h1>
+        <div><p>${data}</p></div>
+        <button onclick='closeCovidDeleteResultModal()'>OKAY</button>
+    `
+}
+
+closeCovidDeleteResultModal = () => {
+    document.getElementById('modal__content').style.display = 'none'
+    covidExpandResult.innerHTML = ''
+    get_covid()
 }
 
 const approveCovid = (fetchedIndex) => {
@@ -211,20 +224,33 @@ const fetchApprove = (fetchedIndex) => {
 const statusApprove = (data) => {
     switch(data.send) {
         case 'success':
-            alert(data.message)
+            covidApproveModal(data.message, 'Success!')
             document.getElementById('approve__covid__window').style.display = 'none'
-            get_covid()
-            covidExpandResult.innerHTML = ''
             break
         case 'none':
-            alert(data.message)
+            covidApproveModal(data.message, 'Warning!')
             break
         case 'fail':
-            alert(data.message)
+            covidApproveModal(data.message, 'Failed!')
             break
     }
 }
 
 const covidApproveCloseWindow = () => {
     document.getElementById('approve__covid__window').style.display = 'none'
+}
+
+covidApproveModal = (data, status) => {
+    document.getElementById('modal__content').style.display = 'flex'
+    document.getElementById('modal__content__info').innerHTML=`
+        <h1>${status}</h1>
+        <div><p>${data}</p></div>
+        <button onclick='closeCovidApproveResultModal()'>OKAY</button>
+    `
+}
+
+closeCovidApproveResultModal = () => {
+    document.getElementById('modal__content').style.display = 'none'
+    covidExpandResult.innerHTML = ''
+    get_covid()
 }

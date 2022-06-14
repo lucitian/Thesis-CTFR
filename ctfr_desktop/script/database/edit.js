@@ -117,15 +117,15 @@ statusUpdate = (data) => {
         case 'success':
             document.getElementById('edit__window').style.display = 'none'
             document.getElementById('edit__confirm__window').style.display = 'none'
-            alert('Updated successfully!')
+            editResultModal(data.message, 'Success!')
             break
         case 'none':
             document.getElementById('edit__window').style.display = 'none'
             document.getElementById('edit__confirm__window').style.display = 'none'
-            alert('Nothing to update!')
+            editResultModal(data.message, 'Warning!')
             break
         case 'fail':
-            alert('Something went wrong!')
+            editResultModal(data.message, 'Failed!')
             break
     }
 }
@@ -145,4 +145,17 @@ editCancel = (x) => {
 confirmCancel = () => {
     document.getElementById('edit__cancel__window').style.display = 'none'
     document.getElementById('edit__window').style.display = 'none'
+}
+
+editResultModal = (data, status) => {
+    document.getElementById('modal__content').style.display = 'flex'
+    document.getElementById('modal__content__info').innerHTML=`
+        <h1>${status}</h1>
+        <div><p>${data}</p></div>
+        <button onclick='closeEditResultModal()'>OKAY</button>
+    `
+}
+
+closeEditResultModal = () => {
+    document.getElementById('modal__content').style.display = 'none'
 }

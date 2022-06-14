@@ -43,7 +43,7 @@ def get_covid():
         'email': user['user_email'],
         'info': user['info']
     } for user in user_result]
-    
+
     return jsonify(json.loads(JSONEncoder().encode(output)))
 
 @app.route('/getresult/<id>', methods=['GET'])
@@ -110,22 +110,37 @@ def delete_covid(id):
 @app.route('/updatecovid/<id>', methods=['PATCH'])
 def update_covid(id):
     try:
-        dbResponse = db_usersInfo.update_one(
-            {'userId': ObjectId(id)},
-            {'$set': {
-                'covidstatus': request.json['approveCovidStatus']
-            }}
-        )
+        if request.json['approveCovidStatus'] == 'Negative':
+            dbResponse = db_covid_results.delete_one({
+                'userId': ObjectId(id)
+            })
 
-        if dbResponse.modified_count == 1:
-            return Response(
-                response = json.dumps({
-                    'message': 'COVID-19 status updated successfully!',
-                    'send': 'success'
-                }),
-                status = 200,
-                mimetype='application/json'
+            if dbResponse.deleted_count == 1:
+                return Response(
+                    response=json.dumps({
+                        'message': 'COVID-19 Request Deleted Successfully!',
+                        'send': 'success'
+                    }),
+                    status=200,
+                    mimetype='application/json'
+                )
+        else:
+            dbResponse = db_usersInfo.update_one(
+                {'userId': ObjectId(id)},
+                {'$set': {
+                    'covidstatus': request.json['approveCovidStatus']
+                }}
             )
+
+            if dbResponse.modified_count == 1:
+                return Response(
+                    response = json.dumps({
+                        'message': 'COVID-19 status updated successfully!',
+                        'send': 'success'
+                    }),
+                    status = 200,
+                    mimetype='application/json'
+                )
         return Response(
             response=json.dumps({
                 'message': 'Nothing to update!',

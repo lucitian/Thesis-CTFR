@@ -27,17 +27,30 @@ statusDelete = (data) => {
     switch(data.send) {
         case 'success':
             document.getElementById('delete__window').style.display = 'none'
-            alert('Deleted successfully!')
+            deleteResultModal(data.message, 'Success!')
             break
         case 'nothing':
-            alert('User not found!')
+            deleteResultModal(data.message, 'Warning!')
             break
         case 'fail':
-            alert('Failed to delete user!')
+            deleteResultModal(data.message, 'Failed!')
             break
     }
 }
 
 function deleteCancel() {
     document.getElementById('delete__window').style.display = 'none'
+}
+
+deleteResultModal = (data, status) => {
+    document.getElementById('modal__content').style.display = 'flex'
+    document.getElementById('modal__content__info').innerHTML=`
+        <h1>${status}</h1>
+        <div><p>${data}</p></div>
+        <button onclick='closeDeleteResultModal()'>OKAY</button>
+    `
+}
+
+closeDeleteResultModal = () => {
+    document.getElementById('modal__content').style.display = 'none'
 }

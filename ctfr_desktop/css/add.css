@@ -118,7 +118,7 @@
     background-color: white;
     position: fixed;
     margin: auto;
-    height: 130px;
+    height: auto;
     width: 420px;
     border-radius: 5px;
     padding: 25px 25px;
@@ -142,7 +142,7 @@
     background-color: white;
     position: fixed;
     margin: auto;
-    height: 150px;
+    height: auto;
     width: 420px;
     border-radius: 5px;
     padding: 25px 25px;

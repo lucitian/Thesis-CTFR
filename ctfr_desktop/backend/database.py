@@ -54,7 +54,7 @@ def add_user():
         else:
             return Response(
                 response = json.dumps({
-                    'message': 'Incomplete!',
+                    'message': 'Incomplete information!',
                     'send': 'incomplete'
                 }),
                 status = 500,
@@ -85,7 +85,7 @@ def add_user():
         else:
             return Response(
                 response = json.dumps({
-                    'message': 'Incomplete!',
+                    'message': 'Incomplete information!',
                     'send': 'incomplete'
                 }),
                 status = 500,
@@ -94,7 +94,7 @@ def add_user():
 
         return Response(
             response=json.dumps({
-                'message': 'user created',
+                'message': 'User created successfully!',
                 'id': f'{dbResponse.inserted_id, dbResponseInfo.inserted_id}',
                 'send': 'success'
             }),
@@ -105,7 +105,7 @@ def add_user():
         print(ex)
         return Response(
             response = json.dumps({
-                'message': 'Failed!',
+                'message': 'Failed to add user!',
                 'send': 'fail'
             }),
             status = 500,
@@ -139,7 +139,7 @@ def update_user(id):
         if dbResponse.modified_count == 1 or dbResponseInfo.modified_count == 1:
             return Response(
                 response = json.dumps({
-                    'message': 'Success!',
+                    'message': 'User edited successfully!',
                     'send': 'success'
                 }),
                 status = 200,
@@ -156,7 +156,7 @@ def update_user(id):
     except Exception as ex:
         return Response(
             response = json.dumps({
-                'message': 'Failed!',
+                'message': 'Failed to edit user!',
                 'send': 'fail'
             }),
             status = 500,
@@ -175,7 +175,7 @@ def delete_user(id):
         if dbResponse.deleted_count == 1 and dbResponseInfo.deleted_count == 1:
             return Response(
                 response = json.dumps({
-                    'message': 'User deleted',
+                    'message': 'User deleted successfully!',
                     'send': 'success'
                 }),
                 status = 200,
@@ -193,7 +193,7 @@ def delete_user(id):
         print(ex)
         return Response(
             response = json.dumps({
-                'message': 'Failed',
+                'message': 'Failed to delete user!',
                 'send': 'fail'
             }),
             status = 500,

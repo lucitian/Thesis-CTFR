@@ -17,13 +17,13 @@
     <body>
         <div class="container">
             <ul class="dashboard-pane">
-                <li data-tab-target="#camera-pane" class="active dashboard-tab">
+                <li data-tab-target="#camera-pane" class="dashboard-tab">
                     <i class="fas fa-camera"></i>
                 </li>
                 <li data-tab-target="#room-pane" class="dashboard-tab">
                     <i class="fas fa-table"></i> 
                 </li>
-                <li data-tab-target="#database-pane" class="dashboard-tab">
+                <li data-tab-target="#database-pane" class="active dashboard-tab">
                     <i class="fas fa-database"></i> 
                 </li>
                 <li data-tab-target="#covid-pane" class="dashboard-tab">
@@ -32,7 +32,7 @@
             </ul>
             <div class="dashboard-container" id="dashboard-container">
                 <!-- Main Camera Pane -->
-                <div id="camera-pane" class="active camera-pane" data-tab-content>
+                <div id="camera-pane" class="camera-pane" data-tab-content>
                     <div class="title">
                         <h1>Camera section</h1>
                     </div>
@@ -164,7 +164,7 @@
                 </div>
 
                 <!-- User Database -->
-                <div id="database-pane" class="database-pane" data-tab-content>
+                <div id="database-pane" class="active database-pane" data-tab-content>
                     <div class="title">
                         <h1>Database</h1>
                     </div>
@@ -309,6 +309,12 @@
             <!-- Approve modal -->
             <div class="approve__covid__window" id="approve__covid__window"></div>
             <!-- End -->
+
+            <!-- Popup modal-->
+            <div class="modal__content" id="modal__content">
+                <div class="modal__content__info" id="modal__content__info"></div>
+            </div>
+            <!-- END-->
         </div>
         <script src='../script/pymongo.js'></script>
         <script src='../script/database/room.js'></script>

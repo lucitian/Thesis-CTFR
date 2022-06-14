@@ -62,13 +62,26 @@ statusRoomDelete = (data) => {
     switch(data.send) {
         case 'success':
             document.getElementById('delete__window').style.display = 'none'
-            alert(data.message)
+            deleteRoomResultModal(data.message, 'Success!')
             break
         case 'nothing':
-            alert(data.message)
+            deleteRoomResultModal(data.message, 'Warning!')
             break
         case 'fail':
-            alert(data.message)
+            deleteRoomResultModal(data.message, 'Failed!')
             break
     }
+}
+
+deleteRoomResultModal = (data, status) => {
+    document.getElementById('modal__content').style.display = 'flex'
+    document.getElementById('modal__content__info').innerHTML = `
+        <h1>${status}</h1>
+        <div><p>${data}</p></div>
+        <button onclick='closeDeleteResultModal()'>OKAY</button>
+    `
+}
+
+closeDeleteResultModal = () => {
+    document.getElementById('modal__content').style.display = 'none'
 }

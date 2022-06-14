@@ -54,7 +54,7 @@ def delete_room(id):
         print(ex)
         return Response(
             response = json.dumps({
-                'message': 'Failed',
+                'message': 'Failed to delete!',
                 'send': 'fail'
             }),
             status = 500,

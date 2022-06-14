@@ -109,9 +109,9 @@ addCancelConfirm = () => {
     document.getElementById('add__window').style.display = 'none'
 }
 
-addConfirm = () => {
-    var addData = {}
+var addData = {}
 
+addConfirm = () => {
     addData['addUsername'] = document.forms['add__form']['add__username'].value
     addData['addEmail'] = document.forms['add__form']['add__email'].value
     addData['addPassword'] = document.forms['add__form']['add__password'].value
@@ -124,7 +124,6 @@ addConfirm = () => {
     addData['addAddress'] = document.forms['add__form']['add__address'].value
     addData['addCovidStatus'] = document.forms['add__form']['add__covidstatus'].value
 
-    console.log(addData)
     fetch('http://localhost:5000/adduser', {
         method: 'POST',
         headers: {
@@ -139,18 +138,32 @@ addConfirm = () => {
 }
 
 statusAdd = (data) => {
+    addData = {}
     switch (data.send) {
         case 'success':
             document.getElementById('add__window').style.display = 'none'
             document.getElementById('add__confirm__window').style.display = 'none'
-            alert('Added successfully!')
+            addResultModal(data.message, 'Success!')
             break
         case 'incomplete':
             document.getElementById('add__confirm__window').style.display = 'none'
-            alert('Incomplete information!')
+            addResultModal(data.message, 'Warning!')
             break
         case 'fail':
-            alert('Insert failed!')
+            addResultModal(data.message, 'Failed!')
             break
     }
+}
+
+addResultModal = (data, status) => {
+    document.getElementById('modal__content').style.display = 'flex'
+    document.getElementById('modal__content__info').innerHTML=`
+        <h1>${status}</h1>
+        <div><p>${data}</p></div>
+        <button onclick='closeaddResultModal()'>OKAY</button>
+    `
+}
+
+closeaddResultModal = () => {
+    document.getElementById('modal__content').style.display = 'none'
 }
