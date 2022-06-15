@@ -6,6 +6,7 @@ const tempList = document.getElementById('tempList')
 let array_append = []
 
 function open__camera() {
+    fetch(`http://localhost:5000/open_cam`)
     openCamera.innerHTML = `<img src="http://localhost:5000/open_cam" height="100%" width="100%">`
     generateID.innerHTML = ''
     document.getElementById('open__camera').disabled = true

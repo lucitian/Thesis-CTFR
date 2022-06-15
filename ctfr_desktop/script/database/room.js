@@ -36,7 +36,7 @@ get_rooms()
 var globalRoom
 
 function deleteRoom(tableRow) {
-    document.getElementById('delete__window').style.display = 'flex'
+    document.getElementById('room__delete__window').style.display = 'flex'
 
     globalRoom = tableRow
 }

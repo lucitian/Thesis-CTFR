@@ -57,3 +57,63 @@
 .delete__cancel:hover {
     background-color: #ff4101;
 }
+
+.room__delete__window {
+    font-family: 'Poppins', 'monospace';
+    display: none;
+    position: fixed;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.room__delete__content {
+    background-color: white;
+    position: fixed;
+    width: 420px;
+    height: auto;
+    padding: 15px 20px 0 20px;
+    border-radius: 10px;
+}
+
+.room__delete__title h1 {
+    font-size: 20px;
+    padding: 0 0 10px 0;
+}
+
+.room__delete__buttons {
+    margin: 15px 0 75px 0;
+}
+
+.room__delete__confirm {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #339900;
+    float: left;
+}
+
+.room__delete__cancel {
+    border: none;
+    color: white;
+    width: 46.5%;
+    border-radius: 5px;
+    padding: 10px;
+    cursor: pointer;
+    background-color: #cc3300;
+    float: right;
+}
+
+.room__delete__confirm:hover {
+    background-color: #99cc33;
+}
+
+.room__delete__cancel:hover {
+    background-color: #ff4101;
+}

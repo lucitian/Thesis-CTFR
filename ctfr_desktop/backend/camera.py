@@ -13,7 +13,7 @@ global_names = []
 
 def gen(camera):
     i = 0
-    while i <= 30:
+    while i < 100:
         #get camera frame
         frame = camera.get_frame()
         i += 1
@@ -50,6 +50,7 @@ class JSONEncoder(json.JSONEncoder):
 
 @app.route('/fetchnames', methods = ['GET'])
 def fetch_name():
+    global global_names
     temp_dict = {}
     for name in global_names:
         if not name in temp_dict:
@@ -66,6 +67,7 @@ def fetch_name():
             max_name = name
 
     temp_name = max_name
+    global_names = []
     try:
         users = db_users.aggregate(userInfo)
 
@@ -134,8 +136,8 @@ class camera(object):
     def __init__(self):
         self.video = cv2.VideoCapture(0)
         self.classes = ["Christian Olandesca", "James Dela Pena", "Marc Rovic Baja"]
-        self.yolo = YOLO("/Users/baja0/OneDrive/Desktop/Programming/TRAINING AI/yolov4-obj.cfg",
-                    "/Users/baja0/OneDrive/Desktop/Programming/TRAINING AI/yolov4-obj_best.weights", self.classes)
+        self.yolo = YOLO("/Users/baja0/OneDrive/Desktop/Programming/Thesis-CTFR/ctfr_desktop/backend/yolov4-obj.cfg",
+                    "/Users/baja0/OneDrive/Desktop/Programming/Thesis-CTFR/ctfr_desktop/backend/yolov4-obj_last.weights", self.classes)
 
         self.yolo.size = 416
         self.yolo.confidence = 0.4
