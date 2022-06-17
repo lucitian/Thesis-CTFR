@@ -6,3 +6,5 @@ covidresult/
 yolov4-obj_best.weights
 yolov4-obj.cfg
 yolov4-obj_last.weights
+tup_accounts.csv
+.env

@@ -3083,6 +3083,11 @@
     "domelementtype" "^2.2.0"
     "domhandler" "^4.2.0"
 
+"dotenv@^16.0.1":
+  "integrity" "sha512-1K6hR6wtk2FviQ4kEiSjFiH5rpzEVi8WW0x96aztHVMhEspNpc4DVOUTEHtEva5VThQ8IaBX1Pe4gSzpVVUsKQ=="
+  "resolved" "https://registry.npmjs.org/dotenv/-/dotenv-16.0.1.tgz"
+  "version" "16.0.1"
+
 "ecdsa-sig-formatter@1.0.11":
   "integrity" "sha512-nagl3RYrbNv6kQkeJIpt6NJZy8twLB/2vtz6yN9Z4vRKHN4/QZJIEbqohALSgwKdnksuY3k5Addp5lg8sVoVcQ=="
   "resolved" "https://registry.npmjs.org/ecdsa-sig-formatter/-/ecdsa-sig-formatter-1.0.11.tgz"
@@ -4785,7 +4790,7 @@
   "resolved" "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz"
   "version" "4.1.1"
 
-"lodash@^4.17.13", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.3.0":
+"lodash@^4.17.13", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.4", "lodash@^4.3.0":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -5508,6 +5513,11 @@
   "resolved" "https://registry.npmjs.org/node-stream-zip/-/node-stream-zip-1.15.0.tgz"
   "version" "1.15.0"
 
+"nodemailer@^6.7.5":
+  "integrity" "sha512-6VtMpwhsrixq1HDYSBBHvW0GwiWawE75dS3oal48VqRhUvKJNnKnJo2RI/bCVQubj1vgrgscMNW4DHaD6xtMCg=="
+  "resolved" "https://registry.npmjs.org/nodemailer/-/nodemailer-6.7.5.tgz"
+  "version" "6.7.5"
+
 "nopt@^5.0.0":
   "integrity" "sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ=="
   "resolved" "https://registry.npmjs.org/nopt/-/nopt-5.0.0.tgz"
@@ -5966,7 +5976,7 @@
   dependencies:
     "asap" "~2.0.6"
 
-"prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2":
+"prop-types@^15.5.10", "prop-types@^15.6.0", "prop-types@^15.6.2", "prop-types@^15.7.2":
   "integrity" "sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.7.2.tgz"
   "version" "15.7.2"
@@ -6108,6 +6118,14 @@
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
   "version" "3.0.4"
+
+"react-native-confirmation-code-input@^1.0.4":
+  "integrity" "sha512-WmkDws7lovEC9deYHtinwsLBv4Snem4VjHJOoXe0tNM/cgEKzuNNCOui25QHgB2OFPvcWMAnTHzyCJmEHcbnqA=="
+  "resolved" "https://registry.npmjs.org/react-native-confirmation-code-input/-/react-native-confirmation-code-input-1.0.4.tgz"
+  "version" "1.0.4"
+  dependencies:
+    "lodash" "^4.17.4"
+    "prop-types" "^15.5.10"
 
 "react-native-fs@^2.18.0":
   "integrity" "sha512-9iQhkUNnN2JNED0in06JwZy88YEVyIGKWz4KLlQYxa5Y2U0U2AZh9FUHtA04oWj+xt2LlHh0LFPCzhmNsAsUDg=="

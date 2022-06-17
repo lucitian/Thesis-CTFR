@@ -35,3 +35,5 @@ module.exports = {
 }
 ```
 On secret.js, provide the url of your mongodb collection, and on the secret_api.js, provide the url provided by the ngrok.
+
+On verify.js, open the CodeInput component from node_modules using ctrl + left click or go through node_modules and locate react-native-confirmation-code-input, then open the ConfirmationCodeInput.js inside the components folder, then remove the 'flex: 1' from the StyleSheet of container.

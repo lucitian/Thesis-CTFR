@@ -4,32 +4,23 @@ const multer = require('multer')
 const fs = require('fs')
 const path = require('path')
 const requireAuth = require('../middlewares/requireAuth')
-const e = require('express')
 
 const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
 const UserImages = mongoose.model('UserImages')
 const UserCovidResult = mongoose.model('UserCovidResult')
+const UserVerification = mongoose.model('UserVerification')
 const Room = mongoose.model('Room')
 const router = express.Router()
 
 router.use(requireAuth)
 
-router.get('/profileemail', async (req, res) => {
+router.get('/profile', async (req, res) => {
     try {
         const user = await User.findById(req.user._id)
-
-        res.status(200).json(user)
-    } catch (err) {
-        res.status(304).send(err.message)
-    }
-})
-
-router.get('/profileinfo', async (req, res) => {
-    try {
         const userInfo = await UserInfo.findOne({userId: req.user._id})
 
-        res.status(200).json(userInfo)
+        res.status(200).json({user, userInfo})
     } catch (err) {
         res.status(304).send(err.message)
     }

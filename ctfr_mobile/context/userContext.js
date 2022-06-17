@@ -60,24 +60,25 @@ const localSignIn = (dispatch) => async () => {
     const token = await AsyncStorage.getItem('token')
 
     if (token) {
-        if (await AsyncStorage.getItem('userinfo_exist')) {
-            const user = await AsyncStorage.getItem('user')
-            const userInfo = await AsyncStorage.getItem('userinfo')
-            const history = await AsyncStorage.getItem('history')
+        // if (await AsyncStorage.getItem('userinfo_exist')) {
+        //     const user = await AsyncStorage.getItem('user')
+        //     const userInfo = await AsyncStorage.getItem('userinfo')
+        //     const history = await AsyncStorage.getItem('history')
 
-            dispatch({
-                type:'signin',
-                payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo), roomHistory: JSON.parse(history)}
-            })
+        //     dispatch({
+        //         type:'signin',
+        //         payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo), roomHistory: JSON.parse(history)}
+        //     })
     
-            navigate('home')
-        } else {
-            dispatch({
-                type:'signin',
-                payload: token
-            })
-            navigate('intro')
-        }
+        //     navigate('home')
+        // } else {
+        //     dispatch({
+        //         type:'signin',
+        //         payload: token
+        //     })
+        //     navigate('intro')
+        // }
+        navigate('home')
     } else {
         navigate('login')
     }
@@ -92,7 +93,10 @@ const clearError = (dispatch) => () => {
 const signup = (dispatch) => async ({ username, email, password }) => {
     try {
         const response = await api.post('/signup', { username, email, password })
+        console.log(response.data)
+        await AsyncStorage.removeItem('token')
         await AsyncStorage.setItem('token', response.data.token)
+
         dispatch({ 
             type: 'signin',
             payload: response.data.token
@@ -100,6 +104,7 @@ const signup = (dispatch) => async ({ username, email, password }) => {
 
         navigate('intro')
     } catch (err) {
+        console.log(err)
         dispatch({
             type: 'add_error',
             payload: 'Something went wrong'
@@ -107,7 +112,7 @@ const signup = (dispatch) => async ({ username, email, password }) => {
     }
 }
 
-const signin = (dispatch) => async ({ email, password}) => {
+const signin = (dispatch) => async ({email, password}) => {
     try {
         const response = await api.post('/signin', { email, password })
 

@@ -24,6 +24,7 @@ function SignupScreen ({ navigation }) {
         }
         else {
             signup({ username, email, password })
+            // navigation.navigate('verify')
         }
     }
 

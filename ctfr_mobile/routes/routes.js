@@ -3,13 +3,34 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
+const UserVerification = mongoose.model('UserVerification')
+const nodemailer = require('nodemailer')
+const crypto = require('bcrypt')
+require('dotenv').config()
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+    }
+})
+
+transporter.verify((error, success) => {
+    if(error){
+        console.log(error)
+    } else {
+        console.log('Ready for messages')
+        console.log(success)
+    }
+})
 
 const router = express.Router()
 
 router.post('/signup', async (req, res) => {
     const { username, email, password } = req.body
     
-    const existingEmail = await User.findOne({ email: email})
+    const existingEmail = await User.findOne({email: email})
     if (existingEmail) {
         return res.status(422).send({
             error: 'An account with this email already exists.'
@@ -17,16 +38,105 @@ router.post('/signup', async (req, res) => {
     }
 
     try {
-        const user = new User({ username, email, password })
-        await user.save()
+        const user = await new User({ 
+            username, 
+            email, 
+            password,
+            isVerified: false,
+        })    
+        user.save()
+        const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')    
+        const code = generateCode()
+
+        const newVerification = new UserVerification({
+            userId: user._id,
+            uniqueString: code,
+            createdAt: Date.now(),
+            expiresAt: Date.now() + 216000
+        }).save()
         
-        const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
-        
-        res.send({token})
+        transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: email,
+            subject: 'Verify Your Email',
+            html: `
+                <p>Verify your email address to complete the signup and login into your account.</p>
+                <p><b>This link expires in 6 hours.</b></p>
+                <p>Here is your verification code ${code}</p>  
+            `,
+        })
+
+        res.status(200).send({token})
     } catch (err) {
         return res.status(422).send(err.message)
     }
 })
+
+// const sendVerificationEmail = ({_id, email}, res, token) => {
+//     const code = string(generateCode())
+
+//     const mailOptions = {
+//         from: process.env.EMAIL_USER,
+//         to: email,
+//         subject: 'Verify Your Email',
+//         html: `
+//             <p>Verify your email address to complete the signup and login into your account.</p>
+//             <p><b>This link expires in 6 hours.</b></p>
+//             <p>Here is your verification code ${code}</p>  
+//         `,
+//     }
+
+//     const saltRounds = 10
+//     crypto
+//     .hash(code, saltRounds)
+//     .then((hashedUniqueString) => {
+//         const newVerification = new UserVerification({
+//             userId: _id,
+//             uniqueString: hashedUniqueString,
+//             createdAt: Date.now(),
+//             expiresAt: Date.now() + 2160000
+//         })
+        
+//         newVerification.save()
+//         .then(() => {
+//             transporter.sendMail(mailOptions)
+//             .then(() => {
+//                 return res.json({
+//                     status: 'PENDING',
+//                     message: 'Verification email sent'
+//                 })
+//             })
+//             .catch((error) => {
+//                 res.json({
+//                     status: 'FAILED',
+//                     message: 'Verification email failed'
+//                 })
+//             })
+//         })
+//         .catch((error) => {
+//             console.log(error)
+//             res.json({
+//                 status: 'FAILED',
+//                 message: "Couldn't save verification email data"
+//             })
+//         })
+//     })
+//     .catch(() => {
+//         res.json({
+//             status: 'FAILED',
+//             message: 'An error occurred while hashing email data!'
+//         })
+//     })
+// }
+
+const generateCode = () => {
+    const code = Math.floor(100000 + Math.random() * 900000)
+
+    const saltRounds = 10
+    crypto.hash(str(code), saltRounds)
+
+    return hash
+}
 
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body
@@ -43,24 +153,30 @@ router.post('/signin', async (req, res) => {
             error: 'Invalid email or password'
         })
     }
-
-    try {
-        await user.comparePassword(password)
-
-        const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
-
-        if (await UserInfo.findOne({ userId: user._id })) {
-            const userInfo = await UserInfo.findOne({ userId: user._id })
-            
-            res.send({ token, userInfo })
-        } else {
-            res.send({ token })
-        }
-    } catch (err) {
-        return res.status(422).send({
-            error: 'Invalid password or email' 
+    if(!user[0].isVerified) {
+        return res.status(422).json({
+            status: 'Failed',
+            message: "Email hasn't been verified yet! Check your inbox."
         })
-    }    
+    } else {  
+        try {
+            await user.comparePassword(password)
+
+            const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
+
+            if (await UserInfo.findOne({ userId: user._id })) {
+                const userInfo = await UserInfo.findOne({ userId: user._id })
+                
+                res.send({ token, userInfo })
+            } else {
+                res.send({ token })
+            }
+        } catch (err) {
+            return res.status(422).send({
+                error: 'Invalid password or email' 
+            })
+        }       
+    }
 })
 
 module.exports = router 

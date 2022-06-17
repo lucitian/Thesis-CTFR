@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 import LoginScreen from './screens/login/login'
 import SignupScreen from './screens/login/signup'
+import VerifyScreen from './screens/intro/verify'
 import FillScreen from './screens/intro/fill'
 import CameraScreen from './screens/intro/camera'
 import ProfileScreen from './screens/profile/OverlappingContainers/profile'
@@ -24,9 +25,9 @@ import CameraScreenMask from './screens/intro/cameraMask'
 const deviceWidth = Dimensions.get('window').width
 
 const switchNavigator = createSwitchNavigator({
-    resolveAuth: resolveAuth,
+    // resolveAuth: resolveAuth,
     login: createStackNavigator({
-        login: LoginScreen,
+        // login: LoginScreen,
         signup: SignupScreen
     },
     {
@@ -36,10 +37,11 @@ const switchNavigator = createSwitchNavigator({
         }
     }),
     intro: createStackNavigator({
-        agreement: Agreement,
-        fill: FillScreen,
-        camera: CameraScreen,
-        cameraMask: CameraScreenMask,
+        verify: VerifyScreen,
+        // agreement: Agreement,
+        // fill: FillScreen,
+        // camera: CameraScreen,
+        // cameraMask: CameraScreenMask,
     },
     {
         headerMode: 'none',
@@ -47,17 +49,16 @@ const switchNavigator = createSwitchNavigator({
             headerVisible: false
         },
     }),
-    home: createStackNavigator({
-        profile: ProfileScreen,
-        edit: EditScreen,
-        // history: HistoryScreen
-    },
-    {
-        headerMode: 'none',
-        navigationOptions: {
-            headerVisible: false
-        },
-    }),
+    // home: createStackNavigator({
+    //     profile: ProfileScreen,
+    //     edit: EditScreen,
+    // },
+    // {
+    //     headerMode: 'none',
+    //     navigationOptions: {
+    //         headerVisible: false
+    //     },
+    // }),
 })
 
 const App = createAppContainer(switchNavigator)

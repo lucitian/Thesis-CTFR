@@ -3,6 +3,8 @@ require('./models/UserInfo')
 require('./models/UserImages')
 require('./models/UserCovidResult')
 require('./models/Room')
+require('./models/UserVerification')
+require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
 const bodyParser = require('body-parser')
@@ -18,7 +20,14 @@ app.use(authRoutes)
 app.use(userInfoRoutes)
 
 // This function is used to connect to the mongoDB cluster
-mongoose.connect(mongoUri.url, {
+// mongoose.connect(mongoUri.url, {
+//     useNewUrlParser: true,
+// })
+
+    
+const port = process.env.PORT || 3000
+
+mongoose.connect(process.env.MONGO_ATLAS, {
     useNewUrlParser: true,
 })
 
@@ -34,6 +43,6 @@ app.get('/', requireAuth, (req, res) => {
     res.send(`Your email: ${req.user.email}`)
 })
 
-app.listen(3000, () => {
-    console.log('listening on port 3000')
+app.listen(port, () => {
+    console.log(`listening on port ${port}`)
 })
