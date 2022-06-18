@@ -45,98 +45,41 @@ router.post('/signup', async (req, res) => {
             isVerified: false,
         })    
         user.save()
-        const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')    
-        const code = generateCode()
+        .then(async ()=> {
+            const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')    
+            const code = Math.floor(100000 + Math.random() * 900000)
 
-        const newVerification = new UserVerification({
-            userId: user._id,
-            uniqueString: code,
-            createdAt: Date.now(),
-            expiresAt: Date.now() + 216000
-        }).save()
-        
-        transporter.sendMail({
-            from: process.env.EMAIL_USER,
-            to: email,
-            subject: 'Verify Your Email',
-            html: `
-                <p>Verify your email address to complete the signup and login into your account.</p>
-                <p><b>This link expires in 6 hours.</b></p>
-                <p>Here is your verification code ${code}</p>  
-            `,
+            await new UserVerification({
+                userId: user._id,
+                uniqueString: crypto.hashSync(String(code), 10),
+                createdAt: Date.now(),
+                expiresAt: Date.now() + 216000
+            }).save()
+            transporter.sendMail({
+                from: process.env.EMAIL_USER,
+                to: email,
+                subject: 'Verify Your Email',
+                html: `
+                    <p>Verify your email address to complete the signup and login into your account.</p>
+                    <p><b>This link expires in 6 hours.</b></p>
+                    <p>Here is your verification code ${code}</p>  
+                `,
+            })
+
+            res.status(200).send({token})
         })
-
-        res.status(200).send({token})
+        .catch((error) => {
+            console.log(error)
+            res.json({
+                status: 'FAILED',
+                message: 'Failed to create an account.'
+            })
+        })
+        
     } catch (err) {
         return res.status(422).send(err.message)
     }
 })
-
-// const sendVerificationEmail = ({_id, email}, res, token) => {
-//     const code = string(generateCode())
-
-//     const mailOptions = {
-//         from: process.env.EMAIL_USER,
-//         to: email,
-//         subject: 'Verify Your Email',
-//         html: `
-//             <p>Verify your email address to complete the signup and login into your account.</p>
-//             <p><b>This link expires in 6 hours.</b></p>
-//             <p>Here is your verification code ${code}</p>  
-//         `,
-//     }
-
-//     const saltRounds = 10
-//     crypto
-//     .hash(code, saltRounds)
-//     .then((hashedUniqueString) => {
-//         const newVerification = new UserVerification({
-//             userId: _id,
-//             uniqueString: hashedUniqueString,
-//             createdAt: Date.now(),
-//             expiresAt: Date.now() + 2160000
-//         })
-        
-//         newVerification.save()
-//         .then(() => {
-//             transporter.sendMail(mailOptions)
-//             .then(() => {
-//                 return res.json({
-//                     status: 'PENDING',
-//                     message: 'Verification email sent'
-//                 })
-//             })
-//             .catch((error) => {
-//                 res.json({
-//                     status: 'FAILED',
-//                     message: 'Verification email failed'
-//                 })
-//             })
-//         })
-//         .catch((error) => {
-//             console.log(error)
-//             res.json({
-//                 status: 'FAILED',
-//                 message: "Couldn't save verification email data"
-//             })
-//         })
-//     })
-//     .catch(() => {
-//         res.json({
-//             status: 'FAILED',
-//             message: 'An error occurred while hashing email data!'
-//         })
-//     })
-// }
-
-const generateCode = () => {
-    const code = Math.floor(100000 + Math.random() * 900000)
-
-    const saltRounds = 10
-    crypto.hash(str(code), saltRounds)
-
-    return hash
-}
 
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body
