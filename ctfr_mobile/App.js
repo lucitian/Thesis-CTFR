@@ -25,9 +25,9 @@ import CameraScreenMask from './screens/intro/cameraMask'
 const deviceWidth = Dimensions.get('window').width
 
 const switchNavigator = createSwitchNavigator({
-    // resolveAuth: resolveAuth,
+    resolveAuth: resolveAuth,
     login: createStackNavigator({
-        // login: LoginScreen,
+        login: LoginScreen,
         signup: SignupScreen
     },
     {
@@ -38,8 +38,8 @@ const switchNavigator = createSwitchNavigator({
     }),
     intro: createStackNavigator({
         verify: VerifyScreen,
-        // agreement: Agreement,
-        // fill: FillScreen,
+        agreement: Agreement,
+        fill: FillScreen,
         // camera: CameraScreen,
         // cameraMask: CameraScreenMask,
     },
@@ -49,16 +49,16 @@ const switchNavigator = createSwitchNavigator({
             headerVisible: false
         },
     }),
-    // home: createStackNavigator({
-    //     profile: ProfileScreen,
-    //     edit: EditScreen,
-    // },
-    // {
-    //     headerMode: 'none',
-    //     navigationOptions: {
-    //         headerVisible: false
-    //     },
-    // }),
+    home: createStackNavigator({
+        profile: ProfileScreen,
+        // edit: EditScreen,
+    },
+    {
+        headerMode: 'none',
+        navigationOptions: {
+            headerVisible: false
+        },
+    }),
 })
 
 const App = createAppContainer(switchNavigator)

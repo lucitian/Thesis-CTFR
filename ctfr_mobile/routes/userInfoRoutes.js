@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const multer = require('multer')
 const fs = require('fs')
+const {parse} = require('csv-parse')
 const path = require('path')
 const requireAuth = require('../middlewares/requireAuth')
 
@@ -15,23 +16,29 @@ const router = express.Router()
 
 router.use(requireAuth)
 
-router.get('/profile', async (req, res) => {
-    try {
-        const user = await User.findById(req.user._id)
-        const userInfo = await UserInfo.findOne({userId: req.user._id})
+router.get('/profileUser', async(req, res) => {
+    const user = await User.findById(req.user._id)
 
-        res.status(200).json({user, userInfo})
-    } catch (err) {
-        res.status(304).send(err.message)
-    }
+    res.status(200).json({user})
 })
+
+// router.get('/profile', async (req, res) => {
+//     try {
+//         const user = await User.findById(req.user._id)
+//         const userInfo = await UserInfo.findOne({userId: req.user._id})
+
+//         res.status(200).json({user, userInfo})
+//     } catch (err) {
+//         res.status(304).send(err.message)
+//     }
+// })
 
 router.post('/fill', async (req, res) => {
     const { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address } = req.body
 
     if ( !firstname || !middleinitial || !lastname || !contact || !birthdate || !vaxstatus || !address ) {
         console.log(firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address)
-        return res.status(422).send({
+        return res.status(422).json({
             error: "Please provide all necessary information."
         })
     }
@@ -49,15 +56,40 @@ router.post('/fill', async (req, res) => {
                 vaxstatus,
                 address,
                 covidstatus: 'Negative',
-                userId: req.user._id
+                userId: req.user._id,
             })
-    
             await userInfo.save()
- 
-            res.send(userInfo)
+
+            res.status(200).json({userInfo})
         } catch (err) {
+            console.log(err)
             return res.status(422).send(err.message)
         }
+    }
+})
+
+
+router.get('/fillInfo', async (req, res) => {
+    try {
+        const user = await User.findById(req.user._id)
+        let userData = {}
+        fs.readFile(path.join(__dirname, '..', '..', 'tup_accounts.csv'), 'utf-8', (err, data) => {
+            parse(data, {columns: true}, function(err, rows) {
+                for(let i in rows) {
+                    if(user.email == rows[i]['tupemail']) {
+                        userData = rows[i]
+                        res.status(200).json({
+                            userData
+                        })
+                    }
+                }
+            })
+        })
+    } catch (err) {
+        res.status(422).json({
+            status: 'fill_error',
+            message: 'An error occured while fetching information'
+        })
     }
 })
 

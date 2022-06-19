@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
 const UserVerification = mongoose.model('UserVerification')
+const requireAuth = require('../middlewares/requireAuth')
 const nodemailer = require('nodemailer')
 const crypto = require('bcrypt')
 require('dotenv').config()
@@ -53,7 +54,7 @@ router.post('/signup', async (req, res) => {
                 userId: user._id,
                 uniqueString: crypto.hashSync(String(code), 10),
                 createdAt: Date.now(),
-                expiresAt: Date.now() + 216000
+                expiresAt: Date.now() + 21600
             }).save()
             transporter.sendMail({
                 from: process.env.EMAIL_USER,
@@ -66,7 +67,7 @@ router.post('/signup', async (req, res) => {
                 `,
             })
 
-            res.status(200).send({token})
+            res.status(200).json({token, user})
         })
         .catch((error) => {
             console.log(error)
@@ -83,6 +84,7 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body
+    console.log(req.body)
 
     if (!email || !password) {
         return res.status(422).send({
@@ -96,30 +98,131 @@ router.post('/signin', async (req, res) => {
             error: 'Invalid email or password'
         })
     }
-    if(!user[0].isVerified) {
-        return res.status(422).json({
-            status: 'Failed',
-            message: "Email hasn't been verified yet! Check your inbox."
-        })
-    } else {  
-        try {
-            await user.comparePassword(password)
+    try {
+        await user.comparePassword(password)
 
-            const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
+        const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
+        const userInfo = await UserInfo.findOne({ userId: user._id })
 
-            if (await UserInfo.findOne({ userId: user._id })) {
-                const userInfo = await UserInfo.findOne({ userId: user._id })
-                
-                res.send({ token, userInfo })
-            } else {
-                res.send({ token })
-            }
-        } catch (err) {
-            return res.status(422).send({
-                error: 'Invalid password or email' 
+        if(!user.isVerified) {
+            console.log('yawa')
+            return res.status(200).json({
+                token, user,
+                status: 'Failed',
+                message: "Email hasn't been verified yet! Check your inbox."
             })
-        }       
-    }
+        } else {
+            if (userInfo) {
+                console.log('may laman si userInfo')
+                res.status(200).json({ token, user, userInfo })
+            } else {
+                console.log('walang laman si userinfo')
+                res.status(200).json({ token, user })
+            }
+        }
+    } catch (err) {
+        console.log(err)
+        return res.status(422).send({
+            error: 'Invalid password or email' 
+        })
+    }      
+})
+
+router.use(requireAuth)
+
+router.post('/verify', async (req, res) => {
+    const { input } = req.body
+    console.log(input)
+
+    UserVerification.find({userId: req.user._id})
+    .then((result) => {
+        if(result.length > 0) {
+            const {expiresAt} = result[0].expiresAt
+            const hashedString = result[0].uniqueString
+
+            if (expiresAt < Date.now()) {
+                UserVerification.deleteOne({userId: req.user._id})
+                .then(result => {
+                    User.deleteOne({userId: req.user._id})
+                    .then(() => {
+                        res.json({
+                            status: 'DELETED',
+                            message: 'Link has expired. Please sign up again.'
+                        })
+                    })
+                    .catch((error) => {
+                        console.log(error)
+                        res.json({
+                            status: 'ERROR',
+                            message: 'Clearing user with expired unique string failed.'
+                        })
+                    })
+                })
+                .catch((error) => {
+                    console.log(error)
+                    res.json({
+                        status: 'ERROR',
+                        message: 'An error occurred while clearing expired user verification record'
+                    })
+                })
+            } else {
+                crypto.compare(String(input), hashedString)
+                .then((result) => {
+                    console.log(result)
+                    if(result) {
+                        User.updateOne({_id: req.user._id}, {isVerified: true})
+                        .then(() => {
+                            UserVerification.deleteOne({userId: req.user._id})
+                            .then(() => {
+                                res.status(200).json({
+                                    status: 'SUCCESS',
+                                    message: 'User successfully verified!'
+                                })
+                            })
+                            .catch((error) => {
+                                console.log(error)
+                                res.status(422).json({
+                                    status: 'FINALIZE ERROR',
+                                    message: 'An error occurred while finalizing successful verification'
+                                })
+                            })
+                        })
+                        .catch((error) => {
+                            console.log(error)
+                            res.status(422).json({
+                                status: "CHECK ERROR",
+                                message: 'An error occurred while updating user record to show verified.'
+                            })
+                        })
+                    } else {
+                        res.status(422).json({
+                            status: 'INVALID',
+                            message: 'Invalid verification details passed. Check your inbox.'
+                        })
+                    }
+                })
+                .catch((error) => {
+                    console.log(error)
+                    res.status(422).json({
+                        status: "ERROR",
+                        message: 'An error occurred while comparing unique strings.'
+                    })
+                })
+            }
+        } else {
+            res.status(422).json({
+                status: 'ERROR',
+                message: "Account record doesn't exist or has been verified already. Please sign in or log in."
+            })
+        }
+    })
+    .catch((error) => {
+        console.log(error)
+        res.json({
+            status: 'ERROR',
+            message: 'An error occurred while checking for existing user verification record.'
+        })
+    })
 })
 
 module.exports = router 

@@ -10,7 +10,6 @@ function Agreement ({ navigation }) {
     const agreed = () => {
         setChecked(true)
         setDisable(false)
-        
     }
     return (
         <View style = {styles.container}>
@@ -44,7 +43,8 @@ function Agreement ({ navigation }) {
                         mode = 'contained'
                         onPress = {() => navigation.navigate('fill')}
                         disabled = {disable}       
-                        title = 'Proceed'                    >
+                        title = 'Proceed'                    
+                    >
                     </Button>
                 </View>
             </View>

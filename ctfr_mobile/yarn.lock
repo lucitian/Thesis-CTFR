@@ -2885,6 +2885,11 @@
   "resolved" "https://registry.npmjs.org/css-what/-/css-what-6.1.0.tgz"
   "version" "6.1.0"
 
+"csv-parse@^5.2.0":
+  "integrity" "sha512-ZuLjTp3Qx2gycoB7FKS9q11KgDL3f0wQszTlNOajS3fHa0jypN/zgjmkam+rczX5dXw5z7+KrDW2hWkM4542Ug=="
+  "resolved" "https://registry.npmjs.org/csv-parse/-/csv-parse-5.2.0.tgz"
+  "version" "5.2.0"
+
 "d3-color@1":
   "integrity" "sha512-p2sTHSLCJI2QKunbGb7ocOh7DgTAn8IrLx21QRc/BSnodXM4sv6aLQlnfpvehFMLZEfBc6g9pH9SWQccFYfJ9Q=="
   "resolved" "https://registry.npmjs.org/d3-color/-/d3-color-1.4.1.tgz"

@@ -1,6 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { navigate } from '../navigation'
-
 import createDataContext from "./createDataContext"
 import api from '../api/api'
 
@@ -14,6 +13,11 @@ const authReducer = (state, action) => {
         case 'signin':
             return {
                 errorMessage: '',
+                token: action.payload
+            }
+        case 'verify':
+            return {
+                errorMessage :'',
                 token: action.payload
             }
         case 'fillup':
@@ -58,27 +62,47 @@ const authReducer = (state, action) => {
 
 const localSignIn = (dispatch) => async () => {
     const token = await AsyncStorage.getItem('token')
-
-    if (token) {
-        // if (await AsyncStorage.getItem('userinfo_exist')) {
-        //     const user = await AsyncStorage.getItem('user')
-        //     const userInfo = await AsyncStorage.getItem('userinfo')
-        //     const history = await AsyncStorage.getItem('history')
-
-        //     dispatch({
-        //         type:'signin',
-        //         payload: {token: token, user: JSON.parse(user), userInfo: JSON.parse(userInfo), roomHistory: JSON.parse(history)}
-        //     })
-    
-        //     navigate('home')
-        // } else {
-        //     dispatch({
-        //         type:'signin',
-        //         payload: token
-        //     })
-        //     navigate('intro')
-        // }
-        navigate('home')
+    if (token != null) {
+        if (await AsyncStorage.getItem('user')) {
+            const user = await AsyncStorage.getItem('user')
+            if(await AsyncStorage.getItem('userInfo')) {
+                const userInfo = await AsyncStorage.getItem('userInfo')
+                
+                dispatch({
+                    type: 'signin',
+                    payload: {
+                        token: token,
+                        user: JSON.parse(user),
+                        userInfo: JSON.parse(userInfo)
+                    }
+                })
+                navigate('home')
+            } else {
+                if (!JSON.parse(user).isVerified) {
+                    console.log('Not Verified')
+                    dispatch({
+                        type: 'sigin',
+                        payload: {
+                            token: token,
+                            user: JSON.parse(user)
+                        }
+                    })
+                    navigate('verify')
+                } else {
+                    const tempData = await AsyncStorage.getItem('tempUserData')
+                    console.log('verified')
+                    dispatch({
+                        type: 'signin',
+                        payload: {
+                            token: token,
+                            user: JSON.parse(user),
+                            tempData: JSON.parse(tempData)
+                        }
+                    })
+                    navigate('agreement')
+                }
+            }
+        }
     } else {
         navigate('login')
     }
@@ -93,13 +117,13 @@ const clearError = (dispatch) => () => {
 const signup = (dispatch) => async ({ username, email, password }) => {
     try {
         const response = await api.post('/signup', { username, email, password })
-        console.log(response.data)
         await AsyncStorage.removeItem('token')
         await AsyncStorage.setItem('token', response.data.token)
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.user))
 
         dispatch({ 
             type: 'signin',
-            payload: response.data.token
+            payload: {token: response.data.token, user: response.data.user}
         })
 
         navigate('intro')
@@ -115,32 +139,142 @@ const signup = (dispatch) => async ({ username, email, password }) => {
 const signin = (dispatch) => async ({email, password}) => {
     try {
         const response = await api.post('/signin', { email, password })
-
         await AsyncStorage.setItem('token', response.data.token)
+        await AsyncStorage.setItem('user', JSON.stringify(response.data.user))
+        console.log(response)
 
-        if (response.data.userInfo) {
-            await AsyncStorage.setItem('userinfo_exist', 'true')
-            const userEmailResponse = await api.get('/profileemail')
-            const userInfoResponse = await api.get('/profileinfo')
-            const historyresponse = await api.get('/history')
-            await AsyncStorage.setItem('user', JSON.stringify(userEmailResponse.data))
-            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
-            await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
-
+        if (!response.data.user.isVerified) {
+            console.log('not verified')
             dispatch({
                 type: 'signin',
-                payload: {token: response.data.token, user: userEmailResponse.data, userInfo: userInfoResponse.data, roomHistory: historyresponse.data}
+                payload: {token: response.data.token, user: response.data.user}
             })
-
-            navigate('home')
+            navigate('intro')
         } else {
-            navigate('fill')
-        }       
+            if (response.data.userInfo) {
+                console.log('userInfo')
+                await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
+                dispatch({
+                    type: 'signin',
+                    payload: {
+                        token: response.data.token, 
+                        user: response.data.user, 
+                        userInfo: response.data.userInfo
+                    }
+                })
+                navigate('home')
+            } else {
+                const response = await api.get('/fillInfo')
+        
+                if(await AsyncStorage.getItem('tempUserData')) {
+                    const tempData = await AsyncStorage.getItem('tempUserData')
+                    dispatch({
+                        type: 'signin',
+                        payload: {
+                            token: response.data.token,
+                            user: response.data.user,
+                            tempData: JSON.parse(tempData)
+                        }
+                    })
+                    navigate('agreement')
+                } else {
+                    await AsyncStorage.setItem('tempUserData', JSON.stringify(response.data.userData))
+                    const tempData = await AsyncStorage.getItem('tempUserData')
+                    dispatch({
+                        type: 'signin',
+                        payload: {
+                            token: response.data.token,
+                            user: response.data.user,
+                            tempData: JSON.parse(tempData)
+                        }
+                    })
+                    navigate('agreement')
+                }
+            }     
+        }
     } catch (err) {
         console.log(err)
         dispatch({
             type: 'add_error',
             payload: 'Something went wrong with sign in'
+        })
+    }
+}
+
+const verify = (dispatch) => async (input) => {
+    try {
+        const response = await api.post('/verify', {input})
+        const token = await AsyncStorage.getItem('token')
+        const responseUser = await api.get('/profileUser')
+        await AsyncStorage.setItem('user', JSON.stringify(responseUser.data.user))
+
+        if((response.data.status).toLowerCase() == 'success') {
+            const response = await api.get('/fillInfo')
+        
+            if(await AsyncStorage.getItem('tempUserData')) {
+                const tempData = await AsyncStorage.getItem('tempUserData')
+                dispatch({
+                    type: 'signin',
+                    payload: {
+                        token: token,
+                        user: JSON.parse(responseUser),
+                        tempData: JSON.parse(tempData)
+                    }
+                })
+                navigate('agreement')
+            } else {
+                await AsyncStorage.setItem('tempUserData', JSON.stringify(response.data.userData))
+                const tempData = await AsyncStorage.getItem('tempUserData')
+                dispatch({
+                    type: 'signin',
+                    payload: {
+                        token: token,
+                        user: JSON.parse(responseUser),
+                        tempData: JSON.parse(tempData)
+                    }
+                })
+                navigate('agreement')
+            }
+        }
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: 'verify_error',
+            payload: 'Something went wrong'
+        })
+    }
+}
+
+const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus }) => {
+    try {
+        const response = await api.post('/fill', { 
+            firstname, 
+            middleinitial, 
+            lastname, 
+            contact, 
+            birthdate, 
+            vaxstatus, 
+            address,
+            covidstatus
+        })
+        const user = await AsyncStorage.getItem('user')
+        console.log(response)
+        await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
+        dispatch({
+            type: 'fillup',
+            payload: {
+                token: response.data.token,
+                user: JSON.parse(user),
+                userInfo: response.data.userInfo
+            }
+        })
+        navigate('profile')
+        // navigate('camera')
+    } catch (err) {
+        console.log(err)
+        dispatch({
+            type: 'add_error',
+            payload: 'Something went wrong'
         })
     }
 }
@@ -187,25 +321,6 @@ const covid_upload = (dispatch) => async (formData) => {
         })
 
     } catch (err) {
-        dispatch({
-            type: 'add_error',
-            payload: 'Something went wrong'
-        })
-    }
-}
-
-const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus }) => {
-    try {
-        const response = await api.post('/fill', { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus })
-        await AsyncStorage.setItem('userinfo_exist', 'true')
-        dispatch({
-            type: 'fillup',
-            payload: response.data.token
-        })
-
-        navigate('camera')
-    } catch (err) {
-        console.log(err)
         dispatch({
             type: 'add_error',
             payload: 'Something went wrong'
@@ -290,6 +405,9 @@ const camera_uploadMask = (dispatch) => async (formData) => {
 
 const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
+    await AsyncStorage.removeItem('user')
+    await AsyncStorage.removeItem('userInfo')
+    await AsyncStorage.removeItem('tempUserDat')
 
     console.log('signout')
     dispatch({
@@ -301,6 +419,17 @@ const signout = (dispatch) => async () => {
 
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup, signin, fillup, camera_upload, camera_uploadMask, clearError, localSignIn, update, covid_upload, signout },
+    { 
+        localSignIn, 
+        signup, 
+        verify, 
+        signin, 
+        fillup, 
+        camera_upload, 
+        camera_uploadMask, 
+        clearError, 
+        update, 
+        covid_upload, 
+        signout },
     { token: null, errorMessage: '' }
 )

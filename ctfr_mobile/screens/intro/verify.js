@@ -8,41 +8,12 @@ import { Context as UserContext } from '../../context/UserContext'
 const VerifyScreen = ({ navigation }) => {
     // const { email } = route
     // console.log(route.email)
-    const { signout } = useContext(UserContext)
-    const ref = useRef(null)
+    const { verify, signout } = useContext(UserContext)
     const [input, setInput] = useState('')
 
     const _onFulfill = (code) => {
         setInput(code)
-        if (input == 'Burat') {
-          alert(
-            'Confirmation Code',
-            'Successful!',
-            [{text: 'OK'}],
-            { cancelable: false }
-          );
-        } else {
-          alert(
-            'Confirmation Code',
-            'Code not match!',
-            [{text: 'OK'}],
-            { cancelable: false }
-          );
-          
-          this.refs.codeInputRef1.clear();
-        }
-    }
-    const _onFinishCheckingCode2 =(isValid, code) => {
-        console.log(isValid);
-        if (!isValid) {
-          alert(
-            'Code not match!'
-            [{text: 'OK'}],
-            { cancelable: false }
-          );
-        } else {
-            setInput({ code })
-        }
+        verify(input)
     }
       
     return (
@@ -63,14 +34,13 @@ const VerifyScreen = ({ navigation }) => {
                 <CodeInput
                     inactiveColor='#000000'
                     activeColor='rgb(105, 72, 244)'
-                    codeLength={5}
-                    size={50}
+                    codeLength={6}
+                    size={40}
                     space={10}
-                    compareWithCode='Burat'
                     className='border-b'
                     autoFocus={false}
                     codeInputStyle={{ fontWeight: '800', backgroundColor: '#F5F5F5' }}
-                    onFulfill={(isValid, code) => _onFinishCheckingCode2(isValid, code)}
+                    onFulfill={(input) => _onFulfill(input)}
                 />
             </View>
             <View style={styles.resendTextContainer}>
