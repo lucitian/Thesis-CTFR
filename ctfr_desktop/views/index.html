@@ -125,6 +125,12 @@
                             <div class="db__filter__title">
                                 <h2>Name</h2>
                             </div>
+                            <div class="db__filter__title">
+                                <h2>Date From</h2>
+                            </div>
+                            <div class="db__filter__title">
+                                <h2>Date To</h2>
+                            </div>
                         </div>
                         <div class="room-db__filter__input__container">
                             <div class="db__filter__group">
@@ -135,6 +141,12 @@
                                 <div class="filter__group">
                                     <input type="text" required class="room__filter__name" id="room__filter__name" onkeyup="roomStudentFilter()">
                                     <label>Name</label>
+                                </div>    
+                                <div class="filter__group">
+                                    <input id="dateFrom" type="date" required class="room__filter__name" id="room__filter__name" onchange="dateFilter()">
+                                </div>    
+                                <div class="filter__group">
+                                    <input id="dateTo" type="date" required class="room__filter__name" id="room__filter__name" onchange="dateFilter()">                                    
                                 </div>    
                             </div> 
                             <div class="db__buttons__container">
