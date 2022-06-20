@@ -58,10 +58,15 @@ confirmRoomDelete = () => {
     })
 }
 
+function deleteRoomCancel() {
+    document.getElementById('room__delete__window').style.display = 'none'
+}
+
+
 statusRoomDelete = (data) => {
     switch(data.send) {
         case 'success':
-            document.getElementById('delete__window').style.display = 'none'
+            document.getElementById('room__delete__window').style.display = 'none'
             deleteRoomResultModal(data.message, 'Success!')
             break
         case 'nothing':
