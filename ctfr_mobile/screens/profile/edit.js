@@ -45,7 +45,7 @@ function FillScreen ({ navigation }) {
                 <View style = { styles.homeComponents }>
                     <View style = { styles.TextContainer }>
                         <Text style = { styles.boldText }>
-                            Hi!
+                            Edit information
                         </Text>
                     </View>
                     <View>
@@ -147,7 +147,7 @@ function FillScreen ({ navigation }) {
                                 field: { onChange, value, onBlur }
                             }) => (
                                 <TextInput                                
-                                    placeholder = "yyyy/mm/dd"
+                                    placeholder = "mm/dd/yyyy"
                                     keyboardType ='numeric'
                                     onBlur = {onBlur}
                                     render = { (props) => (
@@ -155,7 +155,7 @@ function FillScreen ({ navigation }) {
                                             {...props}
                                             type={'datetime'}
                                             options={{
-                                                format: 'YYYY/MM/DD'
+                                                format: 'MM/DD/YYYY'
                                             }}                                            
                                             value={birthdate}
                                             onChangeText={(text) => {
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     boldText: {
         color: '#6948f4',
         fontWeight: 'bold',
-        fontSize: 70,
+        fontSize: 40,
         marginLeft: 10
     },
     infoText: {

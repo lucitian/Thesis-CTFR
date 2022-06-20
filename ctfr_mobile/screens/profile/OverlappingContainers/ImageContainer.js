@@ -29,7 +29,7 @@ const ImageContainer = ({
       setToggleN(false)
       setToggleP(true)
     }
-  })
+  }, [])
 
   const changeVal = () => {
     if(toggleN == true){

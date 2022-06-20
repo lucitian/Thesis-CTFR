@@ -84,7 +84,6 @@ router.post('/signup', async (req, res) => {
 
 router.post('/signin', async (req, res) => {
     const { email, password } = req.body
-    console.log(req.body)
 
     if (!email || !password) {
         return res.status(422).send({
@@ -105,7 +104,6 @@ router.post('/signin', async (req, res) => {
         const userInfo = await UserInfo.findOne({ userId: user._id })
 
         if(!user.isVerified) {
-            console.log('yawa')
             return res.status(200).json({
                 token, user,
                 status: 'Failed',
@@ -113,10 +111,8 @@ router.post('/signin', async (req, res) => {
             })
         } else {
             if (userInfo) {
-                console.log('may laman si userInfo')
                 res.status(200).json({ token, user, userInfo })
             } else {
-                console.log('walang laman si userinfo')
                 res.status(200).json({ token, user })
             }
         }

@@ -258,7 +258,6 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
             covidstatus
         })
         const user = await AsyncStorage.getItem('user')
-        console.log(response)
         await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
         dispatch({
             type: 'fillup',
@@ -281,19 +280,30 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
 
 const update = (dispatch) => async ({ firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus}) => {
     try {
-        await api.patch('/update', {
-            firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address, covidstatus
+        const response = await api.patch('/update', {
+            firstname,
+            middleinitial,
+            lastname,
+            contact,
+            birthdate,
+            vaxstatus,
+            address,
+            covidstatus
         })
+        console.log(response.data)
+        await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
         const token = await AsyncStorage.getItem('token')
         const user = await AsyncStorage.getItem('user')
-        const history = await AsyncStorage.getItem('history')
-        const userInfoResponse = await api.get('/profileinfo')
-        const historyResponse = await api.get('/history')
-        await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
+        // const history = await AsyncStorage.getItem('history')
+        // const historyResponse = await api.get('/history')
 
         dispatch ({
             type:'update',
-            payload: {token: token, user: JSON.parse(user), userInfo: userInfoResponse.data, roomHistory: historyResponse.data}
+            payload: {
+                token: token, 
+                user: JSON.parse(user), 
+                userInfo: response.data.userInfo, 
+            }
         })
 
         navigate('home')
@@ -407,7 +417,7 @@ const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
     await AsyncStorage.removeItem('user')
     await AsyncStorage.removeItem('userInfo')
-    await AsyncStorage.removeItem('tempUserDat')
+    await AsyncStorage.removeItem('tempUserData')
 
     console.log('signout')
     dispatch({

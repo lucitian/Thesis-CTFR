@@ -51,7 +51,7 @@ const switchNavigator = createSwitchNavigator({
     }),
     home: createStackNavigator({
         profile: ProfileScreen,
-        // edit: EditScreen,
+        edit: EditScreen,
     },
     {
         headerMode: 'none',

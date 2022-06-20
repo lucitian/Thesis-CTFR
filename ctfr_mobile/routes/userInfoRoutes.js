@@ -22,17 +22,6 @@ router.get('/profileUser', async(req, res) => {
     res.status(200).json({user})
 })
 
-// router.get('/profile', async (req, res) => {
-//     try {
-//         const user = await User.findById(req.user._id)
-//         const userInfo = await UserInfo.findOne({userId: req.user._id})
-
-//         res.status(200).json({user, userInfo})
-//     } catch (err) {
-//         res.status(304).send(err.message)
-//     }
-// })
-
 router.post('/fill', async (req, res) => {
     const { firstname, middleinitial, lastname, contact, birthdate, vaxstatus, address } = req.body
 
@@ -116,7 +105,7 @@ router.patch('/update', async (req,res) => {
         })
 
         await userInfo.save()
-        res.status(200).send(userInfo)
+        res.status(200).json({userInfo})
     } catch (err) {
         console.log(err)
         return res.status(404).send(err)
