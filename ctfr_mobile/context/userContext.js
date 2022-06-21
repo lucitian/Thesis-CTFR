@@ -310,7 +310,8 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
             }
         })
 
-        navigate('camera')
+        navigate('profile')
+        // navigate('camera')
     } catch (err) {
         console.log(err)
         dispatch({
