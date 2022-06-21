@@ -90,3 +90,18 @@ deleteRoomResultModal = (data, status) => {
 closeDeleteResultModal = () => {
     document.getElementById('modal__content').style.display = 'none'
 }
+
+function dateFilter(date){
+    const dateFrom = document.getElementById('dateFrom')
+    const dateTo = document.getElementById('dateTo')
+    filteredDates = []
+    const dates = ['2022-06-10', '2022-06-11', '2022-06-12', '2022-06-13', '2022-06-14', '2022-06-15', '2022-06-16',
+                    '2022-06-17', '2022-06-18', '2022-06-19', '2022-06-20']
+
+    for (i = 0; i < dates.length; i++){
+        if (dates[i] >= dateFrom.value && dates[i] <= dateTo.value){
+            filteredDates.push(dates[i])
+        }
+    }
+    console.log(filteredDates)
+}
