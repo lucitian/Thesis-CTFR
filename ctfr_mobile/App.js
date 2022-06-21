@@ -40,8 +40,8 @@ const switchNavigator = createSwitchNavigator({
         verify: VerifyScreen,
         agreement: Agreement,
         fill: FillScreen,
-        // camera: CameraScreen,
-        // cameraMask: CameraScreenMask,
+        camera: CameraScreen,
+        cameraMask: CameraScreenMask,
     },
     {
         headerMode: 'none',

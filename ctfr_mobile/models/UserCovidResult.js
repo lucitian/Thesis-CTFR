@@ -9,6 +9,7 @@ const imageSchema = new mongoose.Schema({
         data: Buffer,
         contentType: String,
     },
+    sentDate: Date
 })
 
 mongoose.model('UserCovidResult', imageSchema)

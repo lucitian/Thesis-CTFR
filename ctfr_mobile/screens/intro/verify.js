@@ -6,14 +6,10 @@ import CodeInput from 'react-native-confirmation-code-input';
 import { Context as UserContext } from '../../context/UserContext'
 
 const VerifyScreen = ({ navigation }) => {
-    // const { email } = route
-    // console.log(route.email)
     const { verify, signout } = useContext(UserContext)
-    const [input, setInput] = useState('')
 
     const _onFulfill = (code) => {
-        setInput(code)
-        verify(input)
+        verify(code)
     }
       
     return (

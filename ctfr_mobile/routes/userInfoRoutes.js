@@ -204,6 +204,7 @@ router.post('/profile/covid', uploadCovid.single('image'), (req, res, next) => {
             data: fs.readFileSync(path.join(__dirname, '..', '..', 'covidresult', req.file.filename)),
             contentType: 'image/*',
         },
+        sentDate: Date.now()
     })
     image.save().then(result => {
         res.send(image)

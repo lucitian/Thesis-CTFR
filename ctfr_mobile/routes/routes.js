@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken')
 const User = mongoose.model('User')
 const UserInfo = mongoose.model('UserInfo')
 const UserVerification = mongoose.model('UserVerification')
+const Room = mongoose.model('Room')
 const requireAuth = require('../middlewares/requireAuth')
 const nodemailer = require('nodemailer')
 const crypto = require('bcrypt')
@@ -102,6 +103,7 @@ router.post('/signin', async (req, res) => {
 
         const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
         const userInfo = await UserInfo.findOne({ userId: user._id })
+        const userHistory = await Room.findOne({ userId: req.user._id})
 
         if(!user.isVerified) {
             return res.status(200).json({
@@ -111,9 +113,25 @@ router.post('/signin', async (req, res) => {
             })
         } else {
             if (userInfo) {
-                res.status(200).json({ token, user, userInfo })
+                if (userHistory) {
+                    res.status(200).json({ 
+                        token, 
+                        user, 
+                        userInfo, 
+                        userHistory 
+                    })
+                } else {
+                    res.status(200).json({
+                        token,
+                        user,
+                        userInfo
+                    })
+                }
             } else {
-                res.status(200).json({ token, user })
+                res.status(200).json({ 
+                    token, 
+                    user 
+                })
             }
         }
     } catch (err) {

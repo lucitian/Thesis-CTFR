@@ -67,16 +67,29 @@ const localSignIn = (dispatch) => async () => {
             const user = await AsyncStorage.getItem('user')
             if(await AsyncStorage.getItem('userInfo')) {
                 const userInfo = await AsyncStorage.getItem('userInfo')
-                
-                dispatch({
-                    type: 'signin',
-                    payload: {
-                        token: token,
-                        user: JSON.parse(user),
-                        userInfo: JSON.parse(userInfo)
-                    }
-                })
-                navigate('home')
+                if(await AsyncStorage.getItem('userHistory')) {
+                    const userHistory = await AsyncStorage.getItem('userHistory')
+                    dispatch({
+                        type: 'signin',
+                        payload: {
+                            token: token,
+                            user: JSON.parse(user),
+                            userInfo: JSON.parse(userInfo),
+                            userHistory: JSON.parse(userHistory)
+                        }
+                    })
+                    navigate('home')
+                } else {
+                    dispatch({
+                        type: 'signin',
+                        payload: {
+                            token: token,
+                            user: JSON.parse(user),
+                            userInfo: JSON.parse(userInfo),
+                        }
+                    })
+                    navigate('home')
+                }
             } else {
                 if (!JSON.parse(user).isVerified) {
                     console.log('Not Verified')
@@ -99,7 +112,8 @@ const localSignIn = (dispatch) => async () => {
                             tempData: JSON.parse(tempData)
                         }
                     })
-                    navigate('agreement')
+
+                    navigate('login')
                 }
             }
         }
@@ -152,17 +166,45 @@ const signin = (dispatch) => async ({email, password}) => {
             navigate('intro')
         } else {
             if (response.data.userInfo) {
-                console.log('userInfo')
-                await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
-                dispatch({
-                    type: 'signin',
-                    payload: {
-                        token: response.data.token, 
-                        user: response.data.user, 
-                        userInfo: response.data.userInfo
+                if(await AsyncStorage.getItem('camera_mask_0')) {
+                    dispatch({
+                        type: 'signin',
+                        payload: {
+                            token: response.data.token
+                        }
+                    })
+                    navigate('cameraMask')
+                } else if (await AsyncStorage.getItem('camera_mask_1')) {
+                    await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
+                    if (response.data.userHistory) {
+                        await AsyncStorage.setItem('userHistory', JSON.stringify(response.data.userHistory))
+                        dispatch({
+                            type: 'signin',
+                            payload: {
+                                token: response.data.token, 
+                                user: response.data.user, 
+                                userInfo: response.data.userInfo,
+                                userHistory: response.data.userHistory
+                            }
+                        })
+                        navigate('home')
+                    } else {
+                        dispatch({   
+                            type: 'signin',
+                            payload: {
+                                token: response.data.token, 
+                                user: response.data.user, 
+                                userInfo: response.data.userInfo
+                            }
+                        })
+                        navigate('home')
                     }
-                })
-                navigate('home')
+                } else {
+                    dispatch({
+                        type: 'signin',
+                        payload: response.data.token
+                    })
+                }
             } else {
                 const response = await api.get('/fillInfo')
         
@@ -267,8 +309,8 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
                 userInfo: response.data.userInfo
             }
         })
-        navigate('profile')
-        // navigate('camera')
+
+        navigate('camera')
     } catch (err) {
         console.log(err)
         dispatch({
@@ -294,19 +336,32 @@ const update = (dispatch) => async ({ firstname, middleinitial, lastname, contac
         await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
         const token = await AsyncStorage.getItem('token')
         const user = await AsyncStorage.getItem('user')
-        // const history = await AsyncStorage.getItem('history')
-        // const historyResponse = await api.get('/history')
+        
+        if (await AsyncStorage.getItem('userHistory')) {
+            const userHistory = await AsyncStorage.getItem('history')
+            dispatch ({
+                type:'update',
+                payload: {
+                    token: token, 
+                    user: JSON.parse(user), 
+                    userInfo: response.data.userInfo,
+                    userHistory: JSON.parse(userHistory) 
+                }
+            })
 
-        dispatch ({
-            type:'update',
-            payload: {
-                token: token, 
-                user: JSON.parse(user), 
-                userInfo: response.data.userInfo, 
-            }
-        })
+            navigate('home')
+        } else {
+            dispatch ({
+                type:'update',
+                payload: {
+                    token: token, 
+                    user: JSON.parse(user), 
+                    userInfo: response.data.userInfo, 
+                }
+            })
 
-        navigate('home')
+            navigate('home')
+        }
     } catch (err) {
         dispatch({
             type: 'update_error',
@@ -324,12 +379,34 @@ const covid_upload = (dispatch) => async (formData) => {
                 'Content-Type': 'multipart/form-data'
             },
         })
+        const user = await AsyncStorage.getItem('user')
+        const userInfo = await AsyncStorage.getItem('userInfo')
 
-        dispatch({
-            type: 'camera_upload',
-            payload: response.data.token
-        })
+        if (await AsyncStorage.getItem('userHistory')) {
+            const userHistory = await AsyncStorage.getItem('userHistory')
+            dispatch({
+                type: 'camera_upload',
+                payload: {
+                    token: response.data.token,
+                    user: JSON.parse(user),
+                    userInfo: JSON.parse(userInfo),
+                    userHistory: JSON.parse(userHistory)
+                }
+            })
 
+            navigate('home')
+        } else {
+            dispatch({
+                type: 'camera_upload',
+                payload: {
+                    token: response.data.token,
+                    user: JSON.parse(user),
+                    userInfo: JSON.parse(userInfo)
+                }
+            })
+
+            navigate('home')
+        }
     } catch (err) {
         dispatch({
             type: 'add_error',
@@ -347,7 +424,7 @@ const camera_upload = (dispatch) => async (formData) => {
                 'Content-Type': 'multipart/form-data'
             },
         })
-        await AsyncStorage.setItem('cameraUpload', 'true')
+        await AsyncStorage.setItem('camera_mask_0', 'true')
 
         dispatch({
             type: 'camera_upload',
@@ -372,39 +449,21 @@ const camera_uploadMask = (dispatch) => async (formData) => {
                 'Content-Type': 'multipart/form-data'
             },
         })
-        const userEmailResponse = await api.get('/profileemail')
-        const userInfoResponse = await api.get('/profileinfo')
-        const historyresponse = await api.get('/history')
+        await AsyncStorage.setItem('camera_mask_1', 'true')
+        const user = await AsyncStorage.getItem('user')
+        const userInfo = await AsyncStorage.getItem('userInfo')
+        
+        dispatch({
+            type: 'signin',
+            payload: {
+                token: response.data.token,
+                user: JSON.parse(user),
+                userInfo: JSON.parse(userInfo)
+            }
+        })
 
-        if(userEmailResponse.status == 200 && userInfoResponse.status == 200){
-            await AsyncStorage.setItem('user', JSON.stringify(userEmailResponse.data))
-            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
-            await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
-            
-            dispatch({
-                type: 'signin',
-                payload: {token: response.data.token, user: userEmailResponse.data, userInfo: userInfoResponse.data, roomHistory: historyresponse.data}
-            })
-
-            navigate('home')
-            alert('It may take a while before the system recognizes you. Thank you for cooperating!')
-        } else {
-            const userEmailResponse = await api.get('/profileemail')
-            const userInfoResponse = await api.get('/profileinfo')
-            const historyresponse = await api.get('/history')
-            
-            await AsyncStorage.setItem('user', JSON.stringify(userEmailResponse.data))
-            await AsyncStorage.setItem('userinfo', JSON.stringify(userInfoResponse.data))
-            await AsyncStorage.setItem('history', JSON.stringify(historyresponse.data))
-            
-            dispatch({
-                type: 'signin',
-                payload: {token: response.data.token, user: userEmailResponse.data, userInfo: userInfoResponse.data, roomHistory: historyresponse.data}
-            })
-
-            navigate('home')
-            alert('It may take a while before the system recognizes you. Thank you for cooperating!')
-        }
+        navigate('home')
+        alert('It may take a while before the system recognizes you. Thank you for cooperating!')
     } catch (err) {
         dispatch({
             type: 'add_error',
@@ -417,6 +476,7 @@ const signout = (dispatch) => async () => {
     await AsyncStorage.removeItem('token')
     await AsyncStorage.removeItem('user')
     await AsyncStorage.removeItem('userInfo')
+    await AsyncStorage.removeItem('userHistory')
     await AsyncStorage.removeItem('tempUserData')
 
     console.log('signout')

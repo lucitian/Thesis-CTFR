@@ -73,7 +73,6 @@ const ImageContainer = ({
     formData.append('image', covidFile)
     covid_upload(formData)
     alert('Thank you for your cooperation! Please wait until we verify your covid test result.')
-    navigation.navigate('profile')
     setModalCovid(false)
   }
 
