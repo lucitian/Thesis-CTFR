@@ -116,3 +116,38 @@ deleteRoomResultModal = (data, status) => {
 closeDeleteResultModal = () => {
     document.getElementById('modal__content').style.display = 'none'
 }
+
+function print_rooms(data) {
+    var rowLength = roomList.rows.length
+    var tempRooms = []
+    var listRooms = []
+    // console.log(rowLength)
+
+    // console.log(roomList.rows.item(0).cells[1].innerText)
+
+    for (i =0; i < rowLength; i++){
+        var cells = roomList.rows.item(i).cells
+        var cellLength = roomList.rows.item(i).cells.length
+        
+        for (j = 1; j < cellLength; j++){
+            tempRooms.push(cells.item(j).innerText)
+        }
+        listRooms.push(tempRooms)
+        tempRooms = []
+    }
+    console.log(listRooms)
+
+    var csv = "Room No.,User ID,Student Name,Date,Time\n"
+
+    listRooms.forEach(function(row){
+        csv += row.join(",")
+        csv += "\n"
+    })
+
+    var hiddenElement = document.createElement('a')
+    hiddenElement.href = "data:text/csv;charset=utf-8," + encodeURI(csv)
+    hiddenElement.target = "_blank";
+
+    hiddenElement.download = "Print Report.csv"
+    hiddenElement.click()
+}
