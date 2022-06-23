@@ -19,7 +19,6 @@ function FillScreen ({ navigation }) {
     const [ birthdate, setBirthdate ] = useState(state.token.tempData.birthdate)
     const [ vaxstatus, setVaxStatus ] = useState('')
     const [ address, setAddress ] = useState('')
-    const [ tupId, setTupId] = useState('')
 
     const [showDropDown, setShowDropDown] = useState(false);
     const vaxOptions = [
@@ -59,7 +58,6 @@ function FillScreen ({ navigation }) {
                 vaxstatus, 
                 address,
             })
-            navigation.navigate('profile')
         }
     }
 

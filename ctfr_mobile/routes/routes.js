@@ -103,7 +103,7 @@ router.post('/signin', async (req, res) => {
 
         const token = jwt.sign({ userId: user._id }, 'MY_SECRET_KEY')
         const userInfo = await UserInfo.findOne({ userId: user._id })
-        const userHistory = await Room.findOne({ userId: req.user._id})
+        const userHistory = await Room.findOne({ userId: user._id})
 
         if(!user.isVerified) {
             return res.status(200).json({

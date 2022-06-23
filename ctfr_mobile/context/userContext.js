@@ -166,45 +166,69 @@ const signin = (dispatch) => async ({email, password}) => {
             navigate('intro')
         } else {
             if (response.data.userInfo) {
-                if(await AsyncStorage.getItem('camera_mask_0')) {
+                await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
+                if (response.data.userHistory) {
+                    await AsyncStorage.setItem('userHistory', JSON.stringify(response.data.userHistory))
                     dispatch({
                         type: 'signin',
                         payload: {
-                            token: response.data.token
+                            token: response.data.token, 
+                            user: response.data.user, 
+                            userInfo: response.data.userInfo,
+                            userHistory: response.data.userHistory
                         }
                     })
-                    navigate('cameraMask')
-                } else if (await AsyncStorage.getItem('camera_mask_1')) {
-                    await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
-                    if (response.data.userHistory) {
-                        await AsyncStorage.setItem('userHistory', JSON.stringify(response.data.userHistory))
-                        dispatch({
-                            type: 'signin',
-                            payload: {
-                                token: response.data.token, 
-                                user: response.data.user, 
-                                userInfo: response.data.userInfo,
-                                userHistory: response.data.userHistory
-                            }
-                        })
-                        navigate('home')
-                    } else {
-                        dispatch({   
-                            type: 'signin',
-                            payload: {
-                                token: response.data.token, 
-                                user: response.data.user, 
-                                userInfo: response.data.userInfo
-                            }
-                        })
-                        navigate('home')
-                    }
+                    navigate('home')
                 } else {
-                    dispatch({
+                    dispatch({   
                         type: 'signin',
-                        payload: response.data.token
+                        payload: {
+                            token: response.data.token, 
+                            user: response.data.user, 
+                            userInfo: response.data.userInfo
+                        }
                     })
+                    navigate('home')
                 }
+                // if(await AsyncStorage.getItem('camera_mask_0')) {
+                //     dispatch({
+                //         type: 'signin',
+                //         payload: {
+                //             token: response.data.token
+                //         }
+                //     })
+                //     navigate('cameraMask')
+                // } else if (await AsyncStorage.getItem('camera_mask_1')) {
+                //     await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
+                //     if (response.data.userHistory) {
+                //         await AsyncStorage.setItem('userHistory', JSON.stringify(response.data.userHistory))
+                //         dispatch({
+                //             type: 'signin',
+                //             payload: {
+                //                 token: response.data.token, 
+                //                 user: response.data.user, 
+                //                 userInfo: response.data.userInfo,
+                //                 userHistory: response.data.userHistory
+                //             }
+                //         })
+                //         navigate('home')
+                //     } else {
+                //         dispatch({   
+                //             type: 'signin',
+                //             payload: {
+                //                 token: response.data.token, 
+                //                 user: response.data.user, 
+                //                 userInfo: response.data.userInfo
+                //             }
+                //         })
+                //         navigate('home')
+                //     }
+                // } else {
+                //     dispatch({
+                //         type: 'signin',
+                //         payload: response.data.token
+                //     })
+                // }
             } else {
                 const response = await api.get('/fillInfo')
         
@@ -259,7 +283,7 @@ const verify = (dispatch) => async (input) => {
                     type: 'signin',
                     payload: {
                         token: token,
-                        user: JSON.parse(responseUser),
+                        user: responseUser.data.user,
                         tempData: JSON.parse(tempData)
                     }
                 })
@@ -271,7 +295,7 @@ const verify = (dispatch) => async (input) => {
                     type: 'signin',
                     payload: {
                         token: token,
-                        user: JSON.parse(responseUser),
+                        user: responseUser.data.user,
                         tempData: JSON.parse(tempData)
                     }
                 })
@@ -300,17 +324,19 @@ const fillup = (dispatch) => async ({ firstname, middleinitial, lastname, contac
             covidstatus
         })
         const user = await AsyncStorage.getItem('user')
+        const tempData = await AsyncStorage.getItem('tempUserData')
         await AsyncStorage.setItem('userInfo', JSON.stringify(response.data.userInfo))
         dispatch({
             type: 'fillup',
             payload: {
                 token: response.data.token,
                 user: JSON.parse(user),
-                userInfo: response.data.userInfo
+                userInfo: response.data.userInfo,
+                tempData: JSON.parse(tempData)
             }
         })
 
-        navigate('profile')
+        navigate('home')
         // navigate('camera')
     } catch (err) {
         console.log(err)
