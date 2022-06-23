@@ -50,31 +50,31 @@
                                     <label>Room</label>
                                 </div> 
                                 <ul class="classrooms" id="classrooms">
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>COS 320</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>COS 316</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>COS 319</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>CLA 217</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>CLA 225</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>CLA 210</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>CIT 113</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>CIT 205</p>
                                     </li>
-                                    <li class="room__number" onclick="roomNumber(this)">
+                                    <li class="room__number" room-target>
                                         <p>CIT 207</p>
                                     </li>
                                 </ul>
@@ -143,10 +143,10 @@
                                     <label>Name</label>
                                 </div>    
                                 <div class="filter__group">
-                                    <input id="dateFrom" type="date" required class="room__filter__name" id="room__filter__name" onchange="dateFilter()">
+                                    <input id="dateFrom" type="date" required class="room__filter__date" id="room__filter__date">
                                 </div>    
                                 <div class="filter__group">
-                                    <input id="dateTo" type="date" required class="room__filter__name" id="room__filter__name" onchange="dateFilter()">                                    
+                                    <input id="dateTo" type="date" required class="room__filter__date" id="room__filter__date" onchange="dateFilter()">                                    
                                 </div>    
                             </div> 
                             <div class="db__buttons__container">
@@ -227,7 +227,7 @@
                                     <th class="db__header__cell">Email</th>
                                     <th class="db__header__cell" id="header__name" onclick='sortTable(0)'>Name</th>
                                     <th class="db__header__cell">Contact No.</th>
-                                    <th class="db__header__cell">Date of Birth</th>
+                                    <th class="db__header__cell">Age</th>
                                     <th class="db__header__cell">Vaccination Status</th>
                                     <th class="db__header__cell">Address</th>
                                     <th class="db__header__cell">Covid Status</th>

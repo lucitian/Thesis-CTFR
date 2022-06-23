@@ -6,6 +6,6 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     for (const dependecy of ['chrome', 'node', 'electron']) {
-        replaceText(`${dependecy}-version`, process.versions[dependency])
+        replaceText(`${dependecy}-version`, process.versions['dependency'])
     }
 })

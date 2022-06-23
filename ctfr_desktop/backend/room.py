@@ -1,7 +1,9 @@
+from datetime import datetime
 from app import app
 from mongo import mongo
 from flask import jsonify, Response
 from bson.objectid import ObjectId
+from bson.json_util import dumps
 import json
 
 db_rooms = mongo.db.rooms
@@ -20,7 +22,7 @@ def get_rooms():
         'roomNo': room['roomNo'],
         'userId': room['userId'],
         'name': room['name'],
-        'date': room['date'],
+        'date': str(room['date']),
         'time': room['time']
     }for room in rooms]
 
@@ -60,3 +62,28 @@ def delete_room(id):
             status = 500,
             mimetype='application/json'
         )
+
+@app.route('/fetchdates/<dateArr>')
+def fetchdates(dateArr):
+    try:
+        tempDate = json.loads(dateArr)
+        print(tempDate)
+        rooms = db_rooms.find({
+            'date': {
+                '$gte': datetime.strptime(tempDate['tempFrom'], '%Y-%m-%d'),
+                '$lte': datetime.strptime(tempDate['tempTo'], '%Y-%m-%d')
+            }
+        })
+
+        output = [{
+            'roomNo': room['roomNo'],
+            'userId': room['userId'],
+            'name': room['name'],
+            'date': str(room['date']),
+            'time': room['time']
+        }for room in rooms]
+
+        return jsonify(json.loads(JSONEncoder().encode(output)))
+    except Exception as ex:
+        print(ex)
+        return 'Done'

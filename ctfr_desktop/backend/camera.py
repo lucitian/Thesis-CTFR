@@ -1,6 +1,7 @@
 from app import app
 from mongo import mongo
 from flask import Response, jsonify, request
+from datetime import datetime
 import cv2
 import time
 from yolo import YOLO
@@ -50,24 +51,25 @@ class JSONEncoder(json.JSONEncoder):
 
 @app.route('/fetchnames', methods = ['GET'])
 def fetch_name():
-    global global_names
-    temp_dict = {}
-    for name in global_names:
-        if not name in temp_dict:
-            temp_dict[name] = 1
-        elif name in temp_dict:
-            temp_dict[name] += 1
+    # global global_names
+    # temp_dict = {}
+    # for name in global_names:
+    #     if not name in temp_dict:
+    #         temp_dict[name] = 1
+    #     elif name in temp_dict:
+    #         temp_dict[name] += 1
 
-    max_name = list(temp_dict.keys())[0]
-    max_val = temp_dict[max_name]
-    # print(list(temp_dict.keys())[0], max_val)
-    for name in temp_dict:
-        if max_val < temp_dict[name]:
-            max_val = temp_dict[name]
-            max_name = name
+    # max_name = list(temp_dict.keys())[0]
+    # max_val = temp_dict[max_name]
+    # # print(list(temp_dict.keys())[0], max_val)
+    # for name in temp_dict:
+    #     if max_val < temp_dict[name]:
+    #         max_val = temp_dict[name]
+    #         max_name = name
 
-    temp_name = max_name
-    global_names = []
+    # temp_name = max_name
+    # global_names = []
+    temp_name = 'Marc Rovic Baja'
     try:
         users = db_users.aggregate(userInfo)
 
@@ -106,7 +108,7 @@ def append_room():
             'roomNo': user[0]['roomNo'],
             'userId': ObjectId(user[0]['userId']),
             'name': user[0]['name'],
-            'date': user[0]['date'],
+            'date': datetime.strptime(user[0]['date'], '%Y-%m-%d'),
             'time': user[0]['time'],
         }for user in temp_data]
 

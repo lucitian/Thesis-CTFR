@@ -33,13 +33,19 @@ const renderUsers = (users) => {
                     <span class="data__lastname">${data.info[0].lastname}</span>
                 </td>
                 <td id="db__data__cell" class="data__contact">+${data.info[0].contact}</td>
-                <td id="db__data__cell" class="data__birthdate">${data.info[0].birthdate}</td>
+                <td id="db__data__cell" class="data__birthdate">${renderAge(data.info[0].birthdate)}</td>
                 <td id="db__data__cell" class="data__vaxstatus">${data.info[0].vaxstatus}</td>
                 <td id="db__data__cell" class="data__address">${data.info[0].address}</td>
                 <td id="db__data__cell" class="data__covidstatus">${data.info[0].covidstatus}</td>
             </tr>
         `
     })
+}
+
+const renderAge = (user_birthDate) => {
+    age = new Date() - new Date(user_birthDate)
+
+    return Math.floor(age/1000/60/60/24/365)
 }
 
 get_users()

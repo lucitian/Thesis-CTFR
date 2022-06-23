@@ -47,7 +47,7 @@
     position: relative;
 }
 
-.room__filter__room, .room__filter__name {
+.room__filter__room, .room__filter__name, .room__filter__date {
     font-family: 'OpenSans', monospace;
     outline: none;
     border: 1px solid #dadce0;
@@ -56,17 +56,17 @@
     border-radius: 5px;
 }
 
-.room__filter__room:focus, .room__filter__name:focus {
+.room__filter__room:focus, .room__filter__name:focus, .room__filter__date:focus {
     border: 1px solid royalblue;
 }
 
-.room__filter__room:valid + label, .room__filter__name:valid + label {
+.room__filter__room:valid + label, .room__filter__name:valid + label, .room__filter__date + label {
     bottom: 26px;
     padding: 0 3px;
     color: royalblue;
 }
 
-.room__filter__room:focus + label, .room__filter__name:focus + label {
+.room__filter__room:focus + label, .room__filter__name:focus + label, .room__filter__date:focus + label {
     bottom: 26px;
     padding: 0 3px;
     color: royalblue;

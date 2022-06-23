@@ -4,6 +4,7 @@ document.getElementById('camera__generate__button').disabled = true
 const tempList = document.getElementById('tempList')
 
 let array_append = []
+let temp_room = ""
 
 function open__camera() {
     fetch(`http://localhost:5000/open_cam`)
@@ -11,8 +12,6 @@ function open__camera() {
     generateID.innerHTML = ''
     document.getElementById('open__camera').disabled = true
     document.getElementById('open__camera').classList.add('disable')
-    document.getElementById('camera__generate__button').disabled = false
-    document.getElementById('camera__generate__button').classList.remove('disable')
 }
 
 function close__camera() {
@@ -22,8 +21,6 @@ function close__camera() {
     document.getElementById('open__camera').disabled = false
     document.getElementById('open__camera').classList.remove('disable')
 }
-
-tempData = []
 
 const fetch_name = () => {
     fetch('http://localhost:5000/fetchnames', {
@@ -36,38 +33,37 @@ const fetch_name = () => {
     .catch(error => console.log(error))
 }
 
+const roomTarget = document.querySelectorAll('[room-target]')
+
+roomTarget.forEach(room => {
+    room.addEventListener('click', () => {
+        room.classList.toggle('selected')
+        if (room.classList[1]) {
+            document.getElementById('camera__generate__button').disabled = false
+            document.getElementById('camera__generate__button').classList.remove('disable')
+            temp_room = room.innerText
+        } else {
+            generateID.innerHTML=""
+            temp_room = ""
+        }
+    })
+})
+
 const layoutID = (data) => {
-    tempData = data
     generateID.innerHTML = `
         <p class = "stud_info">Name: ${data.info[0].firstname} ${data.info[0].middleinitial} ${data.info[0].lastname}</p>
         <p class = "stud_info">Email: ${data.email}</p>
         <p class = "stud_info">Vaccination Status: ${data.info[0].vaxstatus}</p>
         <p class = "stud_info">Covid-19 Status: ${data.info[0].covidstatus}</p>
+        <p class = "stud_info">Date: ${newDate()}</p>
+        <p class = "stud_info">Time: ${newTime()}</p>
     `
-}
 
-const newDate = () => {
-    const today = new Date();
-    
-    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-
-    return date
-}
-
-const newTime = () => {
-    const today = new Date();
-    const time = today.getHours() + ":" + today.getMinutes();
-
-    return time
-}
-
-const roomNumber = (clickRow) => {
-    let roomNo = clickRow.innerText
     let temp_array_append = []
-    temp_name = tempData.info[0].firstname + " " + tempData.info[0].middleinitial + " " + tempData.info[0].lastname
+    temp_name = data.info[0].firstname + " " + data.info[0].middleinitial + " " + data.info[0].lastname
     temp_array_append.push({
-        'roomNo': roomNo,
-        'userId': tempData._id,
+        'roomNo': temp_room,
+        'userId': data._id,
         'name': temp_name,
         'date': newDate(),
         'time': newTime()
@@ -81,16 +77,31 @@ const roomNumber = (clickRow) => {
                     <i class="fa fa-trash-o"></i>
                 </button>
             </td>
-            <td id="temp__data__cell">${roomNo}</td>
+            <td id="temp__data__cell">${temp_room}</td>
             <td id="temp__data__cell">
-                <span>${tempData.info[0].firstname}</span>
-                <span>${tempData.info[0].middleinitial}</span>.
-                <span>${tempData.info[0].lastname}</span>
+                <span>${data.info[0].firstname}</span>
+                <span>${data.info[0].middleinitial}</span>.
+                <span>${data.info[0].lastname}</span>
             </td>
             <td id="temp__data__cell">${newDate()}</td>
             <td id="temp__data__cell">${newTime()}</td>
         </tr>
     `
+}
+
+const newDate = () => {
+    const today = new Date();
+    
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+(today.getDate());
+
+    return date
+}
+
+const newTime = () => {
+    const today = new Date();
+    const time = today.getHours() + ":" + today.getMinutes();
+
+    return time
 }
 
 const appendRoom = () => {
@@ -105,6 +116,7 @@ const appendRoom = () => {
     .then(data => console.log(data))
     .catch(error => console.log(error))
     array_append = []
+    generateID.innerHTML = ''
     tempList.innerHTML = ''
 }
 
@@ -138,3 +150,4 @@ function deleteUserAppend(datas) {
         parent.remove()        
     }
 }
+
