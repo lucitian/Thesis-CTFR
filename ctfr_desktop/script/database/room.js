@@ -119,21 +119,23 @@ closeDeleteResultModal = () => {
 
 function print_rooms(data) {
     var rowLength = roomList.rows.length
+    var count = 0
     var tempRooms = []
     var listRooms = []
     // console.log(rowLength)
 
-    // console.log(roomList.rows.item(0).cells[1].innerText)
-
-    for (i =0; i < rowLength; i++){
-        var cells = roomList.rows.item(i).cells
-        var cellLength = roomList.rows.item(i).cells.length
-        
-        for (j = 1; j < cellLength; j++){
-            tempRooms.push(cells.item(j).innerText)
+    for (i = 0; i < rowLength; i++){
+        if (roomList.rows.item(i).style.display == 'none') {
+            continue
+        } else {
+            var cells = roomList.rows.item(i).cells
+            var cellLength = roomList.rows.item(i).cells.length
+            for (j = 1; j < cellLength; j++){
+                tempRooms.push(cells.item(j).innerText)
+            }
+            listRooms.push(tempRooms)
+            tempRooms = []
         }
-        listRooms.push(tempRooms)
-        tempRooms = []
     }
     console.log(listRooms)
 
